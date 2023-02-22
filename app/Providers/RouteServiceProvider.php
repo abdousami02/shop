@@ -39,7 +39,7 @@ class RouteServiceProvider extends ServiceProvider
 
         $this->routes(function () {
 
-          Route::domain("admin.shop_local")
+          Route::domain("admin.badnishop.com")
             ->namespace($this->namespace)
             ->group(base_path('routes/admin.php'));
 
