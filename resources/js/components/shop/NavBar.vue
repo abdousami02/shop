@@ -2,7 +2,7 @@
   <div class="navbar navbar-expand-lg">
     <div class="container">
       <router-link to="/" class="navbar-brand logo" href="#">
-        <img src="/logo.png" alt="logo" style="width: 40px" />
+        <img src="favicon.ico" alt="logo" style="width: 40px" />
         Badni Shop
       </router-link>
       <div class="search-links">
