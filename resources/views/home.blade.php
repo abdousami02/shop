@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Home</title>
-    <link rel="icon" href="">
+    <link rel="icon" href="favicon.ico">
 
     <!-- meta description -->
     <meta name="copyright" content="BadniShop">
@@ -21,7 +21,7 @@
     <!-- facebook meta -->
     <meta name="og:title" content="BadniShop" />
     <meta name="og:type" content="Ecommerce webSite" />
-    <meta name="og:image" content='logo.png' />
+    <meta name="og:image" content='favicon.ico' />
     <meta name="og:description" content="Vente en gros de produits aux commerçants" />
     <meta name="og:description" content="بيع المنتجات بالجملة لأصحاب المحلات و السوبيرات">
 
