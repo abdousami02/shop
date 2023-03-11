@@ -15,5 +15,6 @@ yarn-error.log
 /public/deleted
 /public/product
 /public/user
+/app/Providers/RouteServiceProvider.php
 /.idea
 /.vscode
