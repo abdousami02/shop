@@ -22,7 +22,7 @@ class GroupController extends Controller
 
       switch($user['group_id']){
         case 0 :
-              $get= true; $update= true; $add= true; $delete= true;
+              $get= true; $update= true; $add= true; $delete= false;
               break;
 
         case 1 :
@@ -95,7 +95,7 @@ class GroupController extends Controller
   public function add($data) {
 
     $validator = Validator::make($data->all(), [
-      'id' => 'integer|unique:group,id|required|max:20',
+      'id' => 'integer|unique:group,id|required|max:20|not_in:0,1,2,3,4,5',
       'name' => 'required|unique:group,name|min:3|max:10|string',
       'status' => 'nullable|integer|max:1',
     ]);
@@ -108,7 +108,7 @@ class GroupController extends Controller
 
     $group->id = $data->id;
     $group->name = $data->name;
-    $group->status = $data->status;
+    $group->status = isset($data->status) ? $data->status : 0;
 
     $group->save();
 
@@ -122,10 +122,10 @@ class GroupController extends Controller
   public function update($data){
 
     $validator = Validator::make($data->all(), [
-      'id'   => 'integer|exists:group,id',
+      'id'   => 'required|integer|exists:group,id|not_in:0,1,2,3,4,5',
       'name' => ['required', 'min:3', 'max:10', 'string',
                   Rule::unique('group', 'name')->ignore($data->id, 'id'),],
-      'status' => 'integer|max:1',
+      'status' => 'required|integer|max:1',
     ]);
 
 
@@ -133,8 +133,8 @@ class GroupController extends Controller
       return response()->json(['status'=> 'error', 'errors'=> $validator->errors()]);
     }
 
-    $group = Group::where('id', $data->id)
-                    ->update(['name'=> $data->name, 'status'=> $data->status]);    //find element
+    Group::where('id', $data->id)
+            ->update(['name'=> $data->name, 'status'=> $data->status]);    //find element
 
     // $group->name = $data->name;
     // $group->status = $data->status;
@@ -150,7 +150,7 @@ class GroupController extends Controller
   public function delete($data){
 
     $validator = Validator::make($data->all(), [
-      'id' => 'integer|required|exists:group,id|not_in:1,2,3',
+      'id' => 'integer|required|exists:group,id|not_in:0,1,2,3,4,5',
     ]);
 
     if($validator->fails()) {

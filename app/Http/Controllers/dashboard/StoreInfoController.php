@@ -12,22 +12,53 @@ use Illuminate\Validation\Rule;
 class StoreInfoController extends Controller{
 
 
+
+
   public function default(Request $req){
 
-    if($req->action == 'add_store'){
+    // if have permition
+    $user = auth()->user();
+
+    if($user['group_id'] <= 3 && $user['status'] != 0){
+
+      switch($user['group_id']){
+        case 0 :
+              $get= true; $update= true; $add= true; $delete= true;
+              break;
+
+        case 1 :
+              $get= true; $update= true; $add= true; $delete= false;
+              break;
+
+        case 2 :
+              $get= true; $update= false; $add= true; $delete= false;
+              break;
+
+        case 3 :
+              $get= false; $update= false; $add= false; $delete= false;
+              break;
+
+        default: break;
+      }
+    }else{
+      $get = false; $add= false; $update= false; $delete= false;
+    }
+
+
+    if($req->action == 'add_store' && $add){
       return $this->add($req);
 
     // to update store of user from DataBase
-    } elseif($req->action == 'update_store' ){
+    } elseif($req->action == 'update_store' && $update){
       return $this->update($req);
 
 
       // for getData from database
-    } elseif($req->action == 'delete_store'){
+    } elseif($req->action == 'delete_store' && $delete){
         return $this->delete($req);
 
     } else {
-      return response()->json(['status'=> 'undifined in store controller']);
+      return response()->json(['status'=> 'permition']);
     }
   }
 

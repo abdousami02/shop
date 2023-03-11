@@ -33,11 +33,11 @@ class ProductController extends Controller
               break;
 
         case 2 :
-              $get= false; $update= false; $add= false; $delete= false;
+              $get= true; $update= false; $add= true; $delete= false;
               break;
 
         case 3 :
-              $get= false; $update= false; $add= false; $delete= false;
+              $get= true; $update= true; $add= false; $delete= false;
               break;
 
         default: break;
@@ -128,7 +128,6 @@ class ProductController extends Controller
       'name_ar'     => 'nullable|min:3|max:40|string',
       'code_bare'   => 'nullable|unique:products,code_bare|integer',
       'description' => 'nullable|string|max:150',
-      // 'image'       => 'nullable|image',
       'method_price'=> 'required|in:unite,cartone',
       'price_buy'   => 'required|integer',
       'qte_uc'      => 'nullable|integer',

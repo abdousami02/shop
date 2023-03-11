@@ -16,7 +16,7 @@ class CreateDiscountTable extends Migration
         Schema::create('discount', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('product_id')->unsigned();
-            $table->foreign('product_id')->references('id')->on('product');
+            $table->foreign('product_id')->references('id')->on('products');
             $table->timestamp('start_at')->nullable();
             $table->timestamp('end_at')->nullable();
             $table->decimal('price_unit')->nullable();

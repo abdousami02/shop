@@ -21,7 +21,7 @@ class CreateProductTable extends Migration
         $table->foreign('famille_id')->references('id')->on('familles');
         $table->string('name');
         $table->string('name_ar')->nullable();
-        $table->gibInteger('code_bare')->nullable();
+        $table->bigInteger('code_bare')->nullable();
         $table->string('description')->nullable();
         $table->string('image')->nullable();
         $table->smallInteger('method_price');

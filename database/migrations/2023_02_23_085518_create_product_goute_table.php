@@ -16,7 +16,7 @@ class CreateProductGouteTable extends Migration
       Schema::create('product_goute', function (Blueprint $table) {
         $table->increments('id');
         $table->integer('product_id')->unsigned();
-        $table->foreign('product_id')->references('id')->on('product');
+        $table->foreign('product_id')->references('id')->on('products');
         $table->string('goute');
         $table->integer('in_stock');
         $table->decimal('discount');

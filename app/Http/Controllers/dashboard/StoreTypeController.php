@@ -21,15 +21,15 @@ class StoreTypeController extends Controller
 
       switch($user['group_id']){
         case 0 :
-          $get= true; $update= true; $add= true; $delete= true;
+          $get= true; $update= true; $add= true; $delete= false;
           break;
 
         case 1 :
-              $get= true; $update= true; $add= true; $delete= false;
+              $get= true; $update= false; $add= true; $delete= false;
               break;
 
         case 2 :
-              $get= true; $update= false; $add= true; $delete= false;
+              $get= true; $update= false; $add= false; $delete= false;
               break;
 
         case 3 :
