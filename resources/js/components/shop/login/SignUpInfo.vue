@@ -49,9 +49,10 @@ export default {
   props: ["func_next"],
   watch: {
     num: function (e) {
-      console.log(e.length);
-      if (e.length > 8) {
-        this.num = e.slice(0, 8);
+      let mob = e.toString();
+      console.log(mob.length);
+      if (mob.length > 8) {
+        this.num = mob.slice(0, 8);
       }
     },
   },

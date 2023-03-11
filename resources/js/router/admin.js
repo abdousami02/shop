@@ -1,28 +1,29 @@
 import { createRouter, createWebHistory } from "vue-router";
 
 // file import
-import login from "../views/LoginView.vue";
-import HomeDashboard from "../views/DashboardView.vue";
+import login from "../views/admin/LoginView.vue";
+import HomeDashboard from "../views/admin/DashboardView.vue";
 
 // children
-import dashBoard from "../views/dashView/dashboard.vue";
-import order from "../views/dashView/order.vue";
-import product from "../views/dashView/product.vue";
-import cat from "../views/dashView/cat.vue";
-import user from "../views/dashView/user.vue";
-import saller from "../views/dashView/saller.vue";
-import anal from "../views/dashView/anal.vue";
-import setting from "../views/dashView/setting.vue";
+import dashBoard from "../views/admin/dashboard.vue";
+import order from "../views/admin/order.vue";
+import product from "../views/admin/product.vue";
+import cat from "../views/admin/cat.vue";
+import user from "../views/admin/user.vue";
+import saller from "../views/admin/saller.vue";
+import anal from "../views/admin/anal.vue";
+import setting from "../views/admin/setting.vue";
+import group from "../views/admin/group.vue";
 
 const routes = [
   {
     path: "/",
-    name: "login",
+    name: "Login",
     component: login,
   },
   {
     path: "/dashboard",
-    name: "HomeDashboard",
+    name: "Dashboard",
     component: HomeDashboard,
     children: [
       {
@@ -56,6 +57,10 @@ const routes = [
       {
         path: "setting",
         component: setting,
+      },
+      {
+        path: "group",
+        component: group,
       },
     ],
   },

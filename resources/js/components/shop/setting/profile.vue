@@ -6,7 +6,7 @@
         <label>Profile Picture</label>
         <div class="value">
           <div class="image"><img src="https://secure.gravatar.com/avatar/23b3a4bfdadb21bc68c2d96bed3fa4c7?s=96&d=mm&r=g" alt="image-profile" /></div>
-          <button class="btn btn-outline-primary">Change</button>
+          <button class="btn btn-outline-primary" @click="sendData()">Change</button>
         </div>
       </div>
       <div class="user-name sett-row">
@@ -79,6 +79,13 @@
 <script>
 export default {
   name: "ProfileSetting",
+  methods: {
+    sendData(){
+      axios.post('/api/info ', this.group).then(respons=>{
+        console.log(respons)
+      })
+    },
+  }
 };
 </script>
 

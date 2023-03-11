@@ -2,7 +2,7 @@
   <div class="navbar navbar-expand-lg">
     <div class="container">
       <router-link to="/" class="navbar-brand logo" href="#">
-        <img src="favicon.ico" alt="logo" style="width: 40px" />
+        <img src="/favicon.ico" alt="logo" style="width: 40px" />
         Badni Shop
       </router-link>
       <div class="search-links">
@@ -43,7 +43,7 @@
             <ul class="dropdown-menu dropdown-menu-end">
               <li><router-link to="/dashboard" class="dropdown-item" href="#">Setting</router-link></li>
               <li class="dropdown-divider"></li>
-              <li><router-link to="/logout" class="dropdown-item" href="#">Log in</router-link></li>
+              <li><a @click.prevent="logout" class="dropdown-item" href="#">Log out</a></li>
             </ul>
           </li>
         </ul>
@@ -52,149 +52,24 @@
   </div>
 </template>
 
-<style lang="scss">
-$br: 5px;
-$srch-back: #ccc;
-$main-back: #ccc;
-
-.navbar {
-  background: #fff;
-
-  .container {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    margin: auto;
-    text-align: center;
-    align-items: unset !important;
-
-    .search-links {
-      display: flex;
-      flex-direction: column-reverse;
-      justify-content: space-between;
-      flex-basis: 70%;
-      // align-items: center;
-
-      .search-bar {
-        min-height: 40px;
-        // width: 450px;
-        display: flex;
-        // border: 1px solid #000;
-        border-radius: $br;
-        background: $srch-back;
-        margin-right: 20px;
-        flex-basis: 60%;
-
-        input {
-          // width: calc(100% - 16px);
-          flex-grow: 1;
-          width: 100%;
-          outline: none;
-          border: none;
-          margin-left: $br;
-          background: inherit;
-        }
-        .drop {
-          .form-select {
-            width: 110px;
-            height: 100%;
-            padding: 0 25px 0 7px;
-            border: none;
-            border-left: 1px solid #ccc;
-            border-radius: 0;
-            background-color: inherit;
-            &:focus {
-              box-shadow: none;
-            }
-          }
-          .drop-cat {
-            display: flex;
-            align-items: center;
-            width: 130px;
-            height: 100%;
-            text-decoration: none;
-            color: #444;
-            padding: 0 10px;
-            border-left: 1px solid #ddd;
-            span {
-              width: 100%;
-            }
-          }
-          ul {
-            padding: 0;
-            margin: 0;
-            li a {
-              text-decoration: none;
-            }
-          }
-        }
-        button {
-          background: $main-back;
-          color: #fff;
-          padding: 0 10px;
-          border: none;
-          border-radius: 0 $br $br 0;
-          cursor: pointer;
-        }
-      }
-
-      .dropdown-divider {
-        width: 80%;
-        margin: auto;
-      }
-    }
-
-    .navbar-nav {
-      flex-direction: row;
-      margin: 15px 0;
-
-      .nav-item {
-        flex: 1 0 0%;
-        min-width: 100px;
-
-        .nav-link {
-          color: #103262;
-          border-radius: 17px;
-          white-space: nowrap;
-          &.router-link-exact-active {
-            color: #fff;
-            padding: 8px 10px;
-            background: #103262;
-          }
-        }
-      }
-      // dorpdonw in nav of account an setting
-      .dropdown-menu {
-        position: absolute !important;
-      }
-    }
-  }
-}
-
-@media (min-width: 992px) {
-  .navbar {
-    .container {
-      flex-direction: row;
-      align-items: center !important;
-
-      .search-links {
-        flex-direction: row-reverse;
-        align-items: center;
-      }
-    }
-  }
-}
-</style>
-
 <script>
-var categorie = ["Alimantaion", "boisson", "cosmitique", "detergent"];
 export default {
   data: function () {
     return {
-      categ: categorie,
+
     };
   },
   name: "nav-bar",
-  props: categorie,
+  methods: {
+    logout(){
+      axios.post("/api/auth-admin/logout").then(resp =>{
+        if(resp.data){
+          this.$router.push({ name: "Login" })
+        }
+      })
+    }
+  }
 };
 </script>
+
+

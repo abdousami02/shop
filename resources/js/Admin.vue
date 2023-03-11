@@ -9,6 +9,7 @@ import navbar from "./components/NavBar.vue";
 import footers from "./components/footer.vue";
 
 export default {
+  name: 'Admin',
   components: {
     navbar,
     footers,

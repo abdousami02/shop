@@ -16,19 +16,18 @@ class CreateUsersTable extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('group_id')->unsigned();
-            $table->foreign('group_id')->references('group_id')->on('group');
+            $table->foreign('group_id')->references('id')->on('group');
             $table->string('name');
-            $table->string('mobile')->unique();
-            $table->string('email')->unique();
+            $table->integer('mobile')->unique();
+            $table->string('email')->unique()->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('image');
+            $table->string('image')->nullable();
             $table->integer('permition')->default(1);
-            $table->integer('rate')->default(0);
-            $table->integer('is_active')->default(0);
+            $table->integer('rank')->nullable()->default(0);
+            $table->integer('status')->default(0);
             $table->timestamp('last_login')->nullable();
-            $table->timestamp('create_at')->useCurrent();
-            $table->timestamp('update_at')->nullable();
+            $table->timestamps();
             $table->rememberToken();
             $table->softDeletes();
         });

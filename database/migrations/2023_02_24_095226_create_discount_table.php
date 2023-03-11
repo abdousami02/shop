@@ -22,6 +22,7 @@ class CreateDiscountTable extends Migration
             $table->decimal('price_unit')->nullable();
             $table->decimal('price');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

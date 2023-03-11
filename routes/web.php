@@ -13,17 +13,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-
-
-// Route::get('/admin', function () {
-//     return view('admin');
-// });
-
-// Route::get('/admin/{any}', function ($any) {
-//     return view('admin');
-// })->where('any','.*');
-
-
 Route::get('/{any}', function () {
   return view('home');
 
@@ -33,15 +22,6 @@ Route::get('/', function () {
     return view('home');
 });
 
-// Route::get('/admin/{any}', function () {
-//     return view('admin');
-// })->where('any','.*');
-
-// Route::get('/*/{any}', function () {
-//     return view('home');
-// })->where('any','.*');
-
-
-// Route::get('admin/{any}', function () {
-//     return view('admin');
-// })->where('admin/any','.admin/*');
+Route::post('/order', function() {
+  return view('posts');
+});

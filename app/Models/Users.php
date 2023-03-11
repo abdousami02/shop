@@ -4,20 +4,27 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Users extends Model
 {
   use HasFactory;
-  protected $filable = ['group_id', 'name', 'mobile', 'email', 'email_verified_at', 'password',
-     'image', 'permition', 'rate', 'is_active'];
+  use SoftDeletes;
+
   protected $table = 'users';
 
-  public function group_id(){
-    return $this->belongsTo(Group::class);
+  protected $filable = ['id','group_id', 'name', 'mobile', 'email',
+     'image', 'permition', 'rank', 'status'];
+
+  protected $hidden = ['password','remember_token',];
+
+  public function group(){
+    return $this->belongsTo(Group::class, 'group_id', 'id');
   }
 
   public function store_info(){
-    return $this->hasMany(StoreInfo::class);
+    return $this->hasMany(StoreInfo::class, 'user_id', 'id');
   }
 
 }

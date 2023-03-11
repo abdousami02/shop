@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/', function () {
-  return view('admin');
+  return view('dashboard');
 });
 
 Route::get('/dashboard', function () {
@@ -21,4 +21,5 @@ Route::get('/{any}', function ($any) {
 
 })->where('any','.*');
 
+// Route::post('/login', [App\Http\Controllers\MainController::class, 'index'])->name('login');
 

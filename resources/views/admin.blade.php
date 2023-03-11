@@ -11,7 +11,7 @@
 <body>
   <div class="container mt-5">
     <div class="panel">
-      <form action="" method="POST" class="login">
+      <form action="/login" method="POST" class="login">
         <h3 class="head">Login</h3>
         <div class="name">
           <i class="far fa-user fa-lg icon"></i>

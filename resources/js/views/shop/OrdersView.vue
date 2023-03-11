@@ -8,8 +8,8 @@
       <!-- search add edit -->
       <div class="opt-order">
         <div class="btn-opt mb-2">
-          <button class="btn btn-success btn-sm"><i class="far fa-plus"></i> Add</button>
-          <button class="btn btn-danger btn-sm ms-3"><i class="far fa-times"></i> Delet</button>
+          <button class="btn btn-success btn-sm" @click="setInfo()"><i class="far fa-plus"></i> Add</button>
+          <button class="btn btn-danger btn-sm ms-3" @click="getData()"><i class="far fa-times"></i> Delet</button>
         </div>
       </div>
       <!-- orders Lists -->
@@ -82,12 +82,50 @@
 </template>
 
 <script>
+import $ from "jquery";
 import order from "../../components/shop/item/OrderItem.vue";
 export default {
   name: "OrdersView",
   components: {
     order,
   },
+  methods: {
+    getData(){
+      let data = {
+        name: "alimantaion",
+        name_ar: "مواد غذائية",
+      };
+      console.log(data);
+      axios.post('api/cat', data).then(response=>{
+        console.log(response);
+      })
+    },
+    setFamille(){
+      let data = {
+        categorie_id: 1,
+        name: 'pate',
+        name_ar: "عجائن",
+      }
+      console.log(data);
+      axios.post('api/famille', data).then(response=>{
+        console.log(response);
+      })
+    },
+    setInfo(){
+      let data = {
+        categorie_id: 1,
+        name: 'pate',
+        name_ar: "عجائن",
+      }
+      console.log('send info')
+      axios.post('api/info', data).then(response=>{
+        console.log(response);
+      })
+    }
+  },
+  mounted: function() {
+    // this.getData();
+  }
 };
 </script>
 

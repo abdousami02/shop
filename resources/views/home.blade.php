@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Home-BadniShop</title>
-    <link rel="icon" href="favicon.ico">
+    <title>Home - Badni Shop</title>
+    <link rel="icon" href="/favicon.ico">
 
     <!-- meta description -->
     <meta name="copyright" content="BadniShop">
@@ -15,7 +15,7 @@
 
     <meta name="keywords" content="badnishop badni shop gros seller achat vente ecommerce product produit location Algeria Chlef ">
     <meta name="keywords" content="Alimantation boissons nettoyage couches bébé yaourts fromages sucreries ">
-    <meta name="keywords" content="شراء بيع بالجملة شلف الجزائر مواد غذائية موقع خدمات نقل منتجات توصيل">
+    <meta name="keywords" content="شراء بيع بالجملة شلف الجزائر مواد غذائية موقع خدمات نقل منتجات توصيل بادني شوب">
     <meta name="keywords" content="مواد غذائية مشروبات تنظيف حفاضات معلبات ياغورت اجبان حلويات">
 
     <!-- facebook meta -->
