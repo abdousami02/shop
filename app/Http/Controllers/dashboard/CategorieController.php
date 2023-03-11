@@ -96,7 +96,7 @@ class CategorieController extends Controller
     $cat = new Categorie();
 
     $cat->name = $data->name;
-    $cat->name_ar = $data->name_ar;
+    $cat->name_ar = isset($data->name_ar) ? $data->name_ar : null;
     $cat->status = $data->status || 0;
 
     $cat->save();
@@ -108,6 +108,8 @@ class CategorieController extends Controller
 
   // to update Categorie
   public function update(Request $data){
+
+
 
     $validator = Validator::make($data->all(), [
       'id'      => 'required|exists:categories,id',
@@ -121,8 +123,12 @@ class CategorieController extends Controller
       return response()->json(['status'=> 'error', 'errors'=>$validator->errors()]);
     }
 
+    $data->name_ar = isset($data->name_ar) ? $data->name_ar : null;
+
     Categorie::where('id', $data->id)
-        ->update(['name'=> $data->name, 'name_ar'=> $data->name_ar, 'status'=> $data->status]);
+        ->update(['name'=> $data->name,
+                     'name_ar'=> $data->name_ar,
+                      'status'=> $data->status]);
 
     return response()->json(['status'=>'done']);
 
