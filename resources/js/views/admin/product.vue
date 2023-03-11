@@ -21,7 +21,7 @@
         <td class="image"><img :src="'/'+slotProps.row.image" alt=""></td>
         <td class="code-bare">{{ slotProps.row.code_bare }}</td>
         <td class="name">{{ slotProps.row.name }}</td>
-        <td class="name">{{ slotProps.row.name_ar }}</td>
+        <td class="name ar">{{ slotProps.row.name_ar }}</td>
         <td class="price">{{ slotProps.row.price_sell1 }}</td>
         <td class="price">{{ slotProps.row.price_sell2 }}</td>
         <td class="price">{{ slotProps.row.price_sell3 }}</td>
@@ -111,7 +111,7 @@
                         <!-- name Ar Product -->
                         <div class="name_ar mt-2">
                           <label for="name-product-ar" class="name">Name AR</label>
-                          <div class="inp-form">
+                          <div class="inp-form ar">
                             <input :class="['form-control',errors.name_ar?'is-invalid':'']" id="name-product-ar" type="text" name="name_ar" v-model="product.name_ar" required />
                             <span class="invalid-feedback" v-text="errors.name_ar?errors.name_ar[0]:''"></span>
                           </div>

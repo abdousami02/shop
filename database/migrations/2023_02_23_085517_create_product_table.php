@@ -24,7 +24,7 @@ class CreateProductTable extends Migration
         $table->bigInteger('code_bare')->nullable();
         $table->string('description')->nullable();
         $table->string('image')->nullable();
-        $table->smallInteger('method_price');
+        $table->string('method_price');
         $table->decimal('price_buy');
         $table->integer('qte_uc');
         $table->decimal('price_unit')->nullable();
