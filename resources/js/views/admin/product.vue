@@ -453,7 +453,6 @@ export default {
     editeData(elem){
       console.log(elem);
       this.product = JSON.parse( JSON.stringify(elem)); // get the data from response register and put it in Modal
-      console.log(this.product);
 
       // this.inp_disable = true;          // modifie element Modal in DOM
       this.modal.title = "Edit User";
