@@ -13,8 +13,8 @@ Homestead.yaml
 npm-debug.log
 yarn-error.log
 /public/deleted
-/public/product
-/public/user
+/public/img/product
+/public/img/user
 /app/Providers/RouteServiceProvider.php
 /.idea
 /.vscode

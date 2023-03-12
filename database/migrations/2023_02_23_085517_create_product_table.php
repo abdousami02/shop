@@ -26,7 +26,7 @@ class CreateProductTable extends Migration
         $table->string('image')->nullable();
         $table->string('method_price');
         $table->decimal('price_buy');
-        $table->integer('qte_uc');
+        $table->integer('qte_uc')->nullable();
         $table->decimal('price_unit')->nullable();
         $table->decimal('price_sell1');
         $table->decimal('price_sell2')->nullable();

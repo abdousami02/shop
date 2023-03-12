@@ -259,32 +259,32 @@ class ProductController extends Controller
 
     $updated = [
       'categorie_id' => $data->categorie_id,
-      'famille_id'   => $data->famille_id,
+      'famille_id'   => isset($data->famille_id) ? $data->famille_id : null,
       'name'         => $data->name,
-      'name_ar'      => $data->name_ar,
-      'code_bare'    => $data->code_bare,
-      'description'  => $data->description,
+      'name_ar'      => isset($data->name_ar) ? $data->name_ar : null,
+      'code_bare'    => isset($data->code_bare) ? $data->code_bare : null,
+      'description'  => isset($data->description) ? $data->description : null,
       'method_price' => $data->method_price,
       'price_buy'    => $data->price_buy,
-      'qte_uc'       => $data->qte_uc,
+      'qte_uc'       => isset($data->qte_uc) ? $data->qte_uc : null,
       'price_sell1'  => $data->price_sell1,
-      'price_sell2'  => $data->price_sell2,
-      'price_sell3'  => $data->price_sell3,
-      'qte_sell2'    => $data->qte_sell2,
-      'qte_sell3'    => $data->qte_sell2,
+      'price_sell2'  => isset($data->price_sell2) ? $data->price_sell2 : null,
+      'price_sell3'  => isset($data->price_sell3) ? $data->price_sell3 : null,
+      'qte_sell2'    => isset($data->qte_sell2) ? $data->qte_sell2 : null,
+      'qte_sell3'    => isset($data->qte_sell2) ? $data->qte_sell2 : null,
       'in_stock'     => $data->in_stock,
       'status'       => $data->status,
-      'rank'         => $data->rank,
+      'rank'         => isset($data->rank) ? $data->rank : 0,
       'has_goute'    => isset($data->product_goute) ? count($data->product_goute) : 0,
-      'has_discount' => $data->has_discount ? $data->has_discount : 0,
+      'has_discount' => isset($data->has_discount) ? $data->has_discount : 0,
     ];
 
     $img = array('image' => $data->image);
-    $validator = Validator::make($img, [
+    $img_validator = Validator::make($img, [
       'image' => 'image|mimes:jpeg,jpg,png,gif,webp|required',
     ]);
 
-    if(!$validator->fails()){
+    if(!$img_validator->fails()){
 
       // move old image to deleted folder
       $img = Product::select('image')->where('id', $data->id)->get();

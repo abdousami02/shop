@@ -184,16 +184,20 @@ table {
       display: none;
     }
   }
+}
 
+.cat,
+.users,
+.group {
   .modal{
     .info > div{
-      // display: flex;
-      // justify-content: space-between;
-      // max-width: 400px;
+      display: flex;
+      justify-content: space-between;
+      max-width: 400px;
       margin-bottom: 20px;
-      // .inp-form {
-      //   max-width: 200px;
-      // }
+      .inp-form {
+        max-width: 200px;
+      }
     }
   }
 }
