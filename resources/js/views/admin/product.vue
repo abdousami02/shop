@@ -460,6 +460,7 @@ export default {
 
       this.model_dom.show();
       this.action_func = "update";
+      console.log(this.product);
     },
     search_prod(str){
       let data= {action: "search", str: str, method: this.search_method};
