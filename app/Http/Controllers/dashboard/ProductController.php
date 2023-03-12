@@ -114,6 +114,8 @@ class ProductController extends Controller
     $data->image = $data_old->image;
     $data->action = $data_old->action;
 
+    // return response()->json(($data->price_sell2 ? true : false));
+
     $valid = (array) $data;
     $valid['product_goute'] = [];
     foreach($data->product_goute as $elem => $value){
@@ -156,21 +158,21 @@ class ProductController extends Controller
     $prod->famille_id   = isset($data->famille_id) ? $data->famille_id: null;
     $prod->name         = $data->name;
     $prod->name_ar      = isset($data->name_ar) ? $data->name_ar : null ;
-    $prod->code_bare    = isset($data->code_bare) ? $data->code_bare : null;
+    $prod->code_bare    = isset($data->code_bare) && $data->code_bare ? $data->code_bare : null;
     $prod->description  = isset($data->description) ? $data->description : null;
     $prod->method_price = $data->method_price;
     $prod->price_buy    = $data->price_buy;
-    $prod->qte_uc       = isset($data->qte_uc) ? $data->qte_uc : null;
+    $prod->qte_uc       = isset($data->qte_uc) && $data->qte_uc ? $data->qte_uc : null;
     $prod->price_sell1  = $data->price_sell1;
-    $prod->price_sell2  = isset($data->price_sell2) ? $data->price_sell2 : null;
-    $prod->price_sell3  = isset($data->price_sell3) ? $data->price_sell3 : null;
-    $prod->qte_sell2    = isset($data->qte_sell2) ? $data->qte_sell2 : null;
-    $prod->qte_sell3    = isset($data->qte_sell2) ? $data->qte_sell2 : null;
+    $prod->price_sell2  = isset($data->price_sell2) && $data->price_sell2 ? $data->price_sell2 : null;
+    $prod->price_sell3  = isset($data->price_sell3) && $data->price_sell3 ? $data->price_sell3 : null;
+    $prod->qte_sell2    = isset($data->qte_sell2) && $data->qte_sell2 ? $data->qte_sell2 : null;
+    $prod->qte_sell3    = isset($data->qte_sell3) && $data->qte_sell3 ? $data->qte_sell3 : null;
     $prod->status       = $data->status;
     $prod->in_stock     = $data->in_stock;
-    $prod->rank         = isset($data->rank) ? $data->rank : 0;
-    $prod->has_goute    = count($data->product_goute);
-    $prod->has_discount = isset($data->has_discount) ? $data->has_discount : 0;
+    $prod->rank         = isset($data->rank) && $data->rank ? $data->rank : 0;
+    $prod->has_goute    = isset($data->product_goute) ? count($data->product_goute) : 0;
+    $prod->has_discount = isset($data->has_discount) && $data->has_discount ? $data->has_discount : 0;
 
 
     // condition fo Image
@@ -209,7 +211,7 @@ class ProductController extends Controller
     //   $data[$elem] = $val;
     // }
 
-    // return response()->json($data);
+    // return response()->json(($data->price_sell2 == ''));
 
     $valid = (array) $data;
     $valid['product_goute'] = [];
@@ -262,21 +264,21 @@ class ProductController extends Controller
       'famille_id'   => isset($data->famille_id) ? $data->famille_id : null,
       'name'         => $data->name,
       'name_ar'      => isset($data->name_ar) ? $data->name_ar : null,
-      'code_bare'    => isset($data->code_bare) ? $data->code_bare : null,
+      'code_bare'    => isset($data->code_bare) && $data->code_bare ? $data->code_bare : null,
       'description'  => isset($data->description) ? $data->description : null,
       'method_price' => $data->method_price,
       'price_buy'    => $data->price_buy,
-      'qte_uc'       => isset($data->qte_uc) ? $data->qte_uc : null,
+      'qte_uc'       => isset($data->qte_uc) && $data->qte_uc ? $data->qte_uc : null,
       'price_sell1'  => $data->price_sell1,
-      'price_sell2'  => isset($data->price_sell2) ? $data->price_sell2 : null,
-      'price_sell3'  => isset($data->price_sell3) ? $data->price_sell3 : null,
-      'qte_sell2'    => isset($data->qte_sell2) ? $data->qte_sell2 : null,
-      'qte_sell3'    => isset($data->qte_sell2) ? $data->qte_sell2 : null,
+      'price_sell2'  => isset($data->price_sell2) && $data->price_sell2 ? $data->price_sell2 : null,
+      'price_sell3'  => isset($data->price_sell3) && $data->price_sell3 ? $data->price_sell3 : null,
+      'qte_sell2'    => isset($data->qte_sell2) && $data->qte_sell2 ? $data->qte_sell2 : null,
+      'qte_sell3'    => isset($data->qte_sell2) && $data->qte_sell3 ? $data->qte_sell2 : null,
       'in_stock'     => $data->in_stock,
       'status'       => $data->status,
-      'rank'         => isset($data->rank) ? $data->rank : 0,
+      'rank'         => isset($data->rank) && $data->rank ? $data->rank : 0,
       'has_goute'    => isset($data->product_goute) ? count($data->product_goute) : 0,
-      'has_discount' => isset($data->has_discount) ? $data->has_discount : 0,
+      'has_discount' => isset($data->has_discount) && $data->has_discount  ? $data->has_discount : 0,
     ];
 
     $img = array('image' => $data->image);
