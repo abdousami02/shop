@@ -451,8 +451,9 @@ export default {
       })
     },
     editeData(elem){
-
+      console.log(elem);
       this.product = JSON.parse( JSON.stringify(elem)); // get the data from response register and put it in Modal
+      console.log(this.product);
 
       // this.inp_disable = true;          // modifie element Modal in DOM
       this.modal.title = "Edit User";
@@ -460,7 +461,6 @@ export default {
 
       this.model_dom.show();
       this.action_func = "update";
-      console.log(this.product);
     },
     search_prod(str){
       let data= {action: "search", str: str, method: this.search_method};
