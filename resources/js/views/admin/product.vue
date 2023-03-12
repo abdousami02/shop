@@ -336,7 +336,7 @@ export default {
     getData(page=1){
       let action = 'getData';
       axios.post("/api/product?page="+page, {action: action}).then(response =>{
-
+        console.log(response);
         // if don't have permition
         if(response.data.status == "permition"){
           Swal.fire({
@@ -476,6 +476,7 @@ export default {
     add_goute(){
       let inp = this.goute;
       if(inp.length > 2){
+        // Array.isArray(this.product.product_goute) ? '' : this.product.groduct_goute = [];
         this.product.product_goute.push({goute: inp, in_stock: 0});
         this.goute = '';
       }
@@ -511,6 +512,7 @@ export default {
       this.product= {product_goute: [], status: 0, in_stock: 0};
       this.errors= {0:{},};
       this.image= '';
+      this.goute= "";
     },
     search_id(id_search, from_search){
       for(let elem of from_search){           // loop in response and get data of element with id
