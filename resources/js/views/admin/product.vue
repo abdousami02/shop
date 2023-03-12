@@ -336,7 +336,6 @@ export default {
     getData(page=1){
       let action = 'getData';
       axios.post("/api/product?page="+page, {action: action}).then(response =>{
-        console.log(response);
         // if don't have permition
         if(response.data.status == "permition"){
           Swal.fire({
@@ -451,7 +450,6 @@ export default {
       })
     },
     editeData(elem){
-      console.log(elem);
       this.product = JSON.parse( JSON.stringify(elem)); // get the data from response register and put it in Modal
 
       // this.inp_disable = true;          // modifie element Modal in DOM

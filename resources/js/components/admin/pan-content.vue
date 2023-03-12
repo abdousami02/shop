@@ -151,9 +151,6 @@ export default {
   },
   mounted: function(){
     // setInterval(this.getData_forPag, 10000);
-    setTimeout(e=>{
-      console.log(this.tb)
-    }, 1500)
   },
   watch: {
     search(str){

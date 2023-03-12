@@ -394,6 +394,9 @@ class ProductController extends Controller
                         ->orderby($method, "ASC")
                         ->paginate(20);
 
+    foreach($resulte as $elem){
+      $elem->product_goute ;
+    }
     return response()->json($resulte);
   }
 
