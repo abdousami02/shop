@@ -462,11 +462,17 @@ input[type=number] {
   // edit in panel template
   .panel-dash {
     tbody {
-      .price,
+      .price{
+        width: 100px;
+      }
       .stock,
       .status,
-      .goute {
-        width: 100px;
+      .goute,
+      .qte{
+        width: 80px;
+      }
+      .qte{
+        background: #ffc1077a;
       }
       .code-bare {
         width: 120px;

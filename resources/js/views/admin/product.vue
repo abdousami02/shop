@@ -25,6 +25,7 @@
         <td class="price">{{ slotProps.row.price_sell1 }}</td>
         <td class="price">{{ slotProps.row.price_sell2 }}</td>
         <td class="price">{{ slotProps.row.price_sell3 }}</td>
+        <td class="qte">{{ slotProps.row.qte_uc }}</td>
         <td class="goute">{{ slotProps.row.has_goute }}</td>
         <td class="stock">{{ slotProps.row.in_stock }}</td>
         <td class="status"><span class="status" :data-status="slotProps.row.status">{{ slotProps.row.status == 1 ? "active" : "inactiv" }}</span></td>
@@ -90,7 +91,7 @@
                         <div class="inp-form">
                           <span>Famille</span>
                           <select name="famille" :class="['form-select from-select-sm', errors.famille_id? 'is-invalid':'']" v-model="product.famille_id">
-                            <option v-for="elem in response.familles" :key="elem" :value="elem.id">{{elem.name}}</option>
+                            <option v-for="elem in famille_cat" :key="elem" :value="elem.id">{{elem.name}}</option>
                           </select>
                           <span class="invalid-feedback" v-text="errors.famille_id?errors.famille_id[0]:''"></span>
                         </div>
@@ -314,7 +315,7 @@ export default {
   data: function () {
     return {
       title: "product",
-      thead: ["ID", "Image", "code_bare", "Name", "Name AR", "Price 1", "price 2", "price 3", "Goute", "in Stocke", "status", "rank"],
+      thead: ["ID", "Image", "code_bare", "Name", "Name AR", "Price 1", "price 2", "price 3", "Qte U/c", "Goute", "in Stocke", "status", "rank"],
       tbody:{data:{},},
       modal: {},
       response: {},
@@ -380,6 +381,7 @@ export default {
 
         // if not
         }else{
+          console.log(response);
           this.responseHandel(response, action);
         }
       })
@@ -394,7 +396,16 @@ export default {
 
       // if saccess
       } else if(status_resp == "done" && action != 'delete'){
-        this.getData(this.tbody.current_page);
+        // this.getData(this.tbody.current_page);
+        if(action == 'update'){
+          let id = response.data.data[0]['id'];
+          let elem = this.search_id(id, this.tbody.data);
+          this.tbody.data[elem.index] = response.data.data[0];
+
+        }else{
+          this.tbody.data.unshift(response.data.data[0]);
+        }
+
         this.model_dom.hide();
         this.empty_data();
         Toast.fire({
@@ -513,9 +524,18 @@ export default {
       this.goute= "";
     },
     search_id(id_search, from_search){
-      for(let elem of from_search){           // loop in response and get data of element with id
-        if(id_search == elem.id){return elem; };
+      for(let elem in from_search){           // loop in response and get data of element with id
+        if(id_search == from_search[elem]['id']){return {index: elem, data: from_search[elem]}; };
       };
+    },
+    select_famille(){
+      this.product.categorie_id;
+      this.famille_cat = [];
+      console.log(this.response.familles);
+      this.response.familles.forEach(elem => {
+        if(elem.categorie_id == this.product.categorie_id){ this.famille_cat.push(elem); }
+      });
+      console.log(this.famille_cat);
     },
     nothing(){
 
@@ -526,5 +546,11 @@ export default {
     this.getHelpInfo();
      this.model_dom = new bootstrap.Modal(document.getElementById('modal_product'), {});
   },
+  watch: {
+    'product.categorie_id': function(){
+      console.log('edit');
+      this.select_famille();
+    }
+  }
 };
 </script>

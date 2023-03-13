@@ -83,13 +83,18 @@ class ProductController extends Controller
   // **********
   public function getData($data){
 
-    $product = Product::paginate(50);    // ::get()
+    if($data->id){
+      $product = Product::where('id', $data->id)->get();
+
+    }else{
+      $product = Product::paginate(50);    // ::get()
+    }
 
     foreach($product as $elem){
       $elem->product_goute ;
     }
 
-    return response()->json(['data'=> $product, 'action'=> $data]);
+    return response()->json(['data'=> $product, 'status'=> 'done']);
   }
 
 
@@ -194,7 +199,7 @@ class ProductController extends Controller
 
     }
 
-    return response()->json(['status'=>'done']);
+    return $this->getData($prod);
   }
 
 
@@ -315,7 +320,8 @@ class ProductController extends Controller
       $this->updateGoute($data->product_goute, $data->id);
     }
 
-    return response()->json(['status'=>'done']);
+    // return response()->json($data->id);
+    return $this->getData($data);
   }
 
   // ***********
