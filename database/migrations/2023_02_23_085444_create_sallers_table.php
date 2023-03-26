@@ -19,7 +19,8 @@ class CreateSallersTable extends Migration
         $table->foreign('user_id')->references('id')->on('users');
         $table->string('name');
         $table->string('type');
-        $table->text('address');
+        $table->String('address');
+        $table->integer('mobile')->nullable();
         $table->integer('status')->default(0);
         $table->timestamps();
         $table->softDeletes();

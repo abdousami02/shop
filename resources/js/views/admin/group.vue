@@ -111,7 +111,7 @@ export default {
     // get data
     getData(page = 1, id = 'all'){
       let action = 'getData';
-      axios.post("/api/group?page="+ page, {action: action, id: id}).then(response =>{
+      axios.post("/api/admin/group?page="+ page, {action: action, id: id}).then(response =>{
 
           // if don't have permition
         if(response.data.status == "permition"){
@@ -140,7 +140,7 @@ export default {
       (selected != undefined && action == 'delete') ? data = {id: selected} : '';
       data.action = action;
 
-      axios.post('/api/group', data).then(response=>{
+      axios.post('/api/admin/group', data).then(response=>{
 
         // if have errore
         if(response.data.status == "permition"){

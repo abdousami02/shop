@@ -49,20 +49,24 @@ class UserController extends Controller
 
     // to get data of all user from database
     if($req->action == 'getData' && $get){
-        return $this->getData($req);
+      return response()->json( $this->getData() );
+
+    // get help info for user
+    }elseif($req->action == 'getHelpInfo'){
+      return response()->json( $this->getHelpInfo($req) );
 
     // add data of user in database
     } elseif($req->action == 'add' && $add){
-      return $this->add($req);
+      return response()->json( $this->add($req) );
 
     // to update user
     } elseif($req->action == 'update' && $update){
-      return $this->update($req);
+      return response()->json( $this->update($req) );
 
 
       // to delet user
     } elseif($req->action == 'delete' && $delete){
-        return $this->delete($req);
+        return response()->json( $this->delete($req) );
 
     } else {
       return response()->json(['status'=> 'permition']);
@@ -72,20 +76,35 @@ class UserController extends Controller
   // **********
   //  function to get User data
   // **********
-  public function getData($action){
+  public function getData($method=''){
 
-    $user = Users::paginate(20);
-                  //join('group', 'group.id', '=', 'users.group_id')->get();
+    if($method == 'all'){
+      $user = Users::get();
 
-    $groups = Group::select('id', 'name')->get();
-    $store_type = StoreType::get();
+    }else{
+      $user = Users::paginate(20);
+      //join('group', 'group.id', '=', 'users.group_id')->get();
+    }
 
     foreach($user as $elem){
       $elem->group;
       $elem->store_info;
     }
 
-    return response()->json(['data'=> $user, 'groups' => $groups, 'store_type' => $store_type]);
+    return $user;
+  }
+
+
+  // **********
+  //  function to get info help for User
+  // **********
+  public function getHelpInfo($data){
+
+    $groups = Group::select('id', 'name')->get();
+    $store_type = StoreType::get();
+
+
+    return ['groups' => $groups, 'store_type' => $store_type];
   }
 
 
@@ -96,7 +115,6 @@ class UserController extends Controller
   public function add($data) {
 
     $validator = Validator::make($data->all(), [
-      // 'id' => 'integer|unique:group,group_id|required|max:20',
       'name'    => 'required|min:3|max:10|string',
       'password' => 'required|min:6|regex:/^(?=.*[a-zA-Z])(?=.*[0-9])([a-zA-Z0-9.?!@#$%^&*\-+=_,.?;:\'\\"\/]+)$/',
       'mobile'  => 'required|unique:users,mobile|integer|digits:9|regex: /^([0-9]+())$/',
@@ -111,7 +129,7 @@ class UserController extends Controller
     ]);
 
     if($validator->fails()) {
-      return response()->json(['status'=> 'error', 'errors'=> $validator->errors()]);
+      return ['status'=> 'error', 'errors'=> $validator->errors()];
     }
 
 
@@ -144,7 +162,7 @@ class UserController extends Controller
       $store_info->save();
     }
 
-    return response()->json(['status'=>'done', 'data'=> $user]);
+    return ['status'=>'done', 'data'=> $user];
   }
 
 
@@ -171,7 +189,7 @@ class UserController extends Controller
     ]);
 
     if($validator->fails()) {
-      return response()->json(['status'=> 'error', 'errors'=> $validator->errors()]);
+      return ['status'=> 'error', 'errors'=> $validator->errors()];
     }
 
     $inc = [
@@ -189,7 +207,7 @@ class UserController extends Controller
     Users::where('id', $data->id)
               ->update($inc);
 
-    return response()->json(['status'=>'done']);
+    return ['status'=>'done'];
   }
 
 
@@ -204,16 +222,16 @@ class UserController extends Controller
     ]);
 
     if($validator->fails()) {
-      return response()->json(['status'=> 'error', 'errors'=> $validator->errors()]);
+      return ['status'=> 'error', 'errors'=> $validator->errors()];
     }
 
     $user = Users::where('id', $data->id)->delete();
 
     if($user){
-      return response()->json(['status'=> 'done']);
+      return ['status'=> 'done'];
 
     }else{
-      return response()->json(['status'=> 'error', 'data' => $data]);
+      return ['status'=> 'error', 'data' => $data];
     }
 
   }

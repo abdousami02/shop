@@ -1,10 +1,94 @@
-// Fonts
-@import url('https://fonts.googleapis.com/css?family=Nunito');
 
-// Variables
-@import 'variables';
 
-// Bootstrap
-@import '~bootstrap/scss/bootstrap';
+@import "global/global";
+@import "shop/setting";
 
-@import "main.scss";
+@import "shop/store";
+@import "shop/order";
+
+
+
+p {
+  margin-bottom: 5px;
+}
+.table-bordered>:not(caption)>* {
+  border-width: 1px
+}
+.form-control {
+  min-height: calc(1.5em + 0.5rem + 2px);
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+  border-radius: 0.25rem;
+}
+.form-select {
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+  padding-left: 0.5rem;
+  font-size: .875rem;
+  border-radius: 0.25rem;
+}
+.btn {
+  --bs-btn-padding-y: 0.25rem;
+  --bs-btn-padding-x: 0.5rem;
+  --bs-btn-font-size: 0.875rem;
+  --bs-btn-border-radius: 0.25rem;
+}
+
+.select-cat {
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+  padding-left: 0.5rem;
+  font-size: 0.875rem;
+  border-radius: 0.25rem;
+  width: 100px;
+  display: inline-block;
+}
+
+
+
+.qte-inp {
+  input {
+    width: 50px;
+  }
+}
+.value {
+  font-weight: 600;
+}
+.qte-txt {
+  width: 100px;
+  // overflow: hidden;
+  position: relative;
+  margin-bottom: 7px;
+  .delet {
+    position: absolute;
+    right: -45px;
+    top: -2px;
+    color: #dc3545;
+    cursor: pointer;
+    padding: 7px;
+    border-radius: 50%;
+    opacity: 0.8;
+    &:hover {
+      background: #eee;
+      opacity: 1;
+    }
+  }
+}
+.prix-t {
+  // max-width: 200px;
+  display: flex;
+  justify-content: space-between;
+  background-color: #0dcaf06b;
+  padding: 4px;
+  border-radius: 5px;
+  margin-top: auto;
+  flex-wrap: wrap;
+}
+
+.spb {
+  width: 100px;
+  .value {
+    float: right;
+  }
+}
+

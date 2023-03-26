@@ -50,27 +50,30 @@ class ProductController extends Controller
 
     // to getDat from  database
     if($req->action == 'getData' && $get ){
-        return $this->getData($req);
+        return response()->json( $this->getData($req) );
 
     // to help Info from  database
     }elseif($req->action == 'getHelpInfo' && $get ){
-        return $this->getHelpInfo($req);
+        return response()->json( $this->getHelpInfo($req) );
 
     }elseif($req->action == 'search' && $get){
-      return $this->search($req);
+      return response()->json( $this->search($req) );
 
-      // to add group
+        // to add group
     } elseif($req->action == 'add' && $add){
-      return $this->add($req);
+      return response()->json( $this->add($req) );
+
+    }elseif($req->action == 'update_stock' && $update){
+      return response()->json( $this->update_stock($req) );
 
         // to updat group
     } elseif($req->action == 'update' && $update){
-      return $this->update($req);
+      return response()->json( $this->update($req) );
 
 
       // to delet group
     } elseif($req->action == 'delete' && $delete){
-        return $this->delete($req);
+        return response()->json( $this->delete($req) );
 
     } else {
       return response()->json(['status'=> 'permition']);
@@ -84,17 +87,18 @@ class ProductController extends Controller
   public function getData($data){
 
     if($data->id){
-      $product = Product::where('id', $data->id)->get();
+      $product = Product::with(array('product_goute'))
+                        ->where('id', $data->id)->get();
 
     }else{
-      $product = Product::paginate(50);    // ::get()
+      $product = Product::with(array('product_goute'))->paginate(50);    // ::get()
     }
 
-    foreach($product as $elem){
-      $elem->product_goute ;
-    }
+    // foreach($product as $elem){
+    //   $elem->product_goute ;
+    // }
 
-    return response()->json(['data'=> $product, 'status'=> 'done']);
+    return ['data'=> $product, 'status'=> 'done'];
   }
 
 
@@ -106,7 +110,7 @@ class ProductController extends Controller
     $cat     = Categorie::get();
     $famille = Famille::get();
 
-    return response()->json(['categories'=> $cat, 'familles'=> $famille]);
+    return ['categories'=> $cat, 'familles'=> $famille];
   }
 
 
@@ -137,7 +141,7 @@ class ProductController extends Controller
       'description' => 'nullable|string|max:150',
       'method_price'=> 'required|in:unite,cartone',
       'price_buy'   => 'required|regex:/^\d*\.?\d*$/',
-      'qte_uc'      => 'nullable|integer',
+      'qte_uc'      => 'required|integer',
       'price_sell1' => 'required|regex:/^\d*\.?\d*$/|max:9999',
       'price_sell2' => 'nullable|regex:/^\d*\.?\d*$/|max:9999',
       'price_sell3' => 'nullable|regex:/^\d*\.?\d*$/|max:9999',
@@ -146,6 +150,7 @@ class ProductController extends Controller
       'in_stock'    => 'required|integer|in:0,1',
       'status'      => 'required|integer|in:0,1',
       'rank'        => 'nullable|integer|max:999',
+      'weight'      => 'nullable|regex:/^\d*\.?\d*$/|max:999',
       'has_goute'   => 'nullable|integer',
       'has_discount' => 'nullable|integer|in:0,1',
       'product_goute.*.goute'   => 'required|string|max:15|min:2',
@@ -153,7 +158,7 @@ class ProductController extends Controller
     ]);
 
     if($validator->fails()) {
-      return response()->json(['status'=> 'error', 'errors'=> $validator->errors()]);
+      return ['status'=> 'error', 'errors'=> $validator->errors()];
     }
 
     // return response()->json(['data' => $data->image]);
@@ -166,8 +171,9 @@ class ProductController extends Controller
     $prod->code_bare    = isset($data->code_bare) && $data->code_bare ? $data->code_bare : null;
     $prod->description  = isset($data->description) ? $data->description : null;
     $prod->method_price = $data->method_price;
+    $prod->method_qte   = ( $data->method_price == 'unite') ? $data->qte_uc : 1 ;
     $prod->price_buy    = $data->price_buy;
-    $prod->qte_uc       = isset($data->qte_uc) && $data->qte_uc ? $data->qte_uc : null;
+    $prod->qte_uc       = $data->qte_uc;
     $prod->price_sell1  = $data->price_sell1;
     $prod->price_sell2  = isset($data->price_sell2) && $data->price_sell2 ? $data->price_sell2 : null;
     $prod->price_sell3  = isset($data->price_sell3) && $data->price_sell3 ? $data->price_sell3 : null;
@@ -176,6 +182,7 @@ class ProductController extends Controller
     $prod->status       = $data->status;
     $prod->in_stock     = $data->in_stock;
     $prod->rank         = isset($data->rank) && $data->rank ? $data->rank : 0;
+    $prod->weight       = isset($data->weight) && $data->weight ? $data->weight : 0;
     $prod->has_goute    = isset($data->product_goute) ? count($data->product_goute) : 0;
     $prod->has_discount = isset($data->has_discount) && $data->has_discount ? $data->has_discount : 0;
 
@@ -243,7 +250,7 @@ class ProductController extends Controller
       'image'       => 'nullable|sometimes',
       'method_price'=> 'required|in:unite,cartone',
       'price_buy'   => 'required|regex:/^\d*\.?\d*$/',
-      'qte_uc'      => 'nullable|integer',
+      'qte_uc'      => 'required|integer',
       'price_sell1' => 'required|regex:/^\d*\.?\d*$/|max:9999',
       'price_sell2' => 'nullable|regex:/^\d*\.?\d*$/|max:9999',
       'price_sell3' => 'nullable|regex:/^\d*\.?\d*$/|max:9999',
@@ -252,6 +259,7 @@ class ProductController extends Controller
       'in_stock'    => 'required|integer|in:0,1',
       'status'      => 'required|integer|in:0,1',
       'rank'        => 'required|integer|max:999',
+      'weight'      => 'required|regex:/^\d*\.?\d*$/|max:999',
       'has_goute'   => 'nullable|integer',
       'has_discount'=> 'nullable|integer|in:0,1',
       'product_goute.*.goute'   => 'required|string|max:15|min:2',
@@ -259,7 +267,7 @@ class ProductController extends Controller
     ]);
 
     if($validator->fails()) {
-      return response()->json(['status'=> 'error', 'errors'=> $validator->errors(), 'action' => $data->name]);
+      return ['status'=> 'error', 'errors'=> $validator->errors(), 'action' => $data->name];
     }
     // $elem = $data->product_goute[0];
     // return response()->json( $elem->edite );
@@ -272,16 +280,18 @@ class ProductController extends Controller
       'code_bare'    => isset($data->code_bare) && $data->code_bare ? $data->code_bare : null,
       'description'  => isset($data->description) ? $data->description : null,
       'method_price' => $data->method_price,
+      'method_qte'   => ( $data->method_price == 'unite') ? $data->qte_uc : 1 ,
       'price_buy'    => $data->price_buy,
       'qte_uc'       => isset($data->qte_uc) && $data->qte_uc ? $data->qte_uc : null,
       'price_sell1'  => $data->price_sell1,
       'price_sell2'  => isset($data->price_sell2) && $data->price_sell2 ? $data->price_sell2 : null,
       'price_sell3'  => isset($data->price_sell3) && $data->price_sell3 ? $data->price_sell3 : null,
       'qte_sell2'    => isset($data->qte_sell2) && $data->qte_sell2 ? $data->qte_sell2 : null,
-      'qte_sell3'    => isset($data->qte_sell2) && $data->qte_sell3 ? $data->qte_sell2 : null,
+      'qte_sell3'    => isset($data->qte_sell3) && $data->qte_sell3 ? $data->qte_sell3 : null,
       'in_stock'     => $data->in_stock,
       'status'       => $data->status,
       'rank'         => isset($data->rank) && $data->rank ? $data->rank : 0,
+      'weight'       => isset($data->weight) && $data->weight ? $data->weight : 0,
       'has_goute'    => isset($data->product_goute) ? count($data->product_goute) : 0,
       'has_discount' => isset($data->has_discount) && $data->has_discount  ? $data->has_discount : 0,
     ];
@@ -296,7 +306,7 @@ class ProductController extends Controller
       // move old image to deleted folder
       $img = Product::select('image')->where('id', $data->id)->get();
 
-      if(file_exists($img[0]->image)){
+      if(file_exists($img[0]->image)){   // if image exists delete it
         $img_from = $img[0]->image;
         $img_to = str_replace('img/product', 'img/deleted',$img[0]->image);
         rename($img_from , $img_to );
@@ -314,15 +324,33 @@ class ProductController extends Controller
             ->update($updated);    //find element
 
 
-    // return response()->json(['status'=> $data->product_goute]);
+
     // send update to Goute Controller
     if(isset($data->product_goute)){
       $this->updateGoute($data->product_goute, $data->id);
     }
 
-    // return response()->json($data->id);
     return $this->getData($data);
   }
+
+
+  // *********
+  // update stock product
+  public function update_stock($data){
+    $data->stock;
+    $new_stock = $data->stock == 1 ? 0 : 1;
+
+    if($data->id){
+      Product::where('id', '=', $data->id)
+              ->update(['in_stock' => $new_stock]);
+      return ['status' => $new_stock];
+
+    }else{
+      return ['status' => 'error'];
+    }
+  }
+
+
 
   // ***********
   // function delete group
@@ -334,20 +362,19 @@ class ProductController extends Controller
     ]);
 
     if($validator->fails()) {
-      return response()->json(['status'=> 'error', 'errors'=> $validator->errors()]);
+      return ['status'=> 'error', 'errors'=> $validator->errors()];
     }
     $product = Product::where('id', $data->id)->delete();
 
     if($product){
-      return response()->json(['status'=> 'done']);
+      return ['status'=> 'done'];
 
     }else{
-      return response()->json(['status'=> 'error', 'data' => $data]);
+      return ['status'=> 'error', 'data' => $data];
     }
 
 
   }
-
 
 
   // function for Gout Poroduct
@@ -385,13 +412,13 @@ class ProductController extends Controller
 
       }elseif($elem->id && isset($elem->edite) && $elem->edite == 'delete'){
         ProductGoute::where('id', $elem->id)->delete();
-
-
       }
       $i++;
     }
   }
 
+  // *******
+  // search product
   public function search($data){
     $string = $data->str;
     $method = $data->method;
@@ -403,7 +430,7 @@ class ProductController extends Controller
     foreach($resulte as $elem){
       $elem->product_goute ;
     }
-    return response()->json($resulte);
+    return $resulte;
   }
 
 }

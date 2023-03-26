@@ -8,22 +8,23 @@ use Illuminate\Database\Eloquent\Model;
 class Order extends Model
 {
   use HasFactory;
-  protected $filable = ['id', 'store_id', 'user_id', 'saller_id', 'montant', 'num_product', 'poide', 'status'];
   protected $table = 'order';
+  protected $filable = ['id', 'store_id', 'user_id', 'saller_id', 'amount', 'num_product', 'weight', 'status'];
+  protected $hidden = ['deleted_at', 'updated_at'];
 
   public function store_info(){
     return $this->belongsTo(StoreInfo::class, 'store_id', 'id');
   }
 
   public function user() {
-    return $this->belongsTo(Users::class, 'user_id', 'id');
+    return $this->belongsTo(Users::class);
   }
 
   public function saller() {
-    return $this->belongsTo(Sallers::class, 'saller_id', 'id');
+    return $this->belongsTo(Saller::class);
   }
 
-  public function order_details(){
+  public function order_detail(){
     return $this->hasMany(OrderDetails::class);
   }
 }

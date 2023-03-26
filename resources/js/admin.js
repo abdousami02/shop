@@ -5,13 +5,15 @@
  */
 
 // import $ from 'jquery';
-require('./bootstrap');
+
 
 import { createApp } from "vue";
 import router from "./router/admin";
 import store from "./store";
 
 import {Bootstrap5Pagination}  from 'laravel-vue-pagination';
+
+require('./bootstrap');
 
 // includes
 import Admin from "./Admin.vue";

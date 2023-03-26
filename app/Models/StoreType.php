@@ -16,6 +16,6 @@ class StoreType extends Model
     protected $hidden = ['created_at', 'updated_at', 'deleted_at'];
 
     public function store_info(){
-      return $this->hasMany('App\Models\Users', 'id', 'group_id');
+      return $this->hasMany(StoreInfo::class, 'id', 'group_id');
     }
 }

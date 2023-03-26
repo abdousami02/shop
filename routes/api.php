@@ -37,9 +37,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 // });
 
-Route::group(['middleware' => 'auth:api'], function() {
+Route::group(['middleware' => 'auth:api', 'prefix' => 'admin'], function() {
   Route::post('product', [App\Http\Controllers\dashboard\ProductController::class, 'default']);
   Route::post('order', [App\Http\Controllers\dashboard\OrderController::class, 'default']);
+  Route::post('order_detail', [App\Http\Controllers\dashboard\OrderDetailsController::class, 'default']);
 
   Route::post('cat', [App\Http\Controllers\dashboard\CategorieController::class, 'default']);
   Route::post('famille', [App\Http\Controllers\dashboard\FamillesController::class, 'default']);
@@ -48,6 +49,8 @@ Route::group(['middleware' => 'auth:api'], function() {
 
   Route::post('user', [App\Http\Controllers\dashboard\UserController::class, 'default']);
   Route::post('group', [App\Http\Controllers\dashboard\GroupController::class, 'default']);
+
+  Route::post('setting', [App\Http\Controllers\SettingController::class, 'default']);
 });
 
 
@@ -74,4 +77,14 @@ Route::group(['middleware' => 'api', 'prefix' => 'auth'], function ($router) {
 
 });
 
+
+Route::post('guest', [App\Http\Controllers\GuestController::class, 'default']);
+
+Route::group(['middleware' => 'api'], function ($router) {
+
+  Route::post('store', [App\Http\Controllers\website\StoreController::class, 'default']);
+  Route::post('order', [App\Http\Controllers\website\OrderController::class, 'default']);
+  Route::post('order_detail', [App\Http\Controllers\website\OrderDetailController::class, 'default']);
+  Route::post('setting', [App\Http\Controllers\website\SettingController::class, 'default']);
+});
 

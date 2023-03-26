@@ -72,12 +72,16 @@ export default {
         });
       }
     },
+
+
     // function for checkbox action in element row
     sel_row(e) {
       // console.log(this)
       $(e.target).parents(".elem-row").toggleClass("selected");
       $(".t-0 .sel").addClass("active");
     },
+
+    // check login
     check_login(){
       axios.post('/api/auth-admin/refresh').then(response=>{
         console.log('login')

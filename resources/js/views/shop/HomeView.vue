@@ -31,5 +31,8 @@ export default {
     CategShow,
     AllCateg,
   },
+  mounted: function(){
+    this.$root.top_nav = true;
+  }
 };
 </script>

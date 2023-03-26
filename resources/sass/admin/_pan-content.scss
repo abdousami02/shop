@@ -1,0 +1,114 @@
+.panel-dash {
+  background: #fff;
+  border-radius: 15px;
+  font-size: 14px;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  .panel-head {
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #eee;
+    .links {
+      display: flex;
+      font-size: 14px;
+      .link a {
+        margin-left: 5px;
+        text-decoration: none;
+        .count {
+          color: #646970;
+          font-weight: 400;
+        }
+        &.active {
+          color: #000;
+          font-weight: 600;
+        }
+      }
+    }
+  }
+  .panel-body {
+    padding: 15px;
+    .edit {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      .search {
+        width: 370px;
+      }
+    }
+    .info-num {
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+      margin-bottom: 14px;
+      padding: 0 10px;
+    }
+    .opt {
+      width: 40px;
+      .dot-opt {
+        position: relative;
+        cursor: pointer;
+        z-index: 1;
+        margin: 0 10px;
+        &:hover::after {
+          opacity: 1;
+        }
+        &::after {
+          content: "";
+          position: absolute;
+          opacity: 0;
+          left: 50%;
+          top: 50%;
+          transform: translate(-50%, -50%);
+          width: 37px;
+          height: 37px;
+          border-radius: 50%;
+          background: #eee;
+          z-index: -1;
+        }
+      }
+    }
+  }
+  .panel-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 15px;
+  }
+}
+
+// table content
+table {
+  .t-0 {
+    padding: 0;
+    padding-top: 10px;
+    width: 30px;
+    .sel {
+      position: relative;
+      display: inline-block;
+      width: 16px;
+      height: 15px;
+      border: 1px solid #666;
+      border-radius: 2px;
+      top: -3px;
+      margin: 0 9px;
+      cursor: pointer;
+      &::after {
+        content: "";
+        position: absolute;
+        width: 10px;
+        height: 3px;
+        background: #fff;
+        top: calc(50% - 2px);
+        left: 2px;
+      }
+      &.active {
+        background: rgb(0, 153, 255);
+        border-color: rgb(0, 153, 255);
+      }
+    }
+  }
+  .elem-row { cursor: pointer;}
+  .elem-row:hover{ background: #93d6f03b; }
+  .elem-row.selected { background: #10bdff6e; }
+}

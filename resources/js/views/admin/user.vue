@@ -10,14 +10,19 @@
       <template v-slot="slotProps">
         <td class="">{{ slotProps.row.id }}</td>
         <td class="">{{ slotProps.row.name }}</td>
-        <td class="">{{ slotProps.row.mobile }}</td>
+        <td class="">{{ '0'+slotProps.row.mobile }}</td>
         <td class="">{{ slotProps.row.email }}</td>
         <td class="">{{ slotProps.row.rank }}</td>
         <td class=""><span class="status" :data-status="slotProps.row.status">{{ slotProps.row.status == 1 ? "active" : "inactiv" }}</span></td>
-        <td class="">{{ slotProps.row.group }}</td>
+        <td class="">{{ slotProps.row.group.name }}</td>
         <td class="">{{ slotProps.row.login }}</td>
-        <td class="">{{ slotProps.row.storeName }}</td>
-        <td class="">{{ slotProps.row.storeType }}</td>
+        <td class="">
+          <ul>
+            <li v-for="elem in slotProps.row.store_info" :key="elem">
+              <span>{{elem.name}}</span>, <span>{{elem.address}}</span>
+            </li>
+          </ul>
+        </td>
       </template>
     </panel>
 
@@ -161,8 +166,7 @@ export default {
   data: function() {
     return {
       title: "Users",
-      thead: ["ID", "Name", "Mobile", "Email", "Rank", "Status", "Group", "Last Login", "stor Name", "store Type"],
-      tkey: ["id", "name", "mobile", "email", "rank", "status", "group", "Last_login", "storeName", "storeType"],
+      thead: ["ID", "Name", "Mobile", "Email", "Rank", "Status", "Group", "Last Login", "Store Info"],
       tbody: {},
       inp_disable: true,
       mobile: '',
@@ -180,7 +184,7 @@ export default {
       },
       edite_pass: false,
       old_user: '',
-      response: "",
+      response: {},
       modal: {
         title: 'User',
         btn: 'save',
@@ -200,9 +204,9 @@ export default {
 
     // get data
     getData(page = 1){
-      let action = 'getData';
-      axios.post("/api/user?page="+page, {action: action}).then(response =>{
+      axios.post("/api/admin/user?page="+page, {action: 'getData'}).then(response =>{
 
+        console.log(response)
         // if don't have permition
         if(response.data.status == "permition"){
           Swal.fire({
@@ -214,11 +218,19 @@ export default {
 
         // if not
         }else{
-          let resp = response.data.data;
-          this.response = JSON.parse( JSON.stringify(response.data));
-          this.convertData(resp)
+          let resp = JSON.parse( JSON.stringify(response.data));
+          this.response.data = resp
+          this.tbody = response.data;
+          // this.convertData(resp)
         }
       })
+    },
+    getHelpInfo(){
+      axios.post("/api/admin/user", {action: "getHelpInfo"}).then(response => {
+        console.log(response);
+        this.response.groups = response.data.groups;
+        this.response.store_type = response.data.store_type;
+      });
     },
 
 
@@ -229,7 +241,7 @@ export default {
       action == "delete" ? data = {id: id} : '';
       data.action = action;
 
-      axios.post('/api/user', data).then(response=>{
+      axios.post('/api/admin/user', data).then(response=>{
 
           // if don't have permition
         if(response.data.status == "permition"){
@@ -251,7 +263,7 @@ export default {
     sendActionStore(method, info, index){
       let data = info;
       data.action = method;
-      axios.post('/api/store_info', data).then(response=>{
+      axios.post('/api/admin/store_info', data).then(response=>{
 
         // if don't have permition
       if(response.data.status == "permition"){
@@ -539,12 +551,17 @@ export default {
 
       return user_info;
     },
+    dblclick_row(elem){
+      this.editeData(elem);
+    }
   },
   mounted: function (){
     this.old_user = JSON.stringify(this.user);
-    this.old_errors = JSON.stringify(this.errors)
+    this.old_errors = JSON.stringify(this.errors);
 
-    setTimeout(this.getData, 200);
+    this.getHelpInfo();
+    this.getData();
+
     this.model_dom = new bootstrap.Modal(document.getElementById('modal_user'), {});
   },
   watch: {

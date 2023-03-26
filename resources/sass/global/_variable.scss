@@ -1,5 +1,27 @@
+
+
 $br: 20px;
 $srch-back: #f5f5f5;
 // $main-back:#f2ab2f;
 $main-back: #103262;
 $sec-back: #f3a620;
+$br: 5px;
+
+
+:root {
+  --main-color: #103262;
+}
+
+// Body
+$body-bg: #f8fafc;
+
+// Typography
+$font-family-sans-serif: 'Nunito', sans-serif;
+$font-size-base: 0.9rem;
+$line-height-base: 1.6;
+
+
+// for goute of list of goute in order
+$update_goute: #ffc1075e;
+$delete_goute: #dc354557;
+$back_amount: #0dcaf026;

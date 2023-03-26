@@ -13,8 +13,9 @@ class StoreInfo extends Model
 
   protected $table = 'store_info';
   protected $filable = ['user_id', 'name', 'type_id', 'address'];
+  protected $hidden = ['created_at', 'deleted_at', 'updated_at'];
 
-  public function users(){
+  public function user(){
     return $this->belongsTo(Users::class, 'user_id', 'id');
   }
 
@@ -23,6 +24,6 @@ class StoreInfo extends Model
   }
 
   public function order(){
-    return $this->hasMany(Order::class);
+    return $this->hasMany(Order::class, 'store_id', 'id');
   }
 }

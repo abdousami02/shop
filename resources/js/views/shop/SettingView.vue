@@ -32,73 +32,15 @@ export default {
       console.log("close");
       document.querySelector(".nav-setting").classList.toggle("close");
     },
+    check_login(){
+      if(!this.$root.login){
+        this.$router.push({path: '/'})
+      }
+    }
   },
+  mounted: function(){
+    this.check_login();
+  }
 };
 </script>
 
-<style lang="scss">
-// 103262
-.setting {
-  height: 100%;
-  display: flex;
-  position: relative;
-  .nav-setting {
-    height: 100%;
-    position: absolute;
-    left: 0;
-    z-index: 20;
-    width: 180px;
-    background: #fff;
-    transition: width 0.5s;
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important /* global class */;
-    .nav-head {
-      background: #103262;
-      color: #fff;
-      font-size: 20px;
-      padding: 5px 10px;
-      white-space: nowrap;
-      .open {
-        cursor: pointer;
-      }
-      .txt {
-        margin-left: 10px;
-      }
-      .close_btn {
-        position: absolute;
-        top: 10px;
-        right: 15px;
-        color: #f6a823;
-        cursor: pointer;
-      }
-    }
-    .navbar-nav {
-      padding: 10px;
-      .nav-item {
-        font-size: 16px;
-        color: #103262;
-        border-radius: 6px;
-        white-space: nowrap;
-        .router-link-exact-active {
-          color: #f6a823;
-        }
-        .txt {
-          margin-left: 10px;
-        }
-      }
-    }
-  }
-  .content {
-    width: calc(100% - 45px);
-    margin-left: 45px;
-    background: #f1f1f1;
-    padding: 10px;
-  }
-  .close {
-    width: 45px;
-    span,
-    .close_btn {
-      display: none;
-    }
-  }
-}
-</style>

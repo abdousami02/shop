@@ -5,18 +5,18 @@
 
         <div class="col-12  mt-4">
           <!-- Store Type template -->
-          <panel :title="store_type.title" :th="store_type.thead" :tb="store_type.tbody" :tbkey="store_type.tkey"
+          <panel :title="store_type.title" :th="store_type.thead" :tb="store_type.tbody"
                 :getData_forPag="getData"
                 :addData_func="addData"
                 :editData_func="editeData"
                 :deleteData_func="deleteData"
-                :deleteMultiData_func="''"
-                :selected="sel_store" >
+                :deleteMultiData_func="''" >
 
             <template v-slot="slotProps">
               <td class="">{{ slotProps.row.id }}</td>
               <td class="">{{ slotProps.row.name }}</td>
               <td class=""><span class="status" :data-status="slotProps.row.status">{{ slotProps.row.status == 1 ? "active" : "inactiv" }}</span></td>
+              <td class="">{{ slotProps.row.rank }}</td>
             </template>
           </panel>
 
@@ -25,18 +25,18 @@
       <div class="row mt-4">
         <div class="col-6">
           <!-- Categorie templete -->
-          <panel :title="cat.title" :th="cat.thead" :tb="cat.tbody" :tbkey="cat.tkey"
+          <panel :title="cat.title" :th="cat.thead" :tb="cat.tbody"
                 :getData_forPag="getData"
                 :addData_func="addData"
                 :editData_func="editeData"
                 :deleteData_func="deleteData"
-                :deleteMultiData_func="''"
-                :selected="sel_cat" >
+                :deleteMultiData_func="''" >
 
             <template v-slot="slotProps">
               <td class="">{{ slotProps.row.id }}</td>
               <td class="">{{ slotProps.row.name }}</td>
               <td class=""><span class="status" :data-status="slotProps.row.status">{{ slotProps.row.status == 1 ? "active" : "inactiv" }}</span></td>
+              <td class="">{{ slotProps.row.rank }}</td>
             </template>
           </panel>
 
@@ -44,18 +44,18 @@
 
         <div class="col-6">
           <!-- Famille tmeplate -->
-          <panel :title="famille.title" :th="famille.thead" :tb="famille.tbody" :tbkey="famille.tkey"
+          <panel :title="famille.title" :th="famille.thead" :tb="famille.tbody"
                 :getData_forPag="getData"
                 :addData_func="addData"
                 :editData_func="editeData"
                 :deleteData_func="deleteData"
-                :deleteMultiData_func="''"
-                :selected="sel_famille" >
+                :deleteMultiData_func="''" >
 
             <template v-slot="slotProps">
               <td class="">{{ slotProps.row.id }}</td>
               <td class="">{{ slotProps.row.name }}</td>
               <td class=""><span class="status" :data-status="slotProps.row.status">{{ slotProps.row.status == 1 ? "active" : "inactiv" }}</span></td>
+              <td class="">{{ slotProps.row.rank }}</td>
             </template>
           </panel>
 
@@ -111,6 +111,16 @@
                   <span class="invalid-feedback" v-text="errors.status?errors.status[0]:''"></span>
                 </div>
               </div>
+
+              <!-- rank -->
+                <div class="rank">
+                  <span class="name">Rank</span>
+                  <div class="inp-form">
+                    <input :class="['form-control',errors.rank?'is-invalid':'']" type="text" name="name" v-model="element.rank" />
+                    <span class="invalid-feedback" v-text="errors.rank?errors.rank[0]:''"></span>
+                  </div>
+                </div>
+
             </div>
 
           </div>
@@ -138,22 +148,19 @@ export default {
       cat: {
         type: 'cat',
         title: "Categories",
-        thead: ["ID", "Name", "status", ],
-        tkey: ["id", "name", "status"],
+        thead: ["ID", "Name", "status", "rank" ],
         tbody: '',
       },
       famille: {
         type: 'famille',
         title: "Famille",
-        thead: ["ID", "Name", "status", ],
-        tkey: ["id", "name", "status"],
+        thead: ["ID", "Name", "status", "rank" ],
         tbody: '',
       },
       store_type: {
         type: 'store',
         title: "Store Type",
-        thead: ["ID", "Name", "status", ],
-        tkey: ["id", "name", "status"],
+        thead: ["ID", "Name", "status", "rank" ],
         tbody: '',
       },
       inp_disable: true,
@@ -175,7 +182,7 @@ export default {
     // get Data of Categories
     getData(page=1,to, id){
       let action = 'getData';
-      axios.post("/api/"+ to, {action: action, id: id}).then(response =>{
+      axios.post("/api/admin/"+ to, {action: action, id: id}).then(response =>{
         // console.log(response)
         this.response[to] = response.data.data.data;
         this[to]['tbody'] = '';
@@ -184,30 +191,13 @@ export default {
       })
     },
 
-    sel_cat(id, event){
-      this.getData(1,'famille', id);
-      this.selected = id;
-      let row = $(event.target).parents('.elem-row');
-
-      row.siblings().removeClass('selected');
-      row.addClass('selected')
-    },
-
-    sel_famille(){
-      //
-    },
-
-    sel_store(){
-      //
-    },
-
     sendAction(to, id){
       let data = this.element;
       let action = this.action_func;
       action == "delete" ? data = {id: id} : '';
       data.action = action;
 
-      axios.post("/api/"+ to, data).then(response =>{
+      axios.post("/api/admin/"+ to, data).then(response =>{
         // console.log(response);
 
         // if don't have permition
@@ -328,6 +318,18 @@ export default {
         }
       })
     },
+
+    click_row(id, event, type){
+      if(type == 'cat'){
+        this.getData(1,'famille', id);
+        this.selected = id;
+      }
+    },
+
+    dblclick_row(elem, type){
+      this.editeData(elem, type);
+    },
+
     empty_data(){
       this.element = {status: 0,};
       this.errors = {};

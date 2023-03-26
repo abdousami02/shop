@@ -1,6 +1,4 @@
-:root {
-  --main-color: #103262;
-}
+
 
 //style for signin & signUp
 .panel {
@@ -11,8 +9,36 @@
   border-radius: 20px;
   padding: 35px 25px;
 
+  .login {
+    .mobile {
+      position: relative;
+      &::before {
+        content: "0";
+        position: absolute;
+        top: 7px;
+        left: 35px;
+        font-size: 17px;
+      }
+    }
+    .invalid {
+      border-color: #dc3545;
+      position: relative;
+      &::after {
+        content: "!";
+        position: absolute;
+        right: 12px;
+        border: 1px solid #dc3545;
+        width: 25px;
+        height: 25px;
+        border-radius: 50%;
+        text-align: center;
+        color: #dc3545;
+        font-size: 16px;
+      }
+    }
+  }
   form {
-    max-width: 260px;
+    max-width: 250px;
     margin: auto;
     position: relative;
     overflow: hidden;
@@ -25,7 +51,6 @@
     margin-bottom: 50px;
   }
   .btn-sub {
-    font-size: 18px;
     display: block;
     margin: 40px auto;
     border: none;
@@ -82,11 +107,12 @@
   .icon {
     color: var(--main-color);
   }
+
   input {
     border: none;
     outline: none;
-    width: 200px;
-    margin-left: 15px;
+    width: 190px;
+    margin-left: 18px;
   }
   .forget {
     display: block;

@@ -19,13 +19,3 @@ export default {
 };
 </script>
 
-<style lang="scss">
-.select-prod {
-  display: flex;
-  margin-bottom: 10px;
-
-  select {
-    width: 130px;
-  }
-}
-</style>

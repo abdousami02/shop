@@ -33,10 +33,13 @@ class AuthController extends Controller
         }else{
           $user = auth()->user();
           if($user['status'] == 0){
-            return response()->json(['message' => 'Unauthenticated.'], 401);
+            return response()->json(['status' => 'permition']);
+            // return response()->json(['message' => 'Unauthenticated.'], 401);
           }
+          $login = new UserController;
+          $login->setLogin($user);
+          return $this->respondWithToken($token, $user);
         }
-        return $this->respondWithToken($token);
 
         // return $this->respondWithToken($token);
     }
@@ -77,7 +80,11 @@ class AuthController extends Controller
         auth()->logout();
         return response()->json(['message' => 'Unauthenticated.'], 401);
       }
-        return $this->respondWithToken($token);
+
+      $login = new UserController;
+      $login->setLogin($user);
+      return $this->respondWithToken($token, $user);
+
     }
 
     /**
@@ -87,10 +94,11 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function respondWithToken($token)
+    protected function respondWithToken($token, $user)
     {
         return response()->json([
             'access_token' => $token,
+            'user_info'    => $user,
             'token_type' => 'bearer',
             'expires_in' => auth()->factory()->getTTL() * 60
         ]);

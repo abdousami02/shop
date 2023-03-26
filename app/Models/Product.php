@@ -14,8 +14,8 @@ class Product extends Model
   protected $table = 'products';
 
   protected $filable = ['categorie_id', 'famille_id', 'name', 'name_ar', 'code_bare', 'description', 'image',
-          'price_buy', 'qte_u/c', 'price_unit', 'price_sell1', 'price_sell2', 'price_sell3', 'qte_sell2',
-          'qte-sell3', 'in_stock', 'is_active', 'has_goute', 'has_discount'];
+          'method_price', 'price_buy', 'qte_uc', 'price_unit', 'price_sell1', 'price_sell2', 'price_sell3', 'qte_sell2',
+          'qte-sell3', 'weight', 'in_stock', 'is_active', 'has_goute', 'has_discount'];
 
   protected $hidden = ['created_at', 'updated_at', 'deleted_at'];
 
@@ -30,6 +30,10 @@ class Product extends Model
 
   public function product_goute(){
     return $this->hasMany(ProductGoute::class);
+  }
+
+  public function product_goute_active(){
+    return $this->hasMany(ProductGoute::class)->where('in_stock','!=','0');
   }
 
   public function order_details(){

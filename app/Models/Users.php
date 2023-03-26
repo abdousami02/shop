@@ -17,7 +17,7 @@ class Users extends Model
   protected $filable = ['id','group_id', 'name', 'mobile', 'email',
      'image', 'permition', 'rank', 'status'];
 
-  protected $hidden = ['password','remember_token',];
+  protected $hidden = ['password','remember_token','created_at', 'deleted_at'];
 
   public function group(){
     return $this->belongsTo(Group::class, 'group_id', 'id');
@@ -25,6 +25,14 @@ class Users extends Model
 
   public function store_info(){
     return $this->hasMany(StoreInfo::class, 'user_id', 'id');
+  }
+
+  public function saller(){
+    return $this->hasMany(Saller::class, 'user_id', 'id');
+  }
+
+  public function order(){
+    return $this->hasMany(Order::class);
   }
 
 }

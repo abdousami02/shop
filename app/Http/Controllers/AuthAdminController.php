@@ -33,11 +33,14 @@ class AuthAdminController extends Controller
         }else{
           $user = auth()->user();
           if($user['group'] > 3 || $user['status'] == 0){
-            return response()->json(['status' => 'error']);
+            return response()->json(['status' => 'permition']);
             // return response()->json(['message' => 'Unauthenticated.'], 401);
           }
 
-          return $this->respondWithToken($token);
+          $login = new UserController;
+          $login->setLogin($user);
+
+          return $this->respondWithToken($token, $user);
         }
 
     }
@@ -74,11 +77,15 @@ class AuthAdminController extends Controller
       $token = auth()->refresh();
       $user  = auth()->user();
 
-      if($user['status'] == 0){
+      if($user['group'] > 3 || $user['status'] == 0){
         auth()->logout();
         return response()->json(['message' => 'Unauthenticated.'], 401);
       }
-        return $this->respondWithToken($token);
+
+      $login = new UserController;
+      $login->setLogin($user);
+
+      return $this->respondWithToken($token, $user);
     }
 
     /**
@@ -88,10 +95,11 @@ class AuthAdminController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function respondWithToken($token)
+    protected function respondWithToken($token, $user)
     {
         return response()->json([
             'access_token' => $token,
+            'user_info'    => $user,
             'token_type' => 'bearer',
             'expires_in' => auth()->factory()->getTTL() * 60
         ]);

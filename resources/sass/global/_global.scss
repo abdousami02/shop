@@ -1,7 +1,147 @@
+
+
+// Variables
+@import 'variable';
+
+// Bootstrap
+@import '~bootstrap/scss/bootstrap';
+
+
+// rest File
+@import "navBar";
+
+@import "login";
+
+
+#shop,
+#admin {
+  color: #2c3e50;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+body {
+  font-family: 'Roboto', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: #eee;
+  position: relative;
+  display: flex;
+  min-height: 100vh;
+  padding-bottom: 40px;
+  min-width: 400px;
+}
+
+.d-link {
+  color: #fff;
+  text-decoration: none;
+  // padding-left: 10px;
+  // padding-right: 10px;
+  &:hover {
+    color: #ddd;
+  }
+}
+img {
+  width: 100%;
+}
 ul {
+  margin: 0;
+  padding: 0;
   list-style: none;
 }
 
+
+
+// for modal show fixed
 body {
-  background: #f5f5f5;
+  padding-right: 0 !important;
+}
+.modal {
+  padding-right: 0 !important;
+}
+.modal-backdrop {
+  width: 100%;
+  height: 100%;
+}
+
+// select checkbox row of table
+.select input {
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 18px;
+  height: 18px;
+}
+
+
+input.hidden-arrow {
+  -moz-appearance: textfield;
+}
+input.hidden-arrow::-webkit-outer-spin-button,
+input.hidden-arrow::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+
+// for list of goute in order
+ul.list-goute {
+  border: 1px solid #bbb;
+  border-radius: 5px;
+  padding: 5px;
+  margin-top: 20px;
+  min-height: 75px;
+
+  li {
+    display: flex;
+    justify-content: space-between;
+    padding: 3px 10px;
+    border-bottom: 1px solid #bbb;
+    align-items: center;
+    &:last-child {
+      border-bottom: none;
+    }
+    &:hover { background-color: #93d6f03b; }
+    &.update { background: $update_goute; }
+    &.delete { background: $delete_goute; }
+
+    .opt {
+      width: 81px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      .delete-icon {
+        padding: 5px;
+        color: #dc3545;
+        cursor: pointer;
+      }
+    }
+  }
+}
+
+// component for info in table of order and order deatils
+.info-order {
+  position: relative;
+  .info-elem{
+    position: relative;
+    top: -10px;
+    left: 41px;
+    margin-bottom: -10px;
+  }
+  .name {
+    margin-right: 10px;
+  }
+  .name-lg {
+    margin-right: 20px;
+    i { font-size: 16px; }
+  }
+  i {
+    font-weight: 600;
+    margin-left: 5px;
+  }
+
+  .inp-form {
+    width: 200px;
+    writing-mode: vertical-lr;
+  }
 }

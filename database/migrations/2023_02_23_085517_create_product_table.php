@@ -25,14 +25,15 @@ class CreateProductTable extends Migration
         $table->string('description')->nullable();
         $table->string('image')->nullable();
         $table->string('method_price');
+        $table->decimal('method_qte')->default(1);
         $table->decimal('price_buy');
         $table->integer('qte_uc')->nullable();
-        $table->decimal('price_unit')->nullable();
         $table->decimal('price_sell1');
         $table->decimal('price_sell2')->nullable();
         $table->decimal('price_sell3')->nullable();
         $table->integer('qte_sell2')->nullable();
         $table->integer('qte_sell3')->nullable();
+        $table->integer('weight')->nullable()->default(0);
         $table->integer('in_stock')->default(0);
         $table->integer('status')->default(0);
         $table->integer('rank')->default(0);

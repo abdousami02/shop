@@ -27,7 +27,7 @@
         <td class="price">{{ slotProps.row.price_sell3 }}</td>
         <td class="qte">{{ slotProps.row.qte_uc }}</td>
         <td class="goute">{{ slotProps.row.has_goute }}</td>
-        <td class="stock">{{ slotProps.row.in_stock }}</td>
+        <td class="stock"><span @click="edite_stock(slotProps.row, slotProps.index)" :class="['status-btn', slotProps.row.in_stock == 1 ? 'active':'']" ></span></td>
         <td class="status"><span class="status" :data-status="slotProps.row.status">{{ slotProps.row.status == 1 ? "active" : "inactiv" }}</span></td>
         <td class="stock">{{ slotProps.row.rank }}</td>
       </template>
@@ -141,6 +141,13 @@
                         <input name="rat" type="number" :class="['form-control from-control-sm', errors.price_buy? 'is-invalid':'']" v-model="product.price_buy" />
                         <span class="invalid-feedback" v-text="errors.price_buy?errors.price_buy[0]:''"></span>
                       </div>
+                      <div class="saller">
+                        <span>Saller</span>
+                        <select class="form-select">
+                          <option value="">Mohamed</option>
+                        </select>
+                        <button class="btn btn-primary">Add</button>
+                      </div>
                     </div>
                   </div>
 
@@ -148,7 +155,7 @@
                     <!-- Qte Unit / Cartoune -->
                     <div class="qte-uc">
                       <span class="name">Qte Unit/<sub>Cartone</sub></span>
-                      <div class="inp-form select-form">
+                      <div class="inp-num">
                         <input name="rat" type="number" :class="['form-control from-control-sm', errors.qte_uc? 'is-invalid':'']" v-model="product.qte_uc" />
                         <span class="invalid-feedback" v-text="errors.qte_uc?errors.qte_uc[0]:''"></span>
                       </div>
@@ -194,7 +201,7 @@
                         <span class="invalid-feedback" v-text="errors.price_sell2?errors.price_sell2[0]:''"></span>
                       </div>
                       <div class="qte">
-                        <span>Qte<sub>Cartone</sub> :</span>
+                        <span>Qte<sub>Cartone</sub></span>
                         <input type="number" class="form-control" v-model="product.qte_sell2">
                       </div>
                     </div>
@@ -209,7 +216,7 @@
                         <span class="invalid-feedback" v-text="errors.price_sell3?errors.price_sell3:''"></span>
                       </div>
                       <div class="qte">
-                        <span>Qte<sub>Cartone</sub> :</span>
+                        <span>Qte<sub>Cartone</sub></span>
                         <input type="number" class="form-control" v-model="product.qte_sell3">
                       </div>
                     </div>
@@ -279,14 +286,26 @@
                       <textarea name="description" :class="['form-control', errors.description? 'is-invalid':'' ]" id="desc" cols="30" rows="1" v-model="product.description"></textarea>
                     </div>
                   </div>
-                  <div class="col-2"></div>
-                  <div class="col-4">
+                  <div class="col-1"></div>
+                  <div class="col-2">
                     <!-- Rank -->
-                    <div class="price inp-form select-form">
+                    <div class="price inp-num">
                       <span class="name">Rank</span>
                       <input name="rat" type="number" :class="['form-control from-control-sm', errors.rank? 'is-invalid':'']" v-model="product.rank" />
                       <span class="invalid-feedback" v-text="errors.rank?errors.rank[0]:''"></span>
                     </div>
+                  </div>
+                  <div class="col-2">
+                    <!-- weight -->
+                    <div class="inp-num">
+                      <span>Weight</span>
+                      <input type="number" class="form-control" v-model="product.weight">
+                    </div>
+                  </div>
+                </div>
+                <div class="row mt-3">
+                  <div class="col">
+                    <button class="btn btn-outline-primary"><i class="far fa-usd-circle"></i> History of price</button>
                   </div>
                 </div>
               </div>
@@ -325,10 +344,10 @@ export default {
       errors: {0:{},},
       goute: "",
       action_func: "",
-      image: '',
-      image_up: '',
+      image: '',              // on upload image store hiere
       search:'',
       search_method: 'name',
+      action_wait: 0,         // for wait to get response of first action
 
     };
   },
@@ -336,7 +355,7 @@ export default {
 
     getData(page=1){
       let action = 'getData';
-      axios.post("/api/product?page="+page, {action: action}).then(response =>{
+      axios.post("/api/admin/product?page="+page, {action: action}).then(response =>{
         // if don't have permition
         if(response.data.status == "permition"){
           Swal.fire({
@@ -353,38 +372,44 @@ export default {
       });
     },
     getHelpInfo(){
-      axios.post("/api/product", {action: "getHelpInfo"}).then(response => {
+      axios.post("/api/admin/product", {action: "getHelpInfo"}).then(response => {
         this.response.categories = response.data.categories;
         this.response.familles = response.data.familles;
       });
     },
 
     sendAction(id=''){
-      let action = this.action_func;
-      let data = new FormData();
-      data.append('action', action);
-      data.append('image', this.product.image);
-      data.append('product', JSON.stringify(this.product));
+      if(this.action_wait == 0){      // wait for finish first response
 
-      action == "delete" ? data={action: 'delete', id: id} : '';
+        this.action_wait = 1
+        let action = this.action_func;
+        let data = new FormData();
+        data.append('action', action);
+        data.append('image', this.product.image);
+        data.append('product', JSON.stringify(this.product));
 
-      axios.post("/api/product", data).then(response => {
+        action == "delete" ? data={action: 'delete', id: id} : '';
 
-          // if don't have permition
-        if(response.data.status == "permition"){
-          Swal.fire({
-            icon: 'error',
-            title: 'Oops...',
-            text: "Don't have Permition!",
-            // footer: '<a href="">Why do I have this issue?</a>'
-          })
+        axios.post("/api/admin/product", data).then(response => {
 
-        // if not
-        }else{
-          console.log(response);
-          this.responseHandel(response, action);
-        }
-      })
+          this.action_wait = 0        // can send new response
+
+            // if don't have permition
+          if(response.data.status == "permition"){
+            Swal.fire({
+              icon: 'error',
+              title: 'Oops...',
+              text: "Don't have Permition!",
+              // footer: '<a href="">Why do I have this issue?</a>'
+            })
+
+          // if not
+          }else{
+            console.log(response);
+            this.responseHandel(response, action);
+          }
+        })
+      }
     },
     responseHandel(response, action){
       let status_resp = response.data.status;
@@ -462,7 +487,7 @@ export default {
     },
     editeData(elem){
       this.product = JSON.parse( JSON.stringify(elem)); // get the data from response register and put it in Modal
-
+      console.log(elem)
       // this.inp_disable = true;          // modifie element Modal in DOM
       this.modal.title = "Edit User";
       this.modal.btn = "Update";
@@ -473,7 +498,7 @@ export default {
     search_prod(str){
       let data= {action: "search", str: str, method: this.search_method};
 
-      axios.post("/api/product", data).then(resp =>{
+      axios.post("/api/admin/product", data).then(resp =>{
         this.tbody = resp.data;
       })
     },
@@ -515,6 +540,21 @@ export default {
         this.image = e.target.result;
       }
     },
+    edite_stock(elem, index){
+      console.log(elem);
+      let data = {id: elem.id, stock: elem.in_stock, action: "update_stock"};
+      axios.post("/api/admin/product", data ).then(resp =>{
+        console.log(resp);
+
+        if(resp.data.status != 'error'){
+          this.tbody.data[index].in_stock = resp.data.status;
+          Toast.fire({
+            icon: 'success',
+            title: 'Success Update stock Product :)'
+          })
+        }
+      })
+    },
 
   // **** Other Function *******
     empty_data(){
@@ -531,24 +571,21 @@ export default {
     select_famille(){
       this.product.categorie_id;
       this.famille_cat = [];
-      console.log(this.response.familles);
       this.response.familles.forEach(elem => {
         if(elem.categorie_id == this.product.categorie_id){ this.famille_cat.push(elem); }
       });
-      console.log(this.famille_cat);
     },
-    nothing(){
-
+    dblclick_row(elem){
+      this.editeData(elem);
     },
   },
   mounted: function(){
     this.getData();
     this.getHelpInfo();
-     this.model_dom = new bootstrap.Modal(document.getElementById('modal_product'), {});
+    this.model_dom = new bootstrap.Modal(document.getElementById('modal_product'), {});
   },
   watch: {
     'product.categorie_id': function(){
-      console.log('edit');
       this.select_famille();
     }
   }

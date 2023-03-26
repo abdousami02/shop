@@ -1,4 +1,5 @@
-@import "bootstrap/scss/variables";
+// @import "bootstrap/scss/variables";
+
 
 .panel-dash {
   background: #fff;
@@ -120,15 +121,14 @@ table {
 
 
 .dash {
-  height: 100%;
-  // display: flex;
+  display: flex;
   position: relative;
+  height: 100%;
   .nav-dash {
     position: sticky;
     top: 0;
     float: left;
     width: 180px;
-    height: 100vh;
     background: #fff;
     transition: width 0.5s;
     z-index: 20;
@@ -188,7 +188,8 @@ table {
 
 .cat,
 .users,
-.group {
+.group,
+.order {
   .modal{
     .info > div{
       display: flex;
@@ -196,7 +197,7 @@ table {
       max-width: 400px;
       margin-bottom: 20px;
       .inp-form {
-        max-width: 200px;
+        width: 200px;
       }
     }
   }
@@ -258,6 +259,7 @@ input[type=number] {
   }
 }
 
+
 // ********
 // categorie style
 // *******
@@ -307,7 +309,7 @@ input[type=number] {
       &::after{
         content: "0";
         position: absolute;
-        top: 5px;
+        top: 7px;
         left: 10px;
       }
     }
@@ -371,13 +373,13 @@ input[type=number] {
     input {
       width: 44px;
       margin-left: 4px;
-      padding: 2px 7px;
+      // padding: 2px 7px;
     }
   }
 }
 
 
-.qte-uc .inp-form {
+.inp-num {
   width: 60px;
 }
 
@@ -418,46 +420,7 @@ input[type=number] {
       }
     }
   }
-  ul.list-goute {
-    border-radius: 5px;
-    border: 1px solid #bbb;
-    padding: 5px;
-    margin-top: 20px;
-    min-height: 75px;
 
-    li {
-      padding: 3px 10px;
-      border-bottom: 1px solid #bbb;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      &:last-child {
-        border-bottom: none;
-      }
-      &:hover {
-        background-color: #93d6f03b;
-      }
-      &.edite {
-        background: #ffc1075e;
-      }
-      &.delete {
-        background: #dc354557;
-      }
-
-      .opt {
-        width: 81px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        .delete {
-          padding: 5px;
-          color: #dc3545;
-          cursor: pointer;
-        }
-      }
-
-    }
-  }
 
   // edit in panel template
   .panel-dash {
@@ -542,5 +505,226 @@ input[type=number] {
 
 
 
+// ********
+// Order
+// *********
+.order {
+  .template {
+    overflow: hidden;
+    .shufle {
+      display: flex;
+      align-items: flex-start;
+      width: calc(200% + 10px);
+      position: relative;
+      transition: left .2s;
+      left: 0;
+      &.details {
+        left: calc(-100% + -10px);
+      }
+      .pan {
+        width: 50%;
+        &:last-child {
+          margin-left: 10px;
+        }
+      }
+    }
+  }
+
+  #modal_order .modal-dialog {
+    margin-top: 200px;
+  }
+
+  tbody {
+    .user,
+    .saller {
+      position: relative;
+    }
+    .date {
+      font-weight: 700;
+      font-size: 15px;
+      width: 200px;
+    }
+    .amount span {
+      background: rgba(13, 202, 240, 0.4196078431);
+      display: block;
+      padding: 5px 10px;
+      border-radius: 5px;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    .saller,
+    .status {
+      .edite-order{
+        opacity: 0;
+      }
+      &:hover {
+        .edite-order {
+          opacity: 1;
+        }
+      }
+    }
+
+    .status {
+      width: 160px;
+      padding-top: 35px;
+      position: relative;
+      .inp-form {
+        width: 120px;
+        writing-mode: vertical-lr;
+        select { padding: 0 5px; }
+        .btn { padding: 0 5px; }
+      }
+    }
+    .edite-order {
+      position: absolute;
+      right: 1px;
+      top: 5px;
+      width: 25px;
+      height: 25px;
+      padding: 0;
+      font-size: 10px;
+    }
+  }
+}
+
+//order detail
+.amount-detail {
+  text-align: right;
+  position: relative;
+  bottom: 3px;
+
+  span {
+    display: inline-block;
+    padding: 8px 50px;
+    background:  #0dcaf06b;
+    font-size: 18px;
+    border-radius: 7px;
+  }
+}
+
+
+.select-btn {
+  display: flex;
+  input {
+    width: 50px
+  }
+  .btn {
+    margin-right: 10px;
+  }
+}
+
+
+.order-details {
+  tbody{
+    .image {
+      width: 60px;
+    }
+    .info-order p {
+      margin-bottom: 0;
+    }
+    .inp-price,
+    .inp-qte {
+      pointer-events: none;
+      border: none;
+      margin-left: 20px;
+      background: inherit;
+      font-weight: 600;
+      &.active {
+        pointer-events: painted;
+        border: 1px solid;
+        background: #fff;
+      }
+    }
+    .inp-price {
+      width: 100px;
+      font-size: 16px;
+
+    }
+    .price {
+      width: 25%;
+      p {color: #888;}
+    }
+    .qte {
+      width: 50px;
+      font-size: 16px;
+      }
+    .inp-qte { width: 40px; }
+    .discount { width: 8%;}
+    .goute {
+      width: 16%;
+      .name {
+        display: inline-block;
+        width: 50px;
+      }
+    }
+    .price-total {
+      font-size: 16px;
+      font-weight: 600;
+      background: $back_amount;
+      width: 140px;
+    }
+
+  }
+  .price-product {
+    margin: auto;
+    width: fit-content;
+    padding: 10px 30px;
+    border-radius: 5px;
+    background: $back_amount;
+    font-weight: 600;
+  }
+
+  .header-order-detail {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 80%;
+    padding: 11px 20px;
+    font-size: 16px;
+    background: #ffd793;
+    border-radius: 5px;
+    margin: -60px 30px 20px auto;
+    .amount {
+      padding: 10px 40px;
+      font-size: 16px;
+      font-weight: 600;
+      background: #0dcaf0;
+      border-radius: 5px;
+    }
+  }
+}
+
+.search-prod {
+  position: relative;
+  .resulte {
+    position: absolute;
+    top: 32px;
+    width: calc(100% - 24px);
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 0 0 10px 10px;
+    box-shadow: 0 0.5rem 1rem rgb(0 0 0 / 15%);
+    z-index: 10;
+    .image {
+      width: 40px;
+      margin: 0;
+    }
+    li {
+      display: flex !important;
+      align-items: center;
+      cursor: pointer;
+      padding: 2px 0;
+      &:hover {
+        background: #93d6f03b;
+      }
+
+      .id { padding: 0 10px; }
+      .name { flex-grow: 1; font-size: 16px; font-weight: 600;}
+      .price { padding: 0 10px; font-weight: 600;}
+    }
+  }
+
+}
 
 

@@ -26,7 +26,7 @@ class CategorieController extends Controller
               break;
 
         case 1 :
-              $get= true; $update= false; $add= true; $delete= false;
+              $get= true; $update= true; $add= true; $delete= false;
               break;
 
         case 2 :
@@ -87,6 +87,7 @@ class CategorieController extends Controller
       'name'    => 'required|string|unique:categories,name|min:3|max:30',
       'name_ar' => 'nullable|string|min:3|max:15',
       'status'  => 'nullable|integer|max:1',
+      'rank'    => 'nullable|integer|max:100',
     ]);
 
     if ($validator->fails()) {
@@ -95,9 +96,10 @@ class CategorieController extends Controller
 
     $cat = new Categorie();
 
-    $cat->name = $data->name;
+    $cat->name    = $data->name;
     $cat->name_ar = isset($data->name_ar) ? $data->name_ar : null;
-    $cat->status = $data->status || 0;
+    $cat->status  = $data->status || 0;
+    $cat->rank    = $data->rank || 0;
 
     $cat->save();
 
@@ -117,6 +119,7 @@ class CategorieController extends Controller
                     Rule::unique('categories')->ignore($data->id, 'id'),],
       'name_ar' => 'nullable|string|min:3|max:15',
       'status'  => 'integer|max:1',
+      'rank'    => 'integer|max:100',
     ]);
 
     if ($validator->fails()) {
@@ -126,9 +129,10 @@ class CategorieController extends Controller
     $data->name_ar = isset($data->name_ar) ? $data->name_ar : null;
 
     Categorie::where('id', $data->id)
-        ->update(['name'=> $data->name,
-                     'name_ar'=> $data->name_ar,
-                      'status'=> $data->status]);
+              ->update(['name'   => $data->name,
+                        'name_ar'=> $data->name_ar,
+                        'status' => $data->status,
+                        'rank'   => $data->rank ]);
 
     return response()->json(['status'=>'done']);
 

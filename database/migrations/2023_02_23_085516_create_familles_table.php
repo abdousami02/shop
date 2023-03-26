@@ -20,6 +20,7 @@ class CreateFamillesTable extends Migration
           $table->string('name');
           $table->string('name_ar')->nullable();
           $table->integer('status')->default(0);
+          $table->integer('rank')->default(0);
           $table->timestamps();
           $table->softDeletes();
         });

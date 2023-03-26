@@ -1,6 +1,20 @@
-$br: 5px;
-$srch-back: #ccc;
-$main-back: #ccc;
+
+
+// Top Nav Bar
+
+.top-nav {
+  background: $main-back;
+  padding: 7px;
+  .container {
+    display: flex;
+    justify-content: space-between;
+    color: #fff;
+
+    .lang {
+      margin: 0 15px;
+    }
+  }
+}
 
 .navbar {
   background: #fff;
@@ -12,6 +26,10 @@ $main-back: #ccc;
     margin: auto;
     text-align: center;
     align-items: unset !important;
+
+    .log {
+      direction: ltr;
+    }
 
     .search-links {
       display: flex;

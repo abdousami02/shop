@@ -43,24 +43,3 @@ export default {
   props: ["show_prod"],
 };
 </script>
-
-<style lang="scss">
-.item {
-  .qte-gout {
-    border-bottom: none;
-    margin-left: 10px;
-    h6 {
-      margin-left: -10px;
-    }
-  }
-  .check {
-    height: 100%;
-  }
-  .opt {
-    button {
-      width: 55px;
-      margin-bottom: 10px;
-    }
-  }
-}
-</style>

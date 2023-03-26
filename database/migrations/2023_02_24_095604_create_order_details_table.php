@@ -15,17 +15,19 @@ class CreateOrderDetailsTable extends Migration
     {
       Schema::create('order_details', function (Blueprint $table) {
         $table->increments('id');
-        $table->integer('order_id')->unsigned();
-        $table->integer('product_id')->unsigned();
-        $table->integer('product_goute_id')->unsigned();
-        $table->integer('discount_id')->unsigned();
+        $table->bigInteger('order_id')->unsigned();
         $table->foreign('order_id')->references('id')->on('order');
+        $table->integer('product_id')->unsigned();
         $table->foreign('product_id')->references('id')->on('products');
-        $table->foreign('product_goute_id')->references('id')->on('product_goute')->nullable();
+        // $table->integer('product_goute_id')->unsigned()->nullable();
+        // $table->foreign('product_goute_id')->references('id')->on('product_goute');
+        $table->integer('discount_id')->unsigned()->nullable();
         $table->foreign('discount_id')->references('id')->on('discount');
-        $table->integer('qte');
         $table->decimal('price_sell');
-        $table->timestamp('added_at')->useCurrent();
+        $table->integer('qte');
+        $table->decimal('price_total');
+        $table->decimal('weight')->nullable()->default(0);
+        $table->timestamps();
         $table->softDeletes();
       });
     }

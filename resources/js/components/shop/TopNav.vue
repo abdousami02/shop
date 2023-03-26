@@ -6,12 +6,12 @@
         <li class="lang dropdown me-4">
           <a href="#" class="d-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="true">
             <i class="far fa-globe-africa"></i>
-            English
+            {{lang.lang_sel}}
           </a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#">Arabic</a></li>
-            <li><a class="dropdown-item" href="#">English</a></li>
-            <li><a class="dropdown-item" href="#">Franch</a></li>
+          <ul class="dropdown-menu" @click="change_lang">
+            <li><a class="dropdown-item" href="#" data-lang="ar">عربي</a></li>
+            <li><a class="dropdown-item" href="#" data-lang="fr">Franch</a></li>
+            <li><a class="dropdown-item" href="#" data-lang="en">English</a></li>
           </ul>
         </li>
         <li class="local dropdown">
@@ -33,8 +33,8 @@
       <ul class="box navbar-nav">
         <li class="about">
           <router-link to="/contact" href="#" class="d-link">
-            <i class="fal fa-phone-volume me-2"></i>
-            Contact
+            <i :class="['fal fa-phone-volume me-2', lang.lg == 'ar' ? 'fa-flip-horizontal' :'' ]"></i>
+            {{lang.contact}}
           </router-link>
         </li>
       </ul>
@@ -46,20 +46,49 @@
 <script>
 export default {
   name: "top-header",
+  data: function(){
+    return {
+      lang: {},
+      lang_db: {
+        ar: {lang_sel: "عربي", contact: "إتصل بنا"},
+        fr: {lang_sel: "Français", contact: "contacte nous"},
+        en: {lang_sel: "English", contact: "contact us"},
+      },
+
+    };
+  },
+  methods: {
+    change_lang(e){
+      let lang = $(e.target).attr('data-lang');
+      console.log(lang)
+      if(lang == "ar"){
+        this.$root.lang = "ar";
+        this.lang = this.lang_db.ar;
+        this.lang.lg = lg;
+
+      }else if(lang == "fr"){
+        this.$root.lang = "fr";
+        this.lang = this.lang_db.fr;
+
+      }else if(lang == "en"){
+        this.$root.lang = "en";
+        this.lang = this.lang_db.en
+      }
+    },
+  },
+  mounted: function(){
+    let lg = this.$root.lang;
+    if(lg == "ar"){
+      this.lang = this.lang_db.ar;
+      this.lang.lg = lg;
+
+    }else if(lg == "fr"){
+      this.lang = this.lang_db.fr;
+
+    }else{
+      this.lang = this.lang_db.en
+    }
+  }
 };
 </script>
 
-<style lang="scss">
-//vairable file
-@import "../scss/global/variable";
-
-.top-nav {
-  background: $main-back;
-  padding: 7px;
-  .container {
-    display: flex;
-    justify-content: space-between;
-    color: #fff;
-  }
-}
-</style>

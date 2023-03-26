@@ -15,10 +15,10 @@
           <a to="/signUp" href="#" class="forget">Forget Password?</a>
           <button type="submit" form="login-data" class="btn-sub">Login</button>
         </form>
-        <div>
+        <!-- <div>
           <span class="separ">OR</span>
           <p class="switch">Dont have Account? <router-link to="/signUp" href="#">Create Account</router-link></p>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>
@@ -44,9 +44,17 @@ export default {
           document.cookie= "token=" + response.data.access_token, + ";expires=Thu, 18 Dec 2023 12:00:00 UTC; path=/"
           this.$router.push({ path: "dashboard" })
 
+        }else if(response.data.status == 'permition'){
+          Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: "Can't login, contact admin!",
+        })
+
         }else{
           this.error_login = true;
         }
+
       });
     },
 
@@ -69,140 +77,3 @@ export default {
 };
 </script>
 
-<style lang="scss">
-:root {
-  --main-color: #103262;
-}
-
-input.hidden-arrow {
-  -moz-appearance: textfield;
-}
-input.hidden-arrow::-webkit-outer-spin-button,
-input.hidden-arrow::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-//style for signin & signUp
-.panel {
-  max-width: 500px;
-  width: 90%;
-  background: #fff;
-  margin: 50px auto;
-  border-radius: 20px;
-  padding: 35px 25px;
-
-  .login {
-    .mobile {
-      position: relative;
-      &::before {
-        content: "0";
-        position: absolute;
-        top: 7px;
-        left: 35px;
-        font-size: 17px;
-      }
-    }
-    .invalid {
-      border-color: #dc3545;
-      position: relative;
-      &::after {
-        content: "!";
-        position: absolute;
-        right: 12px;
-        border: 1px solid #dc3545;
-        width: 25px;
-        height: 25px;
-        border-radius: 50%;
-        text-align: center;
-        color: #dc3545;
-        font-size: 16px;
-      }
-    }
-  }
-  form {
-    max-width: 250px;
-    margin: auto;
-    position: relative;
-    overflow: hidden;
-  }
-  .head {
-    text-align: center;
-    font-size: 40px;
-    font-weight: 700;
-    color: var(--main-color);
-    margin-bottom: 50px;
-  }
-  .btn-sub {
-    display: block;
-    margin: 40px auto;
-    border: none;
-    padding: 12px;
-    width: 100%;
-    border-radius: 24px;
-    background: var(--main-color);
-    color: #fff;
-  }
-  .separ {
-    display: block;
-    color: #555;
-    position: relative;
-    width: fit-content;
-    margin: auto;
-
-    &::before,
-    &::after {
-      content: "";
-      display: inline-block;
-      position: absolute;
-      width: 30px;
-      height: 1px;
-      background-color: #555;
-      top: 50%;
-    }
-    &::before {
-      left: 30px;
-    }
-    &::after {
-      right: 30px;
-    }
-  }
-  .switch {
-    margin-top: 20px;
-    text-align: center;
-  }
-}
-
-// tyle for just login
-.login {
-  .name,
-  .pass {
-    width: fit-content;
-    margin: auto;
-    border-bottom: 2px solid #ccc;
-    padding: 7px;
-    margin-bottom: 10px;
-    font-size: 16px;
-  }
-  .name {
-    margin-bottom: 30px;
-  }
-  .icon {
-    color: var(--main-color);
-  }
-
-  input {
-    border: none;
-    outline: none;
-    width: 190px;
-    margin-left: 18px;
-  }
-  .forget {
-    display: block;
-    text-align: right;
-    color: var(--main-color);
-    font-size: 13px;
-    margin-top: 15px;
-  }
-}
-</style>

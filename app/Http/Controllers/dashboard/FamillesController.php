@@ -69,7 +69,7 @@ class FamillesController extends Controller
 
 
   // to get Familles from database
-  public function getData(Request $data){
+  public function getData($data){
 
     if($data->id){
       $famille = Famille::where('categorie_id', $data->id)->paginate(20);
@@ -90,12 +90,13 @@ class FamillesController extends Controller
 
 
   // to add Famille
-  public function add(Request $data){
+  public function add($data){
 
     $validator = Validator::make($data->all(), [
       'name'    => 'required|string|unique:familles,name|min:3|max:30',
       'categorie_id' => 'required|integer|exists:categories,id',
       'status'  => 'nullable|integer|max:1',
+      'rank'    => 'nullable|integer|max:100',
     ]);
 
     if ($validator->fails()) {
@@ -108,6 +109,7 @@ class FamillesController extends Controller
     $famille->name_ar      = $data->name_ar;
     $famille->categorie_id = $data->categorie_id;
     $famille->status       = $data->status || 0;
+    $famille->rank         = $data->rank || 0;
 
     $famille->save();
 
@@ -117,14 +119,15 @@ class FamillesController extends Controller
 
 
   // to update Famille
-  public function update(Request $data){
+  public function update($data){
 
     $validator = Validator::make($data->all(), [
       'id'      => 'required|exists:familles,id',
       'name'    => ['required', 'string', 'min:3','max:"30"',
-                    Rule::unique('familles')->ignore($data),],
+                    Rule::unique('familles')->ignore($data->id, 'id'),],
       'categorie_id' => 'required|integer|exists:categories,id',
       'status'  => 'integer|max:1',
+      'rank'    => 'integer|max:100',
     ]);
 
     if ($validator->fails()) {
@@ -132,7 +135,10 @@ class FamillesController extends Controller
     }
 
     Famille::where('id', $data->id)
-        ->update(['name'=> $data->name, 'name_ar'=> $data->name_ar, 'status'=> $data->status]);
+        ->update(['name'   => $data->name,
+                  'name_ar'=> $data->name_ar,
+                  'status' => $data->status,
+                  'rank'   => $data->rank ]);
 
     return response()->json(['status'=>'done']);
 
