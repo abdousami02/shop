@@ -95,6 +95,7 @@ class SignUpController extends Controller
 
       $user->name     = $data->name;
       $user->mobile   = $data->mobile;
+      $user->group_id = 5;
       $user->email    = isset($data->email) ? $data->email : null;
       $user->password = bcrypt($data->password);
 
