@@ -15,12 +15,12 @@ class CreateFamillesTable extends Migration
     {
         Schema::create('familles', function (Blueprint $table) {
           $table->smallIncrements('id');
-          $table->smallIncrements('categorie_id')->unsigned();
+          $table->smallInteger('categorie_id')->unsigned();
           $table->foreign('categorie_id')->references('id')->on('categories');
           $table->string('name');
           $table->string('name_ar')->nullable();
           $table->smallInteger('status')->default(0);
-          $table->mediumInteger('rank')->default(0);
+          $table->smallInteger('rank')->default(0);
           $table->timestamps();
           $table->softDeletes();
         });
