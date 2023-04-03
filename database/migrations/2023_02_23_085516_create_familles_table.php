@@ -15,7 +15,7 @@ class CreateFamillesTable extends Migration
     {
         Schema::create('familles', function (Blueprint $table) {
           $table->smallIncrements('id');
-          $table->integer('categorie_id')->unsigned();
+          $table->smallIncrements('categorie_id')->unsigned();
           $table->foreign('categorie_id')->references('id')->on('categories');
           $table->string('name');
           $table->string('name_ar')->nullable();
