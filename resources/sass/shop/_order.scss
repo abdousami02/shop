@@ -23,19 +23,21 @@
       margin-left: auto;
     }
   }
+
   .price > div {
     display: flex;
     justify-content: space-between;
     max-width: 200px;
-    &.prix-t .value {
-      margin-left: auto;
-    }
+    // &.prix-t .value {
+    //   margin-left: auto;
+    // }
   }
   .info > div {
     display: flex;
     justify-content: space-between;
     max-width: 200px;
   }
+
   .opt {
     width: 40px;
     .dot-opt {
@@ -60,5 +62,13 @@
         z-index: -1;
       }
     }
+    .dropdown-menu .dropdown-item {
+      padding: 10px 15px;
+      font-size: 16px;
+    }
   }
+}
+
+.orders.text-right .dropdown-menu {
+  text-align: right;
 }

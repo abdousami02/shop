@@ -1,14 +1,14 @@
 <template>
   <div class="store">
     <div class="container">
-      <nav class="nav-links">
+      <!-- <nav class="nav-links">
         <a href="#" class="linkd">Home</a> /
         <a href="#" class="linkd">Store</a>
-      </nav>
+      </nav> -->
       <!-- star select order & info -->
-      <div class="order-set" v-if="user.login">
+      <div class="order-set" v-if="$root.login">
 
-        <div class="sel-order">
+        <div class="sel-order mt-3">
           <h4 class="d-inline-block">{{lang.order_id}}<span v-text="order_select.id"></span></h4>
           <br />
           <select class="form-select order-select form-select-sm mb-2 d-block" v-model="order_select" aria-label="Default select example">
@@ -33,6 +33,7 @@
 
           <select class="form-select from-select-sm fami-select" v-model="search_prod.famille_id">
             <option v-for="elem in famille_cat" :key="elem" :value="elem.id">{{elem.name}}</option>
+            <option value=""></option>
           </select>
         </div>
 
@@ -187,7 +188,9 @@
         </tbody>
       </table> -->
       <!-- start next and previes page -->
-      <a href="/orders/orderDetails" class="submit btn btn-success">Check Orders</a>
+      <div class="submit">
+        <router-link :to="'/orders/orderDetails?order_id='+order_select.id" class="btn btn-success">{{lang.btn_check}}</router-link>
+      </div>
 
        <pagination :data="product" @pagination-change-page="getData" />
 
@@ -214,25 +217,29 @@ export default {
       order_select: {amount: 0},
       detail_sel: [],
       user: {},
+      temp_send: true,
 
       lang: {order_id: ''},
       lang_db: {
         ar: {order_id: "الطلب رقم: #", creat: "تم إنشاءه في", num_prod: "عدد المنتجات", add_order: "إضافة",
             search: "بحث", amount: "الثمن الإجمالي", amount_cur: "دج", pr_qte_t: "كمية إجمالية",
             pr_qte_uc: "كمية<sub>و/ك: </sub>", pr_price_u: "ثمن الوحدة", pr_price_c: "ثمن الكرتونة", pr_price_t: "الإجمالي",
-            btn_ok: "تم", btn_edite: "تعديل"
+            btn_ok: "تم", btn_edite: "تعديل", btn_check: "تحقق من الطلب", error_select: "حدد رقم الطلب",
+            error_qte: "حدد الكمية",
           },
 
         fr: {order_id: "Commande Id: #", creat: "Create at", num_prod: "Produits", add_order: "ajoute",
             search: "Recherche", amount: "Total Prix", amount_cur: "DA", pr_qte_t: "Qte T",
             pr_qte_uc: "Q<sub>U/C: </sub>", pr_price_u: "Prix u", pr_price_c: "Prix c", pr_price_t: "Mount",
-            btn_ok: "ok", btn_edite: "modifie"
+            btn_ok: "ok", btn_edite: "modifie", btn_check: 'vérifier la commande',
+            error_select: "sélectionner la commande", error_qte: "qte n'est pas définie",
           },
 
         en: {order_id: "Order Id: #", creat: "Creat at", num_prod: "Product", add_order: "add",
             search: "Search", amount: "Total Price", amount_cur: "DA", pr_qte_t: "Qte T",
             pr_qte_uc: "Q<sub>U/C: </sub>", pr_price_u: "Price u", pr_price_c: "Price c", pr_price_t: "Mount",
-            btn_ok: "ok", btn_edite: "edite"
+            btn_ok: "ok", btn_edite: "edite", btn_check: 'check order',
+            error_select: "select order", error_qte: "qte not set",
           },
       }
 
@@ -245,7 +252,7 @@ export default {
   methods: {
     getHelpInfo(){
       axios.post("/api/guest", {action: "getHelpInfo"}).then(response => {
-        console.log(response);
+        // // console.log(response.data);
         this.response.categories = response.data.categories;
         this.response.familles = response.data.familles;
       });
@@ -253,10 +260,10 @@ export default {
 
     getData(page=1, select=''){
       axios.post("/api/guest?page="+page, {action: "getProduct"}).then(response => {
-        console.log(response);
+        // // console.log(response.data);
         this.product = response.data.data;
 
-        if(select && this.user.login){
+        if(select && this.$root.login){
 
           if(this.order_select.id == 'local'){
             this.detail_sel = this.order_local.detail;
@@ -274,7 +281,7 @@ export default {
 
     getOrder(){
       axios.post("/api/store", {action: "getOrder"}).then(response =>{
-        console.log(response);
+        // // console.log(response.data);
         this.order_db = this.order_local ? [this.order_local.info] : [];
         this.order_db = this.order_db.concat(response.data);
       });
@@ -289,12 +296,16 @@ export default {
 
       }).then((result) => {
         if (result.isConfirmed) {
+          if(!this.temp_send){ return false }
+          this.temp_send = false;
 
           axios.post("/api/store", {action: "addOrder"}).then(resp =>{
-            console.log(resp);
+            this.temp_send = true;
+
+            // // console.log(resp.data);
             if(resp.data.status == 'done'){
-              console.log(resp)
               this.order_db.push(resp.data.data);
+              this.order_select = resp.data.data;
             }else{
               Swal.fire({
                 icon: 'error',
@@ -311,7 +322,7 @@ export default {
     getOrderDetail(){
       let data = {order_id: this.order_select.id, action: "getData", all: true};
       axios.post("/api/order_detail", data).then(response =>{
-        console.log(response);
+        // // console.log(response.data);
 
         if(response.data.status == 'done'){
           this.detail_sel = response.data.data
@@ -329,13 +340,16 @@ export default {
 
     addOrderItem( order_id, prod){
 
-      console.log('contun')
+      if(!this.temp_send){ return false }
+      this.temp_send = false;
+
       let data = prod;
       data.order_id = order_id;
       data.action = "add";
 
       axios.post("/api/order_detail", data).then(resp =>{
-        console.log(resp)
+        this.temp_send = true;
+        // // console.log(resp.data)
         if(resp.data.status == 'done'){
           this.detail_sel.push(resp.data.data[0])
           this.setLocalOrder();
@@ -351,10 +365,13 @@ export default {
       })
     },
     deleteOrderItem(elem){
-      console.log(id)
+      if(!this.temp_send){ return false }
+      this.temp_send = false;
+
       let data = {action: 'delete', id: elem.id, "order_id": elem.order_id};
       axios.post("/api/order_detail", data).then(resp => {
-        console.log(resp)
+        this.temp_send = true;
+        // // console.log(resp.data);
         if(resp.status == "error"){
           Swal.fire({
             icon: 'error',
@@ -376,13 +393,13 @@ export default {
         order_detail_goute: prod.order_detail_goute,
       }
 
-      if(this.user.login && this.order_select.id != 'local'){
+      if(this.$root.login && this.order_select.id != 'local'){
         if(this.order_select.id){
 
           if(!prod.order_qte){
             Swal.fire({
               icon: 'info',
-              title: 'Qte not set',
+              title: this.lang.error_qte,
               showConfirmButton: false,
               timer: 1000
             });
@@ -405,7 +422,7 @@ export default {
         }else{
           Swal.fire({
             icon: 'info',
-            title: 'Select Order',
+            title: this.lang.error_select,
             showConfirmButton: false,
             timer: 1500
           });
@@ -415,18 +432,15 @@ export default {
         let order_info, order_detail;
 
         if(this.order_local){
-          console.log("loop")
 
           order_info = this.order_local.info,
           order_detail = this.order_local.detail;
           order_info.amount = Number(order_info.amount);
 
-          console.log(order_detail);
-
           let if_exists = this.search_id(data.product_id, order_detail, "product_id");
 
           if(if_exists){
-            console.log('yes exitst');
+            // console.log('yes exitst');
             let old = order_detail[if_exists.index];
             order_info.amount -= old.price_total;
             order_info.num_product -= 1;
@@ -444,7 +458,7 @@ export default {
             prod.order_set = "";
             return false;
           }
-          // console.log(order_detail)
+          // // console.log(order_detail)
         }else if(prod.order_qte > 0){
           prod.order_set = "set";
           order_detail = [data];
@@ -458,7 +472,7 @@ export default {
         }else{
           prod.order_set = "";
           return false;
-          // console.log(order_detail)
+          // // console.log(order_detail)
         }
 
         this.order_select.amount = order_info.amount;
@@ -475,7 +489,7 @@ export default {
 
     checkStoragOrder(){
 
-      if(this.user.login){
+      if(this.$root.login){
 
         if(this.order_local && this.order_select.id == "local"){
           this.detail_sel = this.order_local.detail;
@@ -487,7 +501,7 @@ export default {
         }
 
       }else if(this.order_local){
-        console.log('set order not login')
+        // console.log('set order not login')
         // this.order_db.push(this.order_local.info);
         this.detail_sel = this.order_local.detail;
         this.setLocalOrder();
@@ -502,7 +516,6 @@ export default {
       this.detail_sel.forEach(elem =>{
           num_prod++;
           total_price += Number(elem.price_total);
-          console.log(elem.price_total)
 
         let prod = this.search_id(elem.product_id, this.product.data, 'id' );
         if(prod){
@@ -513,7 +526,6 @@ export default {
             order_detail_goute: elem.order_detail_goute,
             order_set: 'set',
           }
-          console.log('dddd')
           Object.assign(this.product.data[prod.index], data);
         }
       })
@@ -539,7 +551,7 @@ export default {
       let data = this.search_prod;
       data.action= "search";
       axios.post("/api/guest", data).then(resp =>{
-        console.log(resp);
+        // console.log(resp);
         this.product = resp.data;
         this.checkStoragOrder();
       })
@@ -574,7 +586,7 @@ export default {
       let id_goute  = elem.order_goute.id,
           name_goute= elem.order_goute,
           qte_goute = elem.order_goute_qte;
-          console.log(name_goute)
+          // console.log(name_goute)
 
       if(id_goute != null && qte_goute > 0){
 
@@ -587,7 +599,7 @@ export default {
         if(if_exists){
           let gout = elem.order_detail_goute[if_exists.index];
           gout.qte = data.qte;
-          gout.edite = 'update';
+          gout.edite = 'edite';
 
         }else{
           elem.order_detail_goute.push(data);
@@ -601,7 +613,7 @@ export default {
     delete_goute(elem, prod){
 
       if(elem.edite == 'delete'){
-        elem.edite = 'update';
+        elem.edite = 'edite';
 
       }else{
         elem.edite = 'delete';
@@ -640,13 +652,14 @@ export default {
       this.getHelpInfo();
       this.getData();
       this.user = this.$root.user;
-      this.user.login = this.$root.login;
+      // console.log(this.$root.login)
 
-      if(this.user.login){
+      if(this.$root.login){
         this.getOrder();
       }
 
     },
+
     change_lang(){
       // fot setting lang
       let lg = this.$root.lang;
@@ -676,8 +689,6 @@ export default {
       };
     }
 
-    console.log(this.$root.render);
-
 
     // if user login action
     if(this.$root.render == true){
@@ -699,7 +710,7 @@ export default {
     },
     'search_prod.famille_id': function(){this.search();},
     'search_prod.str': function(){
-      console.log('serch')
+      // console.log('serch')
       if(this.search_prod.str){
         this.search();
       }
@@ -708,7 +719,7 @@ export default {
     'order_select': function(){
       let elem = this.order_select;
       if(elem.watch != false){
-        console.log("selected change")
+        // console.log("selected change")
         this.getData(1, true)
       }
     }

@@ -36,6 +36,26 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //   Route::post('me', 'AuthController@me');
 
 // });
+Route::group(['middleware' => 'api', 'prefix' => 'auth-admin'], function ($router) {
+
+  Route::post('login', [App\Http\Controllers\AuthAdminController::class, 'login']);
+  Route::post('logout', [App\Http\Controllers\AuthAdminController::class, 'logout']);
+  Route::post('refresh', [App\Http\Controllers\AuthAdminController::class, 'refresh']);
+  Route::post('me', [App\Http\Controllers\AuthAdminController::class, 'me']);
+
+});
+
+Route::group(['middleware' => 'api', 'prefix' => 'auth'], function ($router) {
+
+  Route::post('login', [App\Http\Controllers\AuthController::class, 'login']);
+  Route::post('logout', [App\Http\Controllers\AuthController::class, 'logout']);
+  Route::post('refresh', [App\Http\Controllers\AuthController::class, 'refresh']);
+  Route::post('me', [App\Http\Controllers\AuthController::class, 'me']);
+
+});
+
+
+
 
 Route::group(['middleware' => 'auth:api', 'prefix' => 'admin'], function() {
   Route::post('product', [App\Http\Controllers\dashboard\ProductController::class, 'default']);
@@ -50,41 +70,42 @@ Route::group(['middleware' => 'auth:api', 'prefix' => 'admin'], function() {
   Route::post('user', [App\Http\Controllers\dashboard\UserController::class, 'default']);
   Route::post('group', [App\Http\Controllers\dashboard\GroupController::class, 'default']);
 
-  Route::post('setting', [App\Http\Controllers\SettingController::class, 'default']);
-});
-
-
-Route::group(['middleware' => 'api', 'prefix' => 'auth-admin'], function ($router) {
-
-  Route::post('login', [App\Http\Controllers\AuthAdminController::class, 'login']);
-  Route::post('logout', [App\Http\Controllers\AuthAdminController::class, 'logout']);
-  Route::post('refresh', [App\Http\Controllers\AuthAdminController::class, 'refresh']);
-  Route::post('me', [App\Http\Controllers\AuthAdminController::class, 'me']);
+  Route::post('setting', [App\Http\Controllers\dashboard\AdminSettingController::class, 'default']);
 
 });
 
+
+
+
+
+Route::group(['middleware' => 'auth:api', 'prefix' => 'saller'], function ($router) {
+
+  Route::post('order', [App\Http\Controllers\saller\OrderController::class, 'default']);
+  Route::post('order_detail', [App\Http\Controllers\saller\OrderDetailController::class, 'default']);
+  Route::post('product', [App\Http\Controllers\saller\ProductController::class, 'default']);
+
+});
 
 /*
 |  user router
 |
 */
-Route::group(['middleware' => 'api', 'prefix' => 'auth'], function ($router) {
+Route::post('setting', [App\Http\Controllers\SettingController::class, 'default']);
 
-  Route::post('login', [App\Http\Controllers\AuthController::class, 'login']);
-  Route::post('logout', [App\Http\Controllers\AuthController::class, 'logout']);
-  Route::post('refresh', [App\Http\Controllers\AuthController::class, 'refresh']);
-  Route::post('me', [App\Http\Controllers\AuthController::class, 'me']);
-
-});
-
-
+// for guest user
 Route::post('guest', [App\Http\Controllers\GuestController::class, 'default']);
 
+// register signup
+Route::post('signup', [App\Http\Controllers\website\SignUpController::class, 'default']);
+
+
+// for login user consumer
 Route::group(['middleware' => 'api'], function ($router) {
 
   Route::post('store', [App\Http\Controllers\website\StoreController::class, 'default']);
   Route::post('order', [App\Http\Controllers\website\OrderController::class, 'default']);
   Route::post('order_detail', [App\Http\Controllers\website\OrderDetailController::class, 'default']);
+  Route::post('checkout', [App\Http\Controllers\website\CheckoutController::class, 'default']);
   Route::post('setting', [App\Http\Controllers\website\SettingController::class, 'default']);
 });
 

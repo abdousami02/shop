@@ -4,13 +4,17 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Notifications\Notifiable;
 
 class Order extends Model
 {
-  use HasFactory;
+  use HasFactory, Notifiable;
+  use SoftDeletes;
+
   protected $table = 'order';
   protected $filable = ['id', 'store_id', 'user_id', 'saller_id', 'amount', 'num_product', 'weight', 'status'];
-  protected $hidden = ['deleted_at', 'updated_at'];
+  protected $hidden = ['deleted_at'];
 
   public function store_info(){
     return $this->belongsTo(StoreInfo::class, 'store_id', 'id');
@@ -25,6 +29,10 @@ class Order extends Model
   }
 
   public function order_detail(){
-    return $this->hasMany(OrderDetails::class);
+    return $this->hasMany(OrderDetail::class);
+  }
+
+  public function order_detail_saller(){
+    return $this->hasMany(OrderDetailSaller::class);
   }
 }

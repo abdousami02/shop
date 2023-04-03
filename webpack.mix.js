@@ -13,6 +13,8 @@ const mix = require('laravel-mix');
 
 mix.js('resources/js/admin.js', 'public/js')
     .js('resources/js/shop.js', 'public/js')
+    .js('resources/js/saller.js', 'public/js')
     .vue()
     .sass('resources/sass/app.scss', 'public/css')
+    .sass('resources/sass/saller.scss', 'public/css')
     .sass('resources/sass/admin.scss', 'public/css');

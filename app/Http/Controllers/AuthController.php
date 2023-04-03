@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
+use App\Models\Saller;
+use Symfony\Component\HttpFoundation\ServerBag;
 
 class AuthController extends Controller
 {
@@ -27,18 +29,40 @@ class AuthController extends Controller
     {
         $credentials = request(['mobile', 'password']);
 
-        if (! $token = auth()->attempt($credentials)) {
-          return response()->json(['status' => 'error']);
+        $page = isset($_GET['permition']) ? $_GET['permition']: '';
 
+        if (! $token = auth()->attempt($credentials)) {
+          return response()->json(['status' => 'error', 'message' => 'info wrange']);
+
+
+        //==============
+        // login to saller
+        }elseif($page == 'saller'){
+          $user = auth()->user();
+          $saller = Saller::where('user_id', '=', $user->id)->get();
+
+          if(count($saller) == 0 || $user->group > 4){
+            return response()->json(['status' => 'error', 'message' => 'not_saller']);
+          }
+
+          $login = new UserController;
+          $login->setLogin($user);
+          return $this->respondWithToken($token, $user);
+
+
+        // =============
+        // login to user
         }else{
           $user = auth()->user();
           if($user['status'] == 0){
-            return response()->json(['status' => 'permition']);
+            return response()->json(['status' => 'in_active']);
             // return response()->json(['message' => 'Unauthenticated.'], 401);
           }
           $login = new UserController;
           $login->setLogin($user);
           return $this->respondWithToken($token, $user);
+
+
         }
 
         // return $this->respondWithToken($token);
@@ -76,14 +100,31 @@ class AuthController extends Controller
       $token = auth()->refresh();
       $user  = auth()->user();
 
+      $page = isset($_GET['permition']) ? $_GET['permition']: '';
+
       if($user['status'] == 0){
         auth()->logout();
         return response()->json(['message' => 'Unauthenticated.'], 401);
-      }
 
-      $login = new UserController;
-      $login->setLogin($user);
-      return $this->respondWithToken($token, $user);
+      //==============
+        // login to saller
+      }elseif($page == 'saller'){
+        $user = auth()->user();
+        $saller = Saller::where('user_id', '=', $user->id)->get();
+
+        if(count($saller) == 0 || $user->group > 4){
+          return response()->json(['status' => 'error', 'message' => 'not_saller']);
+        }
+
+        $login = new UserController;
+        $login->setLogin($user);
+        return $this->respondWithToken($token, $user);
+
+      }else{
+        $login = new UserController;
+        $login->setLogin($user);
+        return $this->respondWithToken($token, $user);
+      }
 
     }
 

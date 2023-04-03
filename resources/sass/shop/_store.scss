@@ -76,24 +76,6 @@
     }
   }
 
-  .amount {
-    position: sticky;
-    top: 0;
-    z-index: 10;
-    display: flex;
-    justify-content: space-between;
-    background: #cff4fc;
-    padding: 10px;
-    border-radius: 10px;
-    margin-bottom: 15px;
-    margin-top: -10px;
-
-    .value {
-      font-size: 18px;
-      font-weight: 600;
-    }
-  }
-
   table {
     width: 100%;
     font-size: 14px;
@@ -188,53 +170,7 @@
     width: 30px;
     padding: 3px;
   }
-  .select-qte-angle {
-    position: relative;
-    margin-left: 10px;
-    input {
-      width: 25px;
-      padding: 3px;
-      border-radius: 0;
-      text-align: center;
-    }
-    .up,
-    .down,
-    .plus,
-    .minus {
-      position: absolute;
-      height: 25px;
-      width: 100%;
-      border: 1px solid #ccc;
-      background: #f8fafc;
-      text-align: center;
-      cursor: pointer;
-    }
-    .up {
-      top: 0;
-      transform: translateY(-100%);
-      border-bottom: 0;
-      border-radius: 5px 5px 0 0;
-    };
-    .down {
-      bottom: 0;
-      transform: translateY(100%);
-      border-top: 0;
-      border-radius: 0 0 5px 5px;
-    }
-    .plus {
-      top: 3px;
-      transform: translateX(100%);
-      border-left: none;
-      border-radius: 0 5px 5px 0;
-    }
-    .minus {
-      top: 3px;
-      transform: translateX(-100%);
-      border-right: none;
-      border-radius: 5px 0 0 5px;
-    }
 
-  }
 
   .goute {
     display: flex;
@@ -277,11 +213,7 @@
       margin-bottom: 0;
     }
   }
-  .submit {
-    position: sticky;
-    bottom: 5px;
-    margin-bottom: 20px;
-  }
+
   .pagination {
     float: right;
   }
@@ -308,3 +240,79 @@
   // }
 }
 
+
+.amount {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  justify-content: space-between;
+  background: #cff4fc;
+  padding: 10px;
+  border-radius: 10px;
+  margin-bottom: 15px;
+  margin-top: -10px;
+
+  .value {
+    font-size: 18px;
+    font-weight: 600;
+  }
+}
+
+.select-qte-angle {
+  position: relative;
+  margin-left: 10px;
+  height: 31px;
+  margin-bottom: 20px;
+  input {
+    width: 25px;
+    padding: 3px;
+    border-radius: 0;
+    text-align: center;
+  }
+  .up,
+  .down,
+  .plus,
+  .minus {
+    position: absolute;
+    height: 25px;
+    width: 100%;
+    border: 1px solid #ccc;
+    background: #f8fafc;
+    text-align: center;
+    cursor: pointer;
+  }
+  .up {
+    top: 0;
+    transform: translateY(-100%);
+    border-bottom: 0;
+    border-radius: 5px 5px 0 0;
+  };
+  .down {
+    bottom: 0;
+    transform: translateY(100%);
+    border-top: 0;
+    border-radius: 0 0 5px 5px;
+  }
+  .plus {
+    top: 3px;
+    transform: translateX(100%);
+    border-left: none;
+    border-radius: 0 5px 5px 0;
+  }
+  .minus {
+    top: 3px;
+    transform: translateX(-100%);
+    border-right: none;
+    border-radius: 5px 0 0 5px;
+  }
+
+}
+
+// globale
+
+.submit {
+  position: sticky;
+  bottom: 5px;
+  margin-bottom: 20px;
+}

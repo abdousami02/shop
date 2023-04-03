@@ -1,0 +1,44 @@
+.checkout .panel {
+  .pan-info {
+    padding: 15px;
+    color: #333;
+    font-size: 15px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+  }
+  .head-order {
+    background: rgba(255, 208, 68, 0.6);
+
+    & > * {
+      display: flex;
+      justify-content: space-between;
+      max-width: 350px;
+    }
+  }
+  .value {
+    font-weight: 600;
+    color: #000;
+  }
+  .btns {
+    display: flex;
+    flex-direction: column;
+    .btn {
+      width: 70px;
+      margin-bottom: 7px;
+    }
+  }
+  .addr-order {
+    border: 1px solid #ccc;
+    position: relative;
+    overflow: hidden;
+  }
+  .edt-addr {
+    float: right;
+    width: 70px;
+  }
+  .btns-check {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 35px;
+  }
+}

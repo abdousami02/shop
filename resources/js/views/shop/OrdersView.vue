@@ -6,10 +6,10 @@
         <a href="#" class="linkd">No: 434</a>
       </nav> -->
       <!-- search add edit -->
-      <h4 class="mt-4">Orders:</h4>
+      <h4 class="mt-4">{{lang.title_order}}:</h4>
       <div class="opt-order">
         <div class="btn-opt mb-2">
-          <button class="btn btn-success btn-sm" @click="addOrder()"><i class="far fa-plus"></i> Add</button>
+          <button class="btn btn-success btn-sm" @click="addOrder()"><i class="far fa-plus"></i> {{lang.btn_add}}</button>
         </div>
       </div>
       <!-- orders Lists -->
@@ -22,7 +22,7 @@
           <p class="montant">Montant: <span class="value">1853,00</span></p>
         </div> -->
         <!-- table for PC -->
-        <table class="table table-bordered table-hover tab-pc" v-if="false">
+        <!-- <table class="table table-bordered table-hover tab-pc" v-if="false">
           <thead>
             <tr>
               <th class="select-all"></th>
@@ -58,15 +58,15 @@
               </td>
             </tr>
           </tbody>
-        </table>
+        </table> -->
 
         <!-- table for mobile -->
         <table class="table table-bordered tab-mobile">
           <thead>
             <tr>
               <th class="select-all"></th>
-              <th class="">Info</th>
-              <th class="">Totale</th>
+              <th class="">{{lang.tb_info}}</th>
+              <th class="">{{lang.tb_total}}</th>
               <th class="opt"></th>
             </tr>
           </thead>
@@ -77,24 +77,24 @@
                 <input type="checkbox" name="select" />
               </td>
               <td class="info">
-                <div class="num ">Number: <span class="value">{{order.id}}</span></div>
-                <div class="status">Status: <span class="value">{{order.status}}</span></div>
-                <div class="date">date: <span class="value">{{setDate(order.created_at)}}</span></div>
+                <div class="num ">{{lang.info_id}}: <span class="value">{{order.id}}</span></div>
+                <div class="status">{{lang.info_status}}: <span class="value">{{lang.status[order.status]}}</span></div>
+                <div class="date">{{lang.info_date}}: <span class="value">{{setDate(order.created_at)}}</span></div>
                 <p class="local-order" v-if="order.id == 'local' ">
-                  This Order not register<button @click="addLocalOrder" class="btn btn-success">Add</button>
+                  {{lang.not_reg}}<button @click="addLocalOrder" class="btn btn-success">{{lang.btn_add}}</button>
                 </p>
               </td>
               <td class="price">
-                <div class="num-prod ">Products :<span class="value">{{order.num_product}}</span></div>
-                <div class="poid">Poid: <span class="value">{{order.weight || 0}} Kg</span></div>
-                <div class="prix-t">Montant: <span class="value">{{setNumber(order.amount)}} DA</span></div>
+                <div class="num-prod ">{{lang.total_prd}} :<span class="value">{{order.num_product}}</span></div>
+                <div class="poid">{{lang.total_weight}}: <span class="value">{{order.weight || 0}} Kg</span></div>
+                <div class="prix-t">{{lang.amount}}: <span class="value">{{setNumber(order.amount)}} DA</span></div>
               </td>
               <td class="opt dropdown">
                 <i class="fas fa-ellipsis-v dot-opt show" data-bs-toggle="dropdown"></i>
                 <div class="dropdown-menu dropdown-menu-end">
-                  <router-link to="/orders/orderDetails" href="#" class="dropdown-item"><i class="far fa-pen"></i> edit</router-link>
-                  <a class="dropdown-item" @click="deleteOrder(order.id,index)"><i class="far fa-trash"></i> deleat</a>
-                  <a class="dropdown-item"><i class="far fa-money-check-edit-alt"></i> checkout</a>
+                  <router-link :to="'/orders/orderDetails?order_id='+order.id" href="/orders/orderDetails?order_id=" class="dropdown-item"><i class="far fa-pen"></i> {{lang.opt_edite}}</router-link>
+                  <a class="dropdown-item" @click="deleteOrder(order,index)"><i class="far fa-trash"></i> {{lang.opt_delete}}</a>
+                  <a class="dropdown-item"><i class="far fa-money-check-edit-alt"></i> {{lang.opt_checkout}}</a>
                 </div>
               </td>
             </tr>
@@ -114,19 +114,52 @@ export default {
   },
   data: function(){
     return {
-      response: {},
+      response: {order:[]},
       order_local: '',
+      temp_send: true,
+
+      lang: {},
+      lang_db: {
+        ar: {title_order: "الطلبات", btn_add: "إضافة", tb_info: "معلومات", tb_total: "المجموع", info_id: "رقم", info_status: "الحالة", info_date: "التاريخ",
+            total_prd: "المنتجات", total_weight: "الوزن", amount: "الإجمالي", not_reg: "هذا الطلب غير محفوظ",
+            warn_add: "هل أنت متأكد من إضافة طلب!", warn_del: "هل أنت متأكد من حذف الطلب!", error: "هناك خطأ",
+            warn_login_title: "يحب تسجيل الدخول", warn_loign_text: "يجب تسجيل الدخول لإظهار طلباتك",
+            btn_ok: "حسنا", btn_cancel: "إلغاء", opt_edite: "تعديل", opt_delete: "مسح", opt_checkout: "تأكيد الطلب",
+            status:{0: 'مسودة', 1: 'جاري المعالجة', 2: 'جاري المعالجة',3: 'جاري المعالجة', 4: 'إنتظار رد المستخدم',
+                    5: 'جار التوصيل', 6:'تم التوصيل', 7: 'تم التوصيل', 9: 'تم الإلغاء'},},
+
+        fr: {title_order: "Orders", btn_add: "Ajouter", tb_info: "Info", tb_total: "Total", info_id: "ID", info_status: "Statut", info_date: "Date",
+            total_prd: "Produits", total_weight: "Poids", amount: "montante", not_reg: "",
+            warn_add: "Êtes-vous sûr d'ajouter une commande !", warn_del: "Êtes-vous sûr de supprimer la commande !", error: "Avoir une erreur",
+            warn_login_title: "Doit être connecté", warn_loign_text: "devez vous connecter pour afficher votre commandes",
+            btn_ok: "OK", btn_cancel: "Annuler", opt_edite: "édité", opt_delete: "supprimer", opt_checkout: "envoyer commande",
+            status:{0: 'Brouillon', 1: 'processing', 2: 'processing',3: 'processing', 4: "l'utilisateur approuve",
+                    5: 'Préparez à livraison' , 6:'finir', 7: 'finir', 9: 'Annulé'},},
+
+        en: {title_order: "Orders", btn_add: "add", tb_info: "Info", tb_total: "Total", info_id: "ID", info_status: "Status", info_date: "Date",
+            total_prd: "Products", total_weight: "Weight", amount: "amount", not_reg: "This Order not register",
+            warn_add: "Are you sure to Add Order!", warn_del: "Are you sure to Delete Order!", error: "Have Error",
+            warn_login_title: "Must be login", warn_loign_text: "must login to show your orders",
+            btn_ok: "OK", btn_cancel: "Cancel", opt_edite: "edit", opt_delete: "delete", opt_checkout: "checkout",
+            status:{0: 'Draft', 1: 'processing', 2: 'processing',3: 'processing', 4: 'Attemp user approve',
+                    5: 'Prepare to delevery', 6:'finish', 7: 'finish', 9: 'Cancceled'},},
+      }
     }
   },
   methods: {
     getData(page=1){
       let data = {action: "getData"}
       axios.post("/api/order?page"+page, data).then(response=>{
-        console.log(response);
+        // console.log(response);
         this.response.order = response.data.data;
 
         if(this.order_local){
-          this.response.order.unshift(this.order_local.info)
+          if(Array.isArray(this.response.order)){
+            this.response.order.unshift(this.order_local.info)
+
+          }else{
+            this.response.order = [this.order_local.info]
+          }
         }
       })
     },
@@ -136,30 +169,34 @@ export default {
         name: 'pate',
         name_ar: "عجائن",
       }
-      console.log(data);
+      // console.log(data);
       axios.post('api/famille', data).then(response=>{
-        console.log(response);
+        // console.log(response);
       })
     },
     addOrder(){
        Swal.fire({
-        title: 'Are you sure to Add Order!',
+        title: this.lang.warn_add,
         icon: 'warning',
         reverseButtons: true,
         showCancelButton: true,
 
       }).then((result) => {
         if (result.isConfirmed) {
+          if(!this.temp_send){ return false }
+          this.temp_send = false;
 
           axios.post("/api/order", {action: "add"}).then(resp=>{
-            console.log(resp);
+            this.temp_send = true;
+
+            // console.log(resp);
             if(resp.data.status == 'done'){
               this.response.order.unshift(resp.data.data)
 
             }else{
               Swal.fire({
                 icon: 'error',
-                title: 'Have Error',
+                title: this.lang.error,
                 showConfirmButton: false,
                 timer: 1000
               });
@@ -170,18 +207,24 @@ export default {
       })
     },
 
-    deleteOrder(id,index){
+    deleteOrder(order,index){
        Swal.fire({
-        title: 'Are you sure to Delete Order!',
+        title: this.lang.warn_del,
         icon: 'error',
         reverseButtons: true,
         showCancelButton: true,
 
       }).then((result) => {
         if (result.isConfirmed) {
+          let data = {action: "delete", id: order.id, status: order.status};
 
-          axios.post("/api/order", {action: "delete", id: id}).then(resp=>{
-            console.log(resp);
+          if(!this.temp_send){ return false }
+          this.temp_send = false;
+
+          axios.post("/api/order", data).then(resp=>{
+            this.temp_send = true;
+
+            // console.log(resp);
             if(resp.data.status == 'done'){
               this.response.order.splice(index,1)
 
@@ -203,8 +246,13 @@ export default {
       if(this.order_local){
         let data = {data: this.order_local.detail, action: "setOrderLocal"};
 
+        if(!this.temp_send){ return false }
+        this.temp_send = false;
+
         axios.post("/api/order", data).then(resp => {
-          console.log(resp);
+          this.temp_send = true;
+
+          // console.log(resp);
           if(resp.data.status == 'done'){
             localStorage.removeItem("order_info")
             localStorage.removeItem("order_detail")
@@ -221,9 +269,55 @@ export default {
       let date = new Date(date_iso);
        return date.toLocaleString("es-CL");
     },
+
+    change_lang(){
+      // fot setting lang
+      let lg = this.$root.lang;
+      if(lg == "ar"){
+        this.lang = this.lang_db.ar;
+        this.lang.lg = lg;
+        $(".orders").addClass("text-right");
+        // console.log($(".dropdown-menu"))
+
+      }else if(lg == "fr"){
+        this.lang = this.lang_db.fr;
+        $(".orders").removeClass("text-right");
+
+      }else{
+        this.lang = this.lang_db.en;
+        $(".orders").removeClass("text-right");
+      }
+    },
+
+    after(){
+      this.change_lang();
+
+      if(this.$root.login == false){
+
+        Swal.fire({
+          title: this.lang.warn_login_title,
+          text: this.lang.warn_loign_text,
+          icon: 'warning',
+          reverseButtons: true,
+          showCancelButton: true,
+
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.$router.push({name: "Login"});
+          }else{
+            this.$router.push({name: "store"});
+          }
+        });
+
+      }else{
+        this.getData();
+      }
+
+
+    }
   },
   mounted: function() {
-    if(this.$root.render == true && this.$root.login == true){ this.getData(); }
+    if(this.$root.render == true) {this.after(); }
 
     // show top navbar
     this.$root.top_nav = true;
@@ -239,13 +333,12 @@ export default {
         detail: JSON.parse(order_detail)
       };
     }
+
+
   },
   watch: {
-    '$root.render': function(){
-      if(this.$root.login == true){
-        this.getData();
-      }
-    }
+    '$root.render': function(){ this.after(); },
+    '$root.lang'  : function(){ this.change_lang()},
   }
 };
 </script>

@@ -21,7 +21,7 @@ class CreateSallersTable extends Migration
         $table->string('type');
         $table->String('address');
         $table->integer('mobile')->nullable();
-        $table->integer('status')->default(0);
+        $table->tinyInteger('status')->default(0);
         $table->timestamps();
         $table->softDeletes();
       });

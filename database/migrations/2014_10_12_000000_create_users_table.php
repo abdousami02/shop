@@ -15,7 +15,7 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('group_id')->unsigned();
+            $table->smallInteger('group_id')->unsigned();
             $table->foreign('group_id')->references('id')->on('group');
             $table->string('name');
             $table->integer('mobile')->unique();
@@ -23,9 +23,9 @@ class CreateUsersTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('image')->nullable();
-            $table->integer('permition')->default(1);
-            $table->integer('rank')->nullable()->default(0);
-            $table->integer('status')->default(0);
+            $table->smallInteger('permition')->default(1);
+            $table->smallInteger('rank')->nullable()->default(0);
+            $table->tinyInteger('status')->default(0);
             $table->timestamp('last_login')->nullable();
             $table->timestamps();
             $table->rememberToken();

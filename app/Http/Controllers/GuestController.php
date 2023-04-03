@@ -52,8 +52,8 @@ class GuestController extends Controller
   // **********
   public function getHelpInfo($data){
 
-    $cat   = Categorie::orderby("rank", "DESC")->get();
-    $famille = Famille::orderby("rank", "DESC")->get();
+    $cat   = Categorie::where('status', '!=', 0)->orderby("rank", "DESC")->get();
+    $famille = Famille::where('status', '!=', 0)->orderby("rank", "DESC")->get();
 
     return ['categories'=> $cat, 'familles'=> $famille];
   }

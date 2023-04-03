@@ -62,3 +62,45 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+
+
+----- status Order ------
+
+0 - Draft
+1 - attemp admin processing
+2 - attemp saller processing
+3 - finish saller  updatated 
+4 - attemp user to approve
+5 - prepare to delevery
+6 - finish delevery and wait payment
+7 - finish delevery and payement
+
+9 - Cancceled
+
+
+
+badni Shop ReadMe
+
+----Setting-------
+
+user->id == 0			// all user
+
+setting:
+	-set_price_sell
+		.last_price
+		.first_price
+		.product_price
+	
+	-show_info_dashboard
+		.order_detial
+			= {image: 1, id: 1, categorie: 0, all_price: 1}
+
+
+
+
+
+
+
+
+

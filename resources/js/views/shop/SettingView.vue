@@ -2,7 +2,7 @@
   <div class="setting">
     <div class="nav-setting close">
       <div class="nav-head">
-        <i class="far fa-bars open" @click="open_nav"></i>
+        <i class="far fa-bars" @click="open_nav"></i>
         <span class="txt">Setting</span>
         <i class="far fa-times close_btn" @click="open_nav"></i>
       </div>
@@ -27,19 +27,29 @@
 <script>
 export default {
   name: "SettingView",
+  data: function() {
+    return {
+      nav_bar: 'open',
+    };
+  },
   methods: {
     open_nav() {
-      console.log("close");
       document.querySelector(".nav-setting").classList.toggle("close");
     },
-    check_login(){
-      if(!this.$root.login){
+    after(){
+      if(this.$root.login == false){
         this.$router.push({path: '/'})
       }
     }
   },
   mounted: function(){
-    this.check_login();
+    // if user login action
+    if(this.$root.render == true){
+      this.after();
+    }
+  },
+  watch: {
+    '$root.render': function(){ this.after() },    // on response for login,
   }
 };
 </script>

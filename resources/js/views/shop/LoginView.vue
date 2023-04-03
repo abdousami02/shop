@@ -40,7 +40,7 @@ export default {
     sendData(){
       let data = this.user;
       axios.post('/api/auth/login', data).then(response=>{
-        console.log(response);
+        // console.log(response);
         if(response.data.access_token){
           this.$root.login = true;
           this.$root.user = response.data.user_info;
@@ -53,6 +53,20 @@ export default {
             this.$router.push({ path: "/" })
           }
 
+        }else if(response.data.status == "in_active"){
+          Swal.fire({
+            title: 'قيد المعالجة',
+            icon: 'warning',
+            text: "لن تتمكن من الدخول حتى يتم مراجعة حسابك من طرف المسؤول",
+            reverseButtons: true,
+            // showCancelButton: true,
+            confirmButtonText: 'موافق',
+
+          }).then((result) => {
+            if (result.isConfirmed) {
+              //
+            }
+          })
         }else{
           this.error_login = true;
         }
@@ -61,7 +75,7 @@ export default {
 
     // check login
     check_login(){
-      console.log(this.$root.user)
+      // console.log(this.$root.user)
       if(this.$root.user.id){
         this.$router.push({name: 'store'})
       }
@@ -69,7 +83,7 @@ export default {
   },
   beforeMount() {
     this.check_login();
-    console.log(this.$router)
+    // console.log(this.$router)
   },
 };
 </script>

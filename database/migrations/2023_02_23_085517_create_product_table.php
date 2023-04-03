@@ -34,11 +34,11 @@ class CreateProductTable extends Migration
         $table->integer('qte_sell2')->nullable();
         $table->integer('qte_sell3')->nullable();
         $table->integer('weight')->nullable()->default(0);
-        $table->integer('in_stock')->default(0);
-        $table->integer('status')->default(0);
-        $table->integer('rank')->default(0);
-        $table->integer('has_goute')->default(0);
-        $table->integer('has_discount')->default(0);
+        $table->tinyInteger('in_stock')->default(0);
+        $table->tinyInteger('status')->default(0);
+        $table->smallInteger('rank')->default(0);
+        $table->tinyInteger('has_goute')->default(0);
+        $table->tinyInteger('has_discount')->default(0);
         $table->timestamps();
         $table->softDeletes();
       });

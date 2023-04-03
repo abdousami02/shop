@@ -14,19 +14,21 @@ class CreateOrderDetailsTable extends Migration
     public function up()
     {
       Schema::create('order_details', function (Blueprint $table) {
-        $table->increments('id');
+        $table->bigIncrements('id');
         $table->bigInteger('order_id')->unsigned();
         $table->foreign('order_id')->references('id')->on('order');
         $table->integer('product_id')->unsigned();
         $table->foreign('product_id')->references('id')->on('products');
-        // $table->integer('product_goute_id')->unsigned()->nullable();
-        // $table->foreign('product_goute_id')->references('id')->on('product_goute');
         $table->integer('discount_id')->unsigned()->nullable();
         $table->foreign('discount_id')->references('id')->on('discount');
         $table->decimal('price_sell');
-        $table->integer('qte');
+        // $table->decimal('price_buy')->default(0);
+        $table->smallInteger('qte');
+        $table->smallInteger('method_qte');
         $table->decimal('price_total');
+        // $table->decimal('price_buy_total')->default(0);
         $table->decimal('weight')->nullable()->default(0);
+        // $table->tinyInteger('in_stock')->default(1);
         $table->timestamps();
         $table->softDeletes();
       });

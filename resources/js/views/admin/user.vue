@@ -126,7 +126,7 @@
                     </div>
                     <div class="store-type">
                       <span>Store Type: </span>
-                      <select :class="['form-select from-select-sm', errors.store_info[index].type_id? 'is-invalid':'']" :disabled="!store.not_disabled" v-model="store.type_id" required>
+                      <select :class="['form-select from-select-sm', errors.store_info[index].type_id? 'is-invalid':'']" :disabled="!store.not_disabled" v-model="store.store_type_id" required>
                       <option v-for="type in response.store_type" :key="type" :value="type.id">{{type.name}}</option>
                     </select>
                     </div>

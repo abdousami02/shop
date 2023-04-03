@@ -10,8 +10,8 @@ class Saller extends Model
 {
   use HasFactory;
   use SoftDeletes;
-  protected $filable = ['id', 'user_id', 'name', 'type', 'address', 'is_active'];
   protected $table = 'sallers';
+  protected $filable = ['id', 'user_id', 'name', 'type', 'address', 'is_active'];
   protected $hidden = ['created_at', 'deleted_at', 'updated_at'];
 
   public function user(){
@@ -19,6 +19,6 @@ class Saller extends Model
   }
 
   public function order(){
-    return $this->hasMany(Order::class, 'store_id', 'id');
+    return $this->hasMany(Order::class, 'saller_id', 'id');
   }
 }

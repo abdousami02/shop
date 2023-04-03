@@ -24,9 +24,17 @@ class CreateOrderTable extends Migration
         $table->integer('saller_id')->unsigned()->nullable();
         $table->foreign('saller_id')->references('id')->on('sallers');
         $table->decimal('amount')->default(0);
-        $table->integer('num_product')->default(0);
+        $table->smallInteger('num_product')->default(0);
         $table->decimal('weight')->nullable()->default(0);
-        $table->integer('status')->default(0);
+        $table->tinyInteger('status')->default(0);
+
+        $table->integer('show_admin')->nullable();
+        $table->foreign('show_admin')->references('id')->on('users');
+
+        $table->integer('show_saller')->unsigned()->nullable();
+        $table->foreign('show_saller')->references('id')->on('sallers');
+
+        $table->decimal('amount_buy')->nullable();
         $table->timestamps();
         $table->softDeletes();
       });

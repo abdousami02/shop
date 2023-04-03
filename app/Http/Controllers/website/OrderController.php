@@ -20,25 +20,25 @@ class OrderController extends Controller
     $user = auth()->user();
     // to getDat from  database
     if($req->action == 'getData' ){
-      return response()->json( $this->getData() );
+      return response()->json( $this->getData($req->order_id) );
 
-    }elseif($req->action == 'getDataPrint' ){
-    return response()->json( $this->getDataPrint($req) );
+    // }elseif($req->action == 'getDataPrint' ){
+    // return response()->json( $this->getDataPrint($req) );
 
     // to help Info from  database
     }elseif($req->action == 'setOrderLocal' ){
       return response()->json( $this->setLocal($req) );
 
-    }elseif($req->action == 'search'){
-      return response()->json( $this->search($req) );
+    // }elseif($req->action == 'search'){
+    //   return response()->json( $this->search($req) );
 
     // to add Order
     } elseif($req->action == 'add'){
     return response()->json( $this->add($req, $user) );
 
       // to updat Order
-    } elseif($req->action == 'update'){
-    return response()->json( $this->update($req) );
+    // } elseif($req->action == 'update'){
+    // return response()->json( $this->update($req) );
 
     // to delet Order
     } elseif($req->action == 'delete'){
@@ -64,6 +64,10 @@ class OrderController extends Controller
     }else{
       $order = Order::where('user_id', '=', $user->id)
                     ->orderby("id", "DESC")->paginate(30);    // ::get()
+    }
+
+    if(count($order) == 0){
+      return ['status' => 'error'];
     }
 
     foreach($order as $elem){
@@ -120,20 +124,29 @@ class OrderController extends Controller
   //
   public function delete($data){
 
-    if(!$data->id ){
+    if(!isset($data->id) || !isset($data->status)){
       return ["status" => "error", "message" => "set id and order_id"];
     }
 
-    $goutes = OrderDetailGoute::where('order_id' ,'=', $data->id)->delete();
+    $goutes = OrderDetailGoute::where('order_id' ,'=', $data->id)->forceDelete();
 
-    $order_detail = OrderDetail::where('order_id', '=', $data->id)->delete();
+    $order_detail = OrderDetail::where('order_id', '=', $data->id);
+    $order = Order::where('id', $data->id);
 
-    $order = Order::where('id', $data->id)->delete();
+    if($data->status == 0){
+      $order_detail->forceDelete() ;
+      $order->forceDelete() ;
+
+    }else{
+      $order_detail->delete() ;
+      $order->delete();
+    }
+
 
 
     if($order){
-      return ['status'=> 'done', '
-              message' => `deleted ($goutes) of goutes detail, ($order_detail) of order detail`];
+      return ['status'=> 'done', $goutes, $order_detail];
+              // 'message' => `deleted ($goutes) of goutes detail, ($order_detail) of order detail`];
 
     }else{
       return ['status'=> 'error'];
@@ -151,7 +164,7 @@ class OrderController extends Controller
 
       $order = Order::where('id', '=', $data->order_id);
 
-      $get = ($order->get())[0];
+      $get = $order->first();
       // return $get->amount;
       $amount = $get->amount + $data->price_total;
       $weight = $get->weight + $data->weight;
@@ -172,7 +185,7 @@ class OrderController extends Controller
       $total_weight  = 0;
 
       foreach($order_detail as $elem){
-        $total_price   += $elem['price_total'];
+        $total_price   += $elem['price_sell'] * $elem['qte'] * $elem['method_qte'];
         $total_product += 1;
         $total_weight  += $elem['weight'];
       }

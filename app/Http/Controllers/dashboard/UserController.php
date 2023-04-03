@@ -82,7 +82,7 @@ class UserController extends Controller
       $user = Users::get();
 
     }else{
-      $user = Users::paginate(20);
+      $user = Users::orderby("id", "DESC")->paginate(20);
       //join('group', 'group.id', '=', 'users.group_id')->get();
     }
 

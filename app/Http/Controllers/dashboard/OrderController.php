@@ -10,9 +10,11 @@ use Illuminate\Validation\Rule;
 use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Models\OrderDetailGoute;
+use App\Models\OrderDetailSaller;
 use App\Models\Saller;
-use App\Models\Sallers;
+use App\Models\Setting;
 use App\Models\Users;
+use PhpParser\Node\Expr\FuncCall;
 
 class OrderController extends Controller
 {
@@ -29,7 +31,7 @@ class OrderController extends Controller
               break;
 
         case 1 :
-              $get= true; $update= true; $add= true; $delete= false;
+              $get= true; $update= true; $add= true; $delete= true;
               break;
 
         case 2 :
@@ -60,11 +62,19 @@ class OrderController extends Controller
     }elseif($req->action == 'getHelpInfo' && $get ){
         return response()->json( $this->getHelpInfo($req) );
 
+      // to help Info from  database
+    }elseif($req->action == 'getNew' && $get ){
+        return response()->json( $this->getNew($req) );
+
       // to add Order
     } elseif($req->action == 'add' && $add){
       return response()->json( $this->add($req) );
 
-        // to updat Order
+      // to updat Order
+    } elseif($req->action == 'updateSaller' && $update){
+      return response()->json( $this->updateSaller($req) );
+
+      // to updat Order
     } elseif($req->action == 'update' && $update){
       return response()->json( $this->update($req) );
 
@@ -77,7 +87,7 @@ class OrderController extends Controller
         $out = $this->getData($req);
 
       }else{
-        $out = ["status" => "error"];
+        $out = $del;
       }
       return response()->json( $out );
 
@@ -101,8 +111,12 @@ class OrderController extends Controller
       $id = $data->id;
       $order = Order::where('id', $id)->get();
 
+    }elseif(isset($_GET['status'])){
+      $status = $_GET['status'];
+      $order = Order::where('status', '=', $status)->orderby("created_at", "DESC")->paginate(30);
+
     }else{
-      $order = Order::orderby("id", "DESC")->paginate(30);    // ::get()
+      $order = Order::where('status', '!=', 0)->orderby("created_at", "DESC")->paginate(30);    // ::get()
     }
 
     foreach($order as $elem){
@@ -128,6 +142,31 @@ class OrderController extends Controller
 
     return ['users'=> $user, 'sallers'=> $saller];
   }
+
+
+
+  // **********
+  //  function to get info help for product
+  // **********
+  public function getNew($data){
+
+    $order = Order::where([['show_admin', '=', 0],['status', '>', 0]])
+                  ->where('updated_at', '>', $data->last)
+                  ->orderby("updated_at", "DESC")->get();
+
+    if(count($order) > 0){
+      $out = [];
+      foreach($order as $elem){
+        $out[] = ($this->getData($elem))['data'][0];
+      }
+      return ['status' => 'done', 'data' => $out];
+      // return $this->getData((object)$order);
+
+    }else{
+      return ['status' => 'none', $data->last ];
+    }
+  }
+
 
 
   // ************
@@ -166,9 +205,9 @@ class OrderController extends Controller
 
     $validator = Validator::make($data->all(), [
       'id'        => 'required|integer|exists:order,id',
-      'saller_id' => 'nullable|integer|exists:sallers,id',
+      // 'saller_id' => 'nullable|integer|exists:sallers,id',
       'store_id'  => 'nullable|integer|exists:store_info,id',
-      'status'    => 'nullable|integer|max:5',
+      'status'    => 'nullable|integer|max:10',
     ]);
 
 
@@ -177,10 +216,104 @@ class OrderController extends Controller
     }
 
     Order::where('id', $data->id)
-                    ->update(['saller_id'=> $data->saller_id, 'store_id' => $data->store_id , 'status'=> $data->status]);    //find element
+          ->update(['saller_id'=> $data->saller_id,
+                    'store_id' => $data->store_id ,
+                    'status'=> $data->status]);    //find element
 
 
     return $this->getData($data);
+  }
+
+
+  //************ */
+  // update Saller
+  public function updateSaller($data){
+
+    $param = $this->setting($data->user_id);
+
+    $validator = Validator::make($data->all(), [
+      'id'        => 'required|integer|exists:order,id',
+      'saller_id' => 'nullable|integer|exists:sallers,id',
+    ]);
+    if($validator->fails()) {
+      return ['status'=> 'error', 'errors'=> $validator->errors()];
+    }
+
+    $date = date("Y-m-d H:i:s");
+
+    $order = Order::where('id', '=', $data->id);
+    $order->update(['saller_id'   => $data->saller_id,
+                    'status'      => 2,
+                    'show_saller' => 0,
+                    'to_saller_at'=> $date]);
+
+    $order_saller = OrderDetailSaller::where('order_id', '=', $data->id)->delete();
+
+    // if(count($order_saller) > 0){
+    //   OrderDetailSaller::where('order_id', '=', $data->id)
+    // }
+
+
+    $order_detail = OrderDetail::where('order_id', '=', $data->id)
+                                ->select('id', 'product_id', 'qte','method_qte', 'weight')
+                                ->with('product')->get();
+
+
+    // return $order_detail;
+    isset($param->set_price_sell) ? '': $param->set_price_sell = 10;
+
+    foreach($order_detail as $elem){
+
+      if($param->set_price_sell == 1){    // last of price selling
+        $price = OrderDetailSaller::where([['product_id', '=', $elem['product']['id']],
+                                          ['saller_id', '=', $data->saller_id]])
+                                    // ->orwhere('product_id', '=', $elem['product']['id'])
+                                    ->orderBy('id', 'desc')->first();
+
+
+      }elseif($param->set_price_sell == -1){  // first price selling
+        $price = OrderDetailSaller::where([['product_id', '=', $elem['product']['id']],
+                                          ['saller_id', '=', $data->saller_id]])
+                                    // ->orwhere('product_id', '=', $elem['product']['id'])
+                                    ->first();
+
+      }elseif($param->set_price_sell == 0){     // price of priduct
+        $price = '';
+      }
+      $price ? $price_buy = $price->price_buy : $price_buy = $elem['product']['price_buy'];
+
+
+
+      $order_sell = new OrderDetailSaller();
+
+      $order_sell->saller_id        = $data->saller_id;
+      $order_sell->order_id         = $data->id;
+      $order_sell->order_detail_id  = $elem['id'];
+      $order_sell->product_id       = $elem['product']['id'];
+      $order_sell->price_buy        = $price_buy;
+      $order_sell->qte              = $elem['qte'];
+      $order_sell->method_qte       = $elem['method_qte'];
+      $order_sell->price_total      = $elem['qte'] * $price_buy * $elem['method_qte'];
+      $order_sell->save();
+    }
+
+
+    return $this->getData($data);
+
+  }
+
+
+  public function setting($user_id){
+
+    $param = Setting::where([['section', '=', 'order_saller'],['user_id', '=', $user_id]])
+                    ->orwhere([['section', '=', 'order_saller'],['user_id', '=', 0] ])
+                    ->get();
+    // return $param;
+    $out = [];
+    foreach($param as $elem){
+      $out[$elem['param']] = $elem['value'];
+    }
+    return (object) $out;
   }
 
   // ***********
@@ -192,19 +325,21 @@ class OrderController extends Controller
       return ["status" => "error", "message" => "set id and order_id"];
     }
 
+    $saller = OrderDetailSaller::where('order_id' ,'=', $data->id)->delete();
+
     $goutes = OrderDetailGoute::where('order_id' ,'=', $data->id)->delete();
 
     $order_detail = OrderDetail::where('order_id', '=', $data->id)->delete();
 
-    $order = Order::where('id', $data->id)->delete();
+    $order = Order::where('id', $data->id)->forceDelete();
 
 
     if($order){
-      return ['status'=> 'done', '
-              message' => `deleted ($goutes) of goutes detail, ($order_detail) of order detail`];
+      return ['status'=> 'done',
+              'message' => `deleted ($goutes) of goutes detail, ($order_detail) of order detail`];
 
     }else{
-      return ['status'=> 'error'];
+      return ['status'=> 'error', 'message' => 'not delete any order'];
     }
   }
 
@@ -245,6 +380,8 @@ class OrderController extends Controller
       $total_weight  = 0;
 
       foreach($order_detail as $elem){
+        if($elem['price_total'] == 0){ return ['status' => 'error', 'message' => 'price_total not be 0']; }
+
         $total_price   += $elem['price_total'];
         $total_product += 1;
         $total_weight  += $elem['weight'];
@@ -270,15 +407,17 @@ class OrderController extends Controller
       foreach($order_detail as $elem){
         $elem->product;
 
-        if($elem['product']['qte_sell3'] && $elem['qte'] > $elem['product']['qte_sell3']){   //  set price sell with qte
+        if($elem['product']['qte_sell3'] && $elem['qte'] >= $elem['product']['qte_sell3']){   //  set price sell with qte
           $price_sell = $elem['product']['price_sell3'];
 
-        }elseif($elem['product']['qte_sell3'] && $elem['qte'] > $elem['product']['qte_sell3']){
+        }elseif($elem['product']['qte_sell2'] && $elem['qte'] >= $elem['product']['qte_sell2']){
           $price_sell = $elem['product']['price_sell2'];
 
         }else{
           $price_sell = $elem['product']['price_sell1'];
         }
+
+        if($price_sell == 0 ){return ['status' => 'error', 'message' => 'price not be 0 for product: '.$elem['product']['name']];}
 
         // return $elem['product'];
         $method = $elem['product']['method_qte'];
@@ -289,8 +428,10 @@ class OrderController extends Controller
 
         OrderDetail::where('id', '=', $elem['id'])
                     ->update([
-                      'price_sell'=> ($price_sell * $data->qte * $method),
-                      'weight'    => ($elem['product']['weight'] * $data->qte * $method)
+                      'price_sell'  => $price_sell,
+                      'method_qte'  => $method,
+                      'price_total' => ($price_sell * $elem['qte'] * $method),
+                      'weight'      => ($elem['product']['weight'] * $data->qte * $method)
                     ]);
       }
 

@@ -40,10 +40,10 @@ export default {
       }).catch(error => {
         if(error.response.data.message == "Unauthenticated."){
           console.log('not login');
-          this.$root.user = {};
+          this.user = {};
           this.login = false;
-          this.render = true;
           document.cookie= "token=" + '' + "; expires=Thu, 18 Dec 2021 12:00:00 UTC; path=/";
+          this.render = true;
         }
       });
     },

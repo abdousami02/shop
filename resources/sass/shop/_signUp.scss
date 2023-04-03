@@ -1,0 +1,49 @@
+
+.signup {
+  direction: ltr;
+  .panel {
+    .head {
+      text-align: center;
+    }
+    form {
+      max-width: 300px;
+      & > div {
+        margin-bottom: 20px;
+        padding: 0 5px;
+      }
+    }
+  }
+}
+
+.btns-sel {
+  display: flex;
+  justify-content: space-between;
+  .btn-next,
+  .btn-prev {
+    width: 70px;
+  }
+  .btn-next {
+    margin-left: auto;
+  }
+}
+
+.num-tel {
+  .num-mob {
+    width: 80px;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+  .num {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+}
+
+.panel form > div > div {
+  margin-bottom: 20px;
+}
+
+.form-label {
+  margin-bottom: 3px;
+}
+

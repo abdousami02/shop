@@ -3,12 +3,15 @@
 namespace App\Http\Controllers\website;
 
 use App\Http\Controllers\Controller;
+use App\Models\Categorie;
+use App\Models\Famille;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
 
 use App\Models\OrderDetail;
 use App\Models\OrderDetailGoute;
+use App\Models\OrderDetailSaller;
 use App\Models\Product;
 
 class OrderDetailController extends Controller
@@ -29,7 +32,8 @@ class OrderDetailController extends Controller
     }elseif($req->action == 'getHelpInfo' ){
       return response()->json( $this->getHelpInfo($req) );
 
-    }elseif($req->action == 'search'){
+    // to add Order
+    } elseif($req->action == 'search'){
       return response()->json( $this->search($req) );
 
     // to add Order
@@ -75,6 +79,10 @@ class OrderDetailController extends Controller
       return ['status'=> 'permition', 'message' => 'not set id or order_id'];
     }
 
+    if(count($order_detail) == 0){
+      return ['data' => $order_detail, 'status' => 'done'];
+    }
+
     foreach($order_detail as $elem){
       $elem->product->product_goute;
       $goute = $elem->order_detail_goute ;
@@ -87,6 +95,45 @@ class OrderDetailController extends Controller
 
     return ['data' => $order_detail, 'status' => 'done'];
   }
+
+
+  // ***************
+  // search order detail in order
+  public function search_detail($data){
+
+    $str = $data->str;
+    $id = $data->order_id;
+
+    $opt = [["order_id", "=", $id], ["name", "like", "%{$str}%"]];
+
+    $order_detail = OrderDetail::where($opt)
+                    ->orderby("name", "ASC")->get();
+
+    foreach($order_detail as $elem){
+      $elem->product->product_goute;
+      $goute = $elem->order_detail_goute ;
+
+      foreach($goute as $el){
+        $el->product_goute;
+      }
+
+    }
+
+    return $order_detail;
+
+  }
+
+  // **********
+  //  function to get info help for product
+  // **********
+  public function getHelpInfo($data){
+
+    $cat   = Categorie::get();
+    $famille = Famille::get();
+
+    return ['categories'=> $cat, 'familles'=> $famille];
+  }
+
 
 
   // ************
@@ -134,32 +181,21 @@ class OrderDetailController extends Controller
       return ['status'=> 'error', 'errors'=> $validator->errors()];
     }
 
-    $product = Product::where('id', '=', $data->product_id)->get();
-    $product = $product[0];
+    $product = Product::where('id', '=', $data->product_id)->first();
 
+    $price_sell = $this->checkPrice($product, $data->qte);
 
+    $method     = $product->method_qte;
 
     $order_detail = new OrderDetail();
 
-    if($product->qte_sell3 && $data->qte > $product->qte_sell3){   //  set price sell with qte
-      $price_sell = $product->price_sell3;
-      // return $price_sell;
-
-    }elseif($product->qte_sell2 && $data->qte > $product->qte_sell2){
-      $price_sell = $product->price_sell2;
-
-    }else{
-      $price_sell = $product->price_sell1;
-    }
-    // return $price_sell;
-
-    $method = $product->method_qte;
 
     $order_detail->order_id     = $data->order_id;
     $order_detail->product_id   = $data->product_id;
     $order_detail->price_sell   = $price_sell;
-    $order_detail->price_total  = ($price_sell * $data->qte * $method);
     $order_detail->qte          = $data->qte;
+    $order_detail->method_qte   = $method;
+    $order_detail->price_total  = ($price_sell * $data->qte * $method);
     $order_detail->weight       = ($product->weight * $data->qte * $method);
 
     $order_detail->save();
@@ -201,11 +237,19 @@ class OrderDetailController extends Controller
       return ['status'=> 'error', 'errors'=> ['price_sell' => true]];
     }
 
+    $product = Product::where('id', '=', $data->product_id)->get();
+    $product = $product[0];
+    $method = $product->method_qte;
+
+    $price_sell = $this->checkPrice($product, $data->qte);
+
+
+
     $info = [
-      'price_sell' => $data->product['price_sell1'],
+      'price_sell' => $price_sell,
       'qte'        => $data->qte,
-      'price_total'=> ($data->price_sell * $data->qte),
-      'weight'     => ($data->weight * $data->qte),
+      'price_total'=> ($price_sell * $data->qte * $method),
+      'weight'     => ($product->weight * $data->qte * $method),
     ];
 
     OrderDetail::where('id', '=', $data->id)
@@ -215,12 +259,60 @@ class OrderDetailController extends Controller
     $calc = new OrderController();
     $calc->calc($data, 'update');
 
-    $this->updateGoute($data->order_detail_goute, $data->id);
+    $this->updateGoute($data->order_detail_goute, $data);
 
     return $this->getData($data);
 
   }
 
+
+  public function checkPrice($product, $qte){
+
+    if($product->qte_sell3 && $qte >= $product->qte_sell3){   //  set price sell with qte
+      $price_sell = $product->price_sell3;
+      // return $price_sell;
+
+    }elseif($product->qte_sell2 && $qte >= $product->qte_sell2){
+      $price_sell = $product->price_sell2;
+
+    }else{
+      $price_sell = $product->price_sell1;
+    }
+
+    return $price_sell;
+  }
+
+
+
+   // search method
+   public function search($data){
+
+    if($data->id){
+
+      $resulte = Product::with(array('product_goute'=>function($query){
+                    $query->select()->where('in_stock', '!=', 0); }))
+                    ->where('id', $data->id)->get();
+
+    }else{
+      $string = $data->str;
+      // $method = $data->method;
+
+      $opt = [["name", "like", "%{$string}%"], ["status", "!=", 0], ["in_stock", "!=", 0]];
+
+      $data->categorie_id ? array_push($opt, ["categorie_id", "=", $data->categorie_id]): '';
+      $data->famille_id ? array_push($opt, ["famille_id", "=", $data->famille_id]): '';
+
+      $resulte = Product::where($opt)
+                        ->select('id', 'name', 'name_ar','image', 'price_sell1')
+                        ->orderby("name", "ASC")
+                        ->limit(10)->get();
+    }
+
+    // foreach($resulte as $elem){
+    //   $elem->product_goute ;
+    // }
+    return $resulte;
+  }
 
 
 
@@ -246,15 +338,15 @@ class OrderDetailController extends Controller
   // ***********
   // Update Goutes to order
   // ***********
-  public function updateGoute($goutes, $id){
+  public function updateGoute($goutes, $order_detail){
 
     foreach($goutes as $elem){
       if(!isset($elem['id'])){
-        $this->addGoute([$elem], $id);
+        $this->addGoute([$elem], $order_detail);
 
       }elseif($elem['id'] && isset($elem['edite']) && $elem['edite'] == 'edite'){
-        OrderDetailGoute::where('id', $elem->id)
-                        ->update(['qte', $elem->qte]);
+        OrderDetailGoute::where('id', $elem['id'])
+                        ->update(['qte' => $elem['qte']]);
 
       }elseif($elem['id'] && isset($elem['edite']) && $elem['edite'] == 'delete'){
         OrderDetailGoute::where('id', '=', $elem['id'])->delete();
@@ -272,11 +364,9 @@ class OrderDetailController extends Controller
       return ["status" => "error", "message" => "set id and order_id"];
     }
 
-
-
-    $goutes = OrderDetailGoute::where('order_detail_id' ,'=', $data->id)->delete();
-
-    $order = OrderDetail::where('id', '=', $data->id)->delete();
+    $goutes       = OrderDetailGoute::where('order_detail_id' ,'=', $data->id)->delete();
+    $order_saller = OrderDetailSaller::where('order_detail_id', '=', $data->id)->delete();
+    $order        = OrderDetail::where('id', '=', $data->id)->delete();
 
 
 
@@ -284,7 +374,8 @@ class OrderDetailController extends Controller
       $calc = new OrderController();
       $calc->calc($data, 'delete');
 
-      return ['status' => 'done', 'message' => 'success delete order detail'];
+      return ['status' => 'done',
+              'message' => `deleted ($goutes) of goutes detail, ($order) of order detail`];
     }else{
       return ['status' => 'error'];
     }

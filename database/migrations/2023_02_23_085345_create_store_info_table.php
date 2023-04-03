@@ -18,9 +18,10 @@ class CreateStoreInfoTable extends Migration
         $table->integer('user_id')->unsigned();
         $table->foreign('user_id')->references('id')->on('users');
         $table->string('name');
-        $table->integer('type_id')->unsigned();
-        $table->foreign('type_id')->references('id')->on('store_type');
+        $table->integer('store_type_id')->unsigned();
+        $table->foreign('store_type_id')->references('id')->on('store_type');
         $table->string('address');
+        $table->string('wilaya')->nullable();
         $table->integer('mobile')->nullable();
         $table->timestamps();
         $table->softDeletes();

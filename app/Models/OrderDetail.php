@@ -28,4 +28,8 @@ class OrderDetail extends Model
     return $this->hasMany(OrderDetailGoute::class);
   }
 
+  public function order_detail_saller(){
+    return $this->hasOne(OrderDetailSaller::class,'order_detail_id', 'id');
+  }
+
 }

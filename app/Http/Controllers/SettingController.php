@@ -45,7 +45,7 @@ class SettingController extends Controller
 
     if($user->id){
 
-      $arg = [['user_id', '=', $user->id], ['page', '=', $data->page]];
+      $arg = [['user_id', '=', $user->id], ['param', '=', $data->page]];
 
       $setting = Setting::where($arg)->select('param', 'value')->get();
 

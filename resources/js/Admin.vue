@@ -24,7 +24,7 @@ export default {
         mobile: '0556581171',
         email: 'contact@badnishop.com',
         date: '',
-        th: ['No', 'Nome Produit', 'Goute', 'Qte', 'Prix_U', 'Prix_Totat'],
+        th: ['No', 'Nome Produit', 'Goute', 'Qte', 'Prix_U', 'Prix_Total'],
         tb: {},
         order: null,
       }

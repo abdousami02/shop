@@ -46,12 +46,12 @@
                 </p>
               </td>
               <td class="qte">{{row.qte}}</td>
-              <td class="price-u">{{row.price_sell}}</td>
-              <td class="price-total">{{row.price_total}}</td>
+              <td class="price-u">{{setNumber(row.price_sell)}}</td>
+              <td class="price-total">{{setNumber(row.price_total)}}</td>
             </tr>
           </tbody>
         </table>
-        <div class="amount"><span>Total: </span>{{data.order.amount}} DA</div>
+        <div class="amount"><span>Total: </span>{{setNumber(data.order.amount)}} DA</div>
 
       </div>
     </div>
@@ -68,6 +68,15 @@ export default {
     return {
 
     }
+  },
+  methods: {
+    setNumber(num){
+      return Number(num).toLocaleString("fi-FI", { minimumFractionDigits: 2 }) ;
+    },
+    setDate(date_iso){
+      let date = new Date(date_iso);
+       return date.toLocaleString("es-CL");
+    },
   }
 }
 </script>

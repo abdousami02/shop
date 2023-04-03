@@ -16,7 +16,8 @@ class CreateStoreTypeTable extends Migration
         Schema::create('store_type', function (Blueprint $table) {
           $table->increments('id');
           $table->string('name');
-          $table->integer('status')->default(0);
+          $table->tinyInteger('status')->default(0);
+          $table->smallInteger('rank')->default(0);
           $table->timestamps();
           $table->softDeletes();
         });

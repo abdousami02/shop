@@ -6,10 +6,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Notifications\Notifiable;
 
 class Users extends Model
 {
-  use HasFactory;
+  use HasFactory, Notifiable;
   use SoftDeletes;
 
   protected $table = 'users';
@@ -33,6 +34,10 @@ class Users extends Model
 
   public function order(){
     return $this->hasMany(Order::class);
+  }
+
+  public function setting(){
+    return $this->hasMany(Saller::class);
   }
 
 }

@@ -11,9 +11,15 @@
                     :deleteData_func="deleteData"
                     :deleteMultiData_func="nothing" >
 
+            <!-- link top -->
+          <template v-slot:link_top>
+            <li class="link"><router-link to="?status=0" @click="getData(1)">Draft <span class="count">(12)</span></router-link> |</li>
+            <li class="link"><router-link to="?status=9">Canccel <span class="count">(8)</span></router-link></li>
+          </template>
+
           <template v-slot="slotProps">
             <td class="id">{{ slotProps.row.id }}</td>
-            <td class="date">{{ convert_date(slotProps.row.created_at)}}</td>
+            <td class="date">{{ convert_date(slotProps.row.created_at)}}<span :class="['new-show',slotProps.row.show_admin?'':'active' ]"></span></td>
             <td class="user info-order" v-if="slotProps.row">
               <b>User :</b>
               <p class="info-elem">
@@ -24,7 +30,7 @@
               <p class="info-elem" v-if="slotProps.row.store_info">
                 <span class="name">Name: <i>{{ slotProps.row.store_info.name }}, </i></span>
                 <span class="name"> Address: <i>{{ slotProps.row.store_info.address }}, </i></span>
-                <span> Store Type: <i>{{ slotProps.row.store_info.store_type.name }}</i></span>
+                <!-- <span> Store Type: <i>{{ slotProps.row.store_info.store_type.name }}</i></span> -->
               </p>
             </td>
 
@@ -38,13 +44,13 @@
                 <select name="saller" :class="['form-select from-select-sm', errors.saller? 'is-invalid':'']" v-model="slotProps.row.saller_id">
                   <option v-for="elem in response.sallers" :key="elem" :value="elem.id">{{elem.name+ ' -  '+elem.address }}</option>
                 </select>
-                <button class="btn btn-outline-success ms-2" @click="sendAction(slotProps.row)"><i class="far fa-save m-1"></i></button>
+                <button class="btn btn-outline-success ms-2" @click="change_saller(slotProps.row)"><i class="far fa-save m-1"></i></button>
               </div>
-              <button class="btn btn-primary edite-order" @click="change_saller(slotProps.index)"><i class="far fa-pen"></i></button>
+              <button class="btn btn-primary edite-order" @click="edite_saller(slotProps.index)"><i class="far fa-pen"></i></button>
             </td>
 
             <td class="status">
-              <span v-if="!slotProps.row.edite_status" class="status" :data-status="slotProps.row.status">{{ order_status[slotProps.row.status] }}</span>
+              <span v-if="!slotProps.row.edite_status" class="status-show" :data-status="slotProps.row.status">{{ order_status[slotProps.row.status] }}</span>
 
               <div class="inp-form" v-if="slotProps.row.edite_status == true">
                 <select name="saller" :class="['form-select from-select-sm', errors.status? 'is-invalid':'']" v-model="slotProps.row.status">
@@ -60,8 +66,9 @@
             <td class="amount"><span>{{ setNumber(slotProps.row.amount) }} DA</span></td>
           </template>
 
-          <template  v-slot:btns_opt="slotProps">
+          <template v-slot:btns_opt="slotProps">
             <a class="dropdown-item"  @click="editeData(slotProps.row)"><i class="far fa-pen c"></i> Edit</a>
+            <a class="dropdown-item"  @click="makeCopy(slotProps.row)"><i class="far fa-copy"></i> Make Copy</a>
             <a class="dropdown-item"  @click="calcOrder(slotProps.row, slotProps.index)"><i class="far fa-calculator"></i> Calc</a>
             <a class="dropdown-item" @click="print_order(slotProps.row)"><i class="fas fa-print"></i> Print</a>
             <a class="dropdown-item" @click="deleteOrder(slotProps.row.id, slotProps.index)"><i class="far fa-trash"></i> Delete</a>
@@ -72,7 +79,6 @@
         <order-details class="pan" :backToOrder="hid_details" :order_id="order_id_edite"/>
 
       </div>
-
     </div>
 
     <!-- Print Ordet -->
@@ -182,9 +188,13 @@ export default {
       show_details: false,
 
       order: {},
-      order_status: {0: 'Draft', 1: 'In Progress', 2: 'Prepare Commande', 3: 'finish delevery', 4: '', 5: 'Cancceled'},
+      order_status:{0: 'Draft', 1: 'admin processing', 2: 'saller processing',
+                    3: 'finish saller updated', 4: 'Attemp user approve', 5: 'Prepare to delevery',
+                    6:'delevered and not payment', 7: 'delevered and payment',
+                    9: 'Cancceled'},
       order_id_edite: '',
 
+      time_get: '',
     };
   },
   methods: {
@@ -198,7 +208,10 @@ export default {
 
     getData(page=1){
       let action = 'getData';
-      axios.post("/api/admin/order?page="+page, {action: action}).then(response =>{
+      let status = this.$route.query.status;
+      let query = status ? "&status="+status : null;
+      console.log(query)
+      axios.post("/api/admin/order?page="+page+query, {action: action}).then(response =>{
 
         console.log(response);
         let resp = response.data;
@@ -215,6 +228,8 @@ export default {
         // if not
         }else{
           this.tbody = resp.data;
+          let date = new Date();
+          this.time_get = date.toLocaleString("sv-SE");
         }
       });
     },
@@ -268,7 +283,7 @@ export default {
         this.empty_data();
         Toast.fire({
           icon: 'success',
-          title: 'Success '+ action +' Product :)'
+          title: 'Success '+ action +' Order :)'
         })
 
        // on success delete
@@ -292,6 +307,21 @@ export default {
 
       }
     },
+
+    getNew(){
+      axios.post("/api/admin/order", {action: "getNew",last: this.time_get}).then(resp=>{
+        if(resp.data.status == 'done'){
+          resp.data.data.forEach(elem=>{
+            let date = new Date(elem.updated_at);
+            this.time_get = date.toLocaleString("sv-SE");
+            this.tbody.data.unshift(elem);
+          })
+          var audio = new Audio('/img/notify.mp3'); // path to file
+          audio.play();
+        }
+      })
+    },
+
     addData(){
       this.modal.title = "Add Order";
       this.modal.btn = "Add";
@@ -303,13 +333,23 @@ export default {
     deleteData(){
 
     },
-    showOrderDetail(elem){
-      console.log(elem);
-      this.show_details = true;
-      this.order_id_edite = elem.id;
-      window.scrollTo(0, 0);
+    change_saller(elem){
+      let data = {action: "updateSaller", id: elem.id, saller_id: elem.saller_id, user_id: elem.user_id};
+      axios.post("/api/admin/order", data).then(resp=>{
+        console.log(resp);
+        if(resp.data.status == 'done'){
+          let id = resp.data.data[0]['id'];
+          let elem = this.search_id(id, this.tbody.data);
+          this.tbody.data[elem.index] = resp.data.data[0];
 
+          Toast.fire({
+            icon: 'success',
+            title: 'Success Update Order Saller :)'
+          })
+        }
+      })
     },
+
     editeData(elem){
       this.inp_disable = true;
       this.modal.title = "Edite Order";
@@ -321,6 +361,14 @@ export default {
       console.log(elem)
     },
 
+    showOrderDetail(elem){
+      console.log(elem);
+      this.show_details = true;
+      this.order_id_edite = elem.id;
+      window.scrollTo(0, 0);
+
+    },
+
     // for Order Details
     hid_details(){
       this.order_id_edite = '';
@@ -330,9 +378,14 @@ export default {
     },
 
     // change order saller
-    change_saller(index){
+    edite_saller(index){
       this.tbody.data[index].saller = false;
       this.action_func = 'update';
+    },
+
+    getStatus($data){
+      console.log('status');
+      this.$router.push({path: '/dashboard/order?'+$data});
     },
 
     // change order status
@@ -371,6 +424,17 @@ export default {
 
         if(resp.data.status == 'done'){
           this.tbody.data[index] = resp.data.data[0];
+          Toast.fire({
+            icon: 'success',
+            title: 'Success Calc Order :)'
+          })
+
+        }else{
+          Swal.fire({
+            title: 'Have Error',
+            icon: 'error',
+            text: resp.data.message,
+          });
         }
       })
     },
@@ -378,7 +442,7 @@ export default {
     deleteOrder(id, index){
       Swal.fire({
         title: 'Are you sure to Delete Order!',
-        icon: 'error',
+        icon: 'warning',
         reverseButtons: true,
         showCancelButton: true,
 
@@ -387,7 +451,11 @@ export default {
           axios.post("/api/admin/order", {action: "delete", id: id}).then(resp=>{
             console.log(resp);
             if(resp.data.status == 'done'){
-              this.response.order.splice(index,1)
+              this.tbody.data.splice(index,1);
+              Toast.fire({
+                icon: 'success',
+                title: 'Success Delete Order :)'
+              })
 
             }else{
               Swal.fire({
@@ -415,6 +483,8 @@ export default {
     this.getData();
     this.getHelpInfo();
     this.model_order = new bootstrap.Modal(document.getElementById('modal_order'), {});
+
+    setInterval(this.getNew, 5000);
 
   },
   watch: {

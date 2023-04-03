@@ -12,6 +12,7 @@ use Illuminate\Validation\Rule;
 use App\Models\OrderDetail;
 use App\Models\OrderDetailGoute;
 use App\Models\Product;
+use App\Models\Order;
 
 class OrderDetailsController extends Controller
 {
@@ -74,6 +75,9 @@ class OrderDetailsController extends Controller
     } elseif($req->action == 'update' && $update){
       return response()->json( $this->update($req) );
 
+      // to updat Order
+    } elseif($req->action == 'updateStock' && $update){
+      return response()->json( $this->updateStock($req) );
 
       // to delet Order
     } elseif($req->action == 'delete' && $delete){
@@ -89,10 +93,15 @@ class OrderDetailsController extends Controller
   // **********
   public function getData($data){
 
+    $user = auth()->user();
+
     if($data->id){
       $order_detail = OrderDetail::where('id', $data->id)->get();
 
     }elseif($data->order_id){
+      Order::where('id', '=', $data->order_id)
+          ->update(['show_admin' => $user->id]);
+
       $order_detail = OrderDetail::where('order_id', $data->order_id);    // ::get()
 
       $order_detail = $data->print == true ? $order_detail->get() : $order_detail->paginate(30);
@@ -107,6 +116,7 @@ class OrderDetailsController extends Controller
 
     foreach($order_detail as $elem){
       $elem->product->product_goute;
+      $elem->order_detail_saller;
       $goute = $elem->order_detail_goute ;
 
       foreach($goute as $el){
@@ -214,6 +224,7 @@ class OrderDetailsController extends Controller
     $order_detail->price_sell   = $data->price_sell;
     $order_detail->price_total  = ($data->price_sell * $data->qte * $method);
     $order_detail->qte          = $data->qte;
+    $order_detail->method_qte   = $method;
     $order_detail->weight       = ($data->weight * $data->qte * $method);
 
     $order_detail->save();
@@ -275,6 +286,20 @@ class OrderDetailsController extends Controller
   }
 
 
+  public function updateStock($data){
+
+    if($data->id){
+      $order = OrderDetail::where('id', '=', $data->id)
+                          ->update(['in_stock' => $data->in_stock]);
+
+      if($order > 0){
+        return ['status' => 'done', 'data' => $data->in_stock];
+      }
+    }
+
+  }
+
+
   // search method
   public function search($data){
 
@@ -332,8 +357,8 @@ class OrderDetailsController extends Controller
         $this->addGoute([$elem], $id);
 
       }elseif($elem['id'] && isset($elem['edite']) && $elem['edite'] == 'edite'){
-        OrderDetailGoute::where('id', $elem->id)
-                        ->update(['qte', $elem->qte]);
+        OrderDetailGoute::where('id', $elem['id'])
+                        ->update(['qte' => $elem['qte'] ]);
 
       }elseif($elem['id'] && isset($elem['edite']) && $elem['edite'] == 'delete'){
         OrderDetailGoute::where('id', '=', $elem['id'])->delete();

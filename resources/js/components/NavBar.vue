@@ -62,11 +62,12 @@ export default {
   name: "nav-bar",
   methods: {
     logout(){
-      axios.post("/api/auth-admin/logout").then(resp =>{
-        if(resp.data){
-          this.$router.push({ name: "Login" })
-        }
-      })
+      axios.post("/api/auth/logout").then(resp =>{
+        this.$root.user = {};
+        this.$root.login = false;
+        document.cookie= "token=" + '' + "; expires=Thu, 18 Dec 2021 12:00:00 UTC; path=/";
+        this.$router.push({ path: "/" });
+      });
     }
   }
 };

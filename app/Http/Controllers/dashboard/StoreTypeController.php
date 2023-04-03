@@ -25,7 +25,7 @@ class StoreTypeController extends Controller
           break;
 
         case 1 :
-              $get= true; $update= false; $add= true; $delete= false;
+              $get= true; $update= true; $add= true; $delete= false;
               break;
 
         case 2 :
@@ -83,6 +83,7 @@ class StoreTypeController extends Controller
     $validator = Validator::make($data->all(), [
       'name'    => 'required|string|unique:store_type,name|min:3|max:15',
       'status'  => 'nullable|integer|max:1',
+      'rank'    => 'integer|max:100',
     ]);
 
     if ($validator->fails()) {
@@ -93,6 +94,7 @@ class StoreTypeController extends Controller
 
     $store->name = $data->name;
     $store->status = $data->status || 0;
+    $store->rank         = $data->rank || 0;
 
     $store->save();
 
@@ -110,6 +112,7 @@ class StoreTypeController extends Controller
                     Rule::unique('store_type')->ignore($data->id, 'id'),],
 
       'status'  => 'integer|max:1',
+      'rank'    => 'nullable|integer|max:100',
     ]);
 
     if ($validator->fails()) {
@@ -117,7 +120,9 @@ class StoreTypeController extends Controller
     }
 
     StoreType::where('id', $data->id)
-        ->update(['name'=> $data->name, 'status'=> $data->status]);
+              ->update(['name'=> $data->name,
+                        'status'=> $data->status,
+                        'rank'   => $data->rank ]);
 
     return response()->json(['status'=>'done']);
 

@@ -1,0 +1,131 @@
+
+.dash {
+  display: flex;
+  position: relative;
+  height: 100%;
+  .nav-dash {
+    position: sticky;
+    top: 0;
+    float: left;
+    width: 180px;
+    background: #fff;
+    transition: width 0.5s;
+    z-index: 20;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important /* global class */;
+    .nav-head {
+      position: relative;
+      background: #103262;
+      color: #fff;
+      font-size: 20px;
+      padding: 5px 10px;
+      white-space: nowrap;
+      .open {
+        cursor: pointer;
+      }
+      .txt {
+        margin-left: 10px;
+      }
+      .close_btn {
+        position: absolute;
+        top: 10px;
+        right: 15px;
+        color: #f6a823;
+        cursor: pointer;
+      }
+    }
+    .navbar-nav {
+      padding: 10px;
+      .nav-item {
+        font-size: 16px;
+        color: #103262;
+        border-radius: 6px;
+        white-space: nowrap;
+        .router-link-exact-active {
+          color: #f6a823;
+        }
+        .txt {
+          margin-left: 10px;
+        }
+      }
+    }
+  }
+  .content {
+    float: right;
+    width: calc(100% - 180px);
+    background: #f1f1f1;
+    padding: 20px;
+    flex-grow: 1;
+  }
+  .close {
+    width: 45px;
+    span,
+    .close_btn {
+      display: none;
+    }
+  }
+}
+
+
+// status button
+.status-btn {
+  position: relative;
+  display: inline-block;
+  width: 30px;
+  height: 17px;
+  border: 1px solid #ddd;
+  background: #fff;
+  border-radius: 20px;
+  cursor: pointer;
+  &.active {
+    background: #4cd964;
+    border-color: #4cd964;
+  }
+  &::after {
+    content: '';
+    position: absolute;
+    left: 0px;
+    height: 14px;
+    width: 14px;
+    background: #fff;
+    border-radius: 50%;
+    -webkit-transition: .3s;
+    -o-transition: .3s;
+    transition: .3s;
+    -webkit-box-shadow: 0 0 2px #aaa, 0 2px 5px #999;
+    box-shadow: 0 0 2px #aaa, 0 2px 5px #999;
+  }
+  &.active::after {
+    left: 15px;
+  }
+  &.active {
+    background: #4cd964;
+    border-color: #4cd964;
+  }
+}
+
+
+
+.cat,
+.users,
+.group,
+.order {
+  .modal{
+    .info > div{
+      display: flex;
+      justify-content: space-between;
+      max-width: 400px;
+      margin-bottom: 20px;
+      .inp-form {
+        width: 200px;
+      }
+    }
+  }
+}
+
+.ar {
+  direction: rtl;
+}
+.select-form{
+  width: 130px;
+}
+
