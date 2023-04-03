@@ -28,7 +28,7 @@ class CreateOrderTable extends Migration
         $table->decimal('weight')->nullable()->default(0);
         $table->tinyInteger('status')->default(0);
 
-        $table->integer('show_admin')->nullable();
+        $table->integer('show_admin')->unsigned()->nullable();
         $table->foreign('show_admin')->references('id')->on('users');
 
         $table->integer('show_saller')->unsigned()->nullable();
