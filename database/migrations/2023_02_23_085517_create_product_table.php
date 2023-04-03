@@ -15,8 +15,8 @@ class CreateProductTable extends Migration
     {
       Schema::create('products', function (Blueprint $table) {
         $table->increments('id');
-        $table->integer('categorie_id')->unsigned();
-        $table->integer('famille_id')->unsigned()->nullable();
+        $table->smallInteger('categorie_id')->unsigned();
+        $table->smallInteger('famille_id')->unsigned()->nullable();
         $table->foreign('categorie_id')->references('id')->on('categories');
         $table->foreign('famille_id')->references('id')->on('familles');
         $table->string('name');
