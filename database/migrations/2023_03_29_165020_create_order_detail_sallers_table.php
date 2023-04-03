@@ -28,10 +28,10 @@ class CreateOrderDetailSallersTable extends Migration
             $table->foreign('product_id')->references('id')->on('products');
 
             $table->decimal('price_buy');
-            $table->tinyInteger('in_stock')->default(1);
             $table->smallInteger('qte');
             $table->smallInteger('method_qte');
             $table->decimal('price_total');
+            $table->tinyInteger('in_stock')->default(1);
             $table->tinyInteger('is_edite')->default(0);
             $table->timestamps();
         });

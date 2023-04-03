@@ -22,13 +22,11 @@ class CreateOrderDetailsTable extends Migration
         $table->integer('discount_id')->unsigned()->nullable();
         $table->foreign('discount_id')->references('id')->on('discount');
         $table->decimal('price_sell');
-        // $table->decimal('price_buy')->default(0);
         $table->smallInteger('qte');
         $table->smallInteger('method_qte');
         $table->decimal('price_total');
-        // $table->decimal('price_buy_total')->default(0);
         $table->decimal('weight')->nullable()->default(0);
-        // $table->tinyInteger('in_stock')->default(1);
+        $table->tinyInteger('in_stock')->default(1);
         $table->timestamps();
         $table->softDeletes();
       });
