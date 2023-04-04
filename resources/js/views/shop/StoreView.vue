@@ -217,7 +217,7 @@ export default {
       order_select: {amount: 0},
       detail_sel: [],
       user: {},
-      temp_send: true,
+      action_temp: true,
 
       lang: {order_id: ''},
       lang_db: {
@@ -296,11 +296,11 @@ export default {
 
       }).then((result) => {
         if (result.isConfirmed) {
-          if(!this.temp_send){ return false }
-          this.temp_send = false;
+          if(!this.action_temp){ return false }
+          this.action_temp = false;
 
           axios.post("/api/store", {action: "addOrder"}).then(resp =>{
-            this.temp_send = true;
+            this.action_temp = true;
 
             // // console.log(resp.data);
             if(resp.data.status == 'done'){
@@ -340,15 +340,15 @@ export default {
 
     addOrderItem( order_id, prod){
 
-      if(!this.temp_send){ return false }
-      this.temp_send = false;
+      if(!this.action_temp){ return false }
+      this.action_temp = false;
 
       let data = prod;
       data.order_id = order_id;
       data.action = "add";
 
       axios.post("/api/order_detail", data).then(resp =>{
-        this.temp_send = true;
+        this.action_temp = true;
         // // console.log(resp.data)
         if(resp.data.status == 'done'){
           this.detail_sel.push(resp.data.data[0])
@@ -365,12 +365,12 @@ export default {
       })
     },
     deleteOrderItem(elem){
-      if(!this.temp_send){ return false }
-      this.temp_send = false;
+      if(!this.action_temp){ return false }
+      this.action_temp = false;
 
       let data = {action: 'delete', id: elem.id, "order_id": elem.order_id};
       axios.post("/api/order_detail", data).then(resp => {
-        this.temp_send = true;
+        this.action_temp = true;
         // // console.log(resp.data);
         if(resp.status == "error"){
           Swal.fire({

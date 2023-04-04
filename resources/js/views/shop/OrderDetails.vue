@@ -507,12 +507,12 @@ export default {
 
     // on click to product set is in modal
     set_prod(elem){
-      if(!this.temp_send){ return false }
-      this.temp_send = false;
+      if(this.action_wait == 1){ return false }
+      this.action_wait = 1
 
       let data = {action: "search", id: elem.id}
       axios.post("/api/order_detail", data).then(response=> {
-        this.temp_send = true;
+        this.action_wait = 0;
 
         // console.log(response);
         this.show_product = response.data[0];
