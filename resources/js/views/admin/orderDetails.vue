@@ -169,9 +169,9 @@
                   <span>Price: </span>
                   <input type="number" :class="['form-control', errors.price_sell? 'is-invalid':'']" v-model="order_product.price_sell" >
                 </div>
-                <div class="col-2">
+                <div class="col-2 qte">
                   <span>Qte:</span>
-                  <input type="number" :class="['form-control', errors.qte? 'is-invalid':'']" v-model="order_product.qte">
+                  <input type="number" :class="['form-control', errors.qte? 'invalid':'']" v-model="order_product.qte">
                 </div>
                 <div class="col-6 info-order">
                   <p><span class="name">Qte U/c: <i>{{show_product.qte_uc}}</i></span></p>
@@ -327,10 +327,10 @@ export default {
         console.log(data)
 
         if(action != 'delete' && data.qte < data.qte_goute){
-          this.errors.qte = true;  return false;
+          this.errors.qte = true;this.action_wait = 0;  return false;
 
         }else if(action != 'delete' && data.price_sell <= data.product.price_buy){
-          this.errors.price_sell = true;  return false;
+          this.errors.price_sell = true; this.action_wait = 0;  return false;
         }
 
         if(action == "delete"){data = elem ; elem.action='delete';};

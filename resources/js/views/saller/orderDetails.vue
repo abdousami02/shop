@@ -164,7 +164,7 @@
                 </div>
                 <div class="col-2">
                   <span>Qte:</span>
-                  <input type="number" :class="['form-control', errors.qte? 'is-invalid':'']" v-model="order_product.qte">
+                  <input type="number" :class="['form-control', errors.qte? 'invalid':'']" v-model="order_product.qte">
                 </div>
                 <div class="col-6 info-order">
                   <p><span class="name">Qte U/c: <i>{{show_product.qte_uc}}</i></span></p>
