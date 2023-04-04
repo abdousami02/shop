@@ -491,6 +491,7 @@ export default {
       let count = 0;
       this.order_product.order_detail_goute.forEach(elem =>{
         elem.edite != 'delete' ? count += Number(elem.qte) : '';
+        console.log(count)
 
       });
       this.order_product.qte_goute = count;
