@@ -13,6 +13,7 @@ use App\Models\OrderDetail;
 use App\Models\OrderDetailGoute;
 use App\Models\Product;
 use App\Models\Order;
+use App\Models\OrderDetailSaller;
 
 class OrderDetailsController extends Controller
 {
@@ -381,6 +382,7 @@ class OrderDetailsController extends Controller
     }
 
     $goutes = OrderDetailGoute::where('order_detail_id' ,'=', $data->id)->delete();
+    $saller = OrderDetailSaller::where('order_detail_id' ,'=', $data->id)->delete();
 
     $order = OrderDetail::where('id', '=', $data->id)->delete();
 

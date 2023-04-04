@@ -87,7 +87,7 @@ class OrderDetailController extends Controller
     }
 
     if(count($order_detail) == 0){
-      return ['data' => $order_detail, 'status' => 'error'];
+      return ['message' => 'not have order_detail', 'status' => 'error'];
     }
 
     foreach($order_detail as $elem){
@@ -127,7 +127,7 @@ class OrderDetailController extends Controller
     // add order detail
     $order_detail = new WebsiteOrderDetailController;
 
-    $rt = $order_detail->add($data);
+    $rt = $order_detail->add($data, $saller);
 
     $order_detail = $rt['data'][0];
 
@@ -150,7 +150,8 @@ class OrderDetailController extends Controller
           ->update(['amount_buy' => 0,
                     'status'     => 2]);
 
-    return ['status' => 'done', 'data' => $this->getData($data, $saller)];
+
+    return $this->getData($order_detail_saller, $saller);
 
 
   }

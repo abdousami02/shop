@@ -11,7 +11,7 @@
 
           <template v-slot="slotProps">
             <td class="id">{{ slotProps.row.id }}</td>
-            <td class="date">{{ convert_date(slotProps.row.created_at)}}<span :class="['new-show',slotProps.row.show_saller?'':'active' ]"></span></td>
+            <td class="date">{{ convert_date(slotProps.row.created_at)}}<span :class="['new-show',slotProps.row.show_saller > 0?'':'active' ]"></span></td>
 
             <td class="status">
               <span v-if="!slotProps.row.edite_status" class="status-show" :data-status="slotProps.row.status">{{ order_status[slotProps.row.status] }}</span>
