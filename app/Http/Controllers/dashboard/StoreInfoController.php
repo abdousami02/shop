@@ -84,7 +84,7 @@ class StoreInfoController extends Controller{
 
     $info->user_id =  $data->user_id;
     $info->name =     $data->name;
-    $info->store_type_id =  $data->type_id;
+    $info->store_type_id =  $data->store_type_id;
     $info->address =  $data->address;
 
     $info->save();
@@ -112,7 +112,7 @@ class StoreInfoController extends Controller{
     StoreInfo::where('id', $data->id)
               ->update([
                 'name'    => $data->name,
-                'store_type_id' => $data->type_id,
+                'store_type_id' => $data->store_type_id,
                 'address'  => $data->address,
               ]);    //find element
 
