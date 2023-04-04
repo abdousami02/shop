@@ -41,6 +41,12 @@
               <i class="far fa-user fa-lg"></i>
             </a>
             <ul class="dropdown-menu dropdown-menu-end">
+              <li>
+                <a href="#" class="dropdown-item name">
+                  <span>{{$root.user.name}}</span><br>
+                  <span>mobile: {{'0'+$root.user.mobile}}</span>
+                </a>
+              </li>
               <li><router-link to="/dashboard" class="dropdown-item" href="#">Setting</router-link></li>
               <li class="dropdown-divider"></li>
               <li><a @click.prevent="logout" class="dropdown-item" href="#">Log out</a></li>

@@ -61,7 +61,7 @@
         </td>
 
         <td>
-          <p><span class="name">Price buy: <i>{{slotProps.row.order_detail_saller.price_buy}}</i></span></p>
+          <p><span class="name" >Price buy: <i>{{slotProps.row.order_detail_saller ? slotProps.row.order_detail_saller.price_buy:''}}</i></span></p>
         </td>
 
         <td class="goute info-order">
@@ -75,14 +75,14 @@
 
         <td class="qte">
           <input type="number" class="inp-qte" :value="slotProps.row.qte">
-          <span v-if="slotProps.row.qte != slotProps.row.order_detail_saller.qte" class="qte-saller">{{slotProps.row.order_detail_saller.qte}}</span>
+          <span v-if="slotProps.row.order_detail_saller && slotProps.row.qte != slotProps.row.order_detail_saller.qte" class="qte-saller">{{slotProps.row.order_detail_saller.qte}}</span>
         </td>
 
         <td class="instock">
           <span @click="edite_stock(slotProps.row, slotProps.index)"
                 :class="['status-btn', slotProps.row.in_stock == 1 ? 'active':'',
-                          slotProps.row.in_stock != slotProps.row.order_detail_saller.in_stock && slotProps.row.in_stock == 1 ? 'not' :'' ]" ></span><br>
-          <span v-if="slotProps.row.in_stock != slotProps.row.order_detail_saller.in_stock && slotProps.row.in_stock == 1 " class="text-danger">Not in Stock</span>
+                          slotProps.row.order_detail_saller && slotProps.row.in_stock != slotProps.row.order_detail_saller.in_stock && slotProps.row.in_stock == 1 ? 'not' :'' ]" ></span><br>
+          <span v-if="slotProps.row.order_detail_saller && slotProps.row.in_stock != slotProps.row.order_detail_saller.in_stock && slotProps.row.in_stock == 1 " class="text-danger">Not in Stock</span>
 
         </td>
 

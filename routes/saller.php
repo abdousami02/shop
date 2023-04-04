@@ -17,7 +17,7 @@ Route::get('/dashboard/{any}', function ($any) {
 })->where('any','.*');
 
 Route::get('/{any}', function ($any) {
-  return view('dashboard');
+  return view('saller');
 
 })->where('any','.*');
 

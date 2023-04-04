@@ -32,17 +32,20 @@ class AuthController extends Controller
         $page = isset($_GET['permition']) ? $_GET['permition']: '';
 
         if (! $token = auth()->attempt($credentials)) {
-          return response()->json(['status' => 'error', 'message' => 'info wrange']);
+          return response()->json(['status' => 'error_info', 'message' => 'info wrange']);
 
 
         //==============
         // login to saller
         }elseif($page == 'saller'){
           $user = auth()->user();
-          $saller = Saller::where('user_id', '=', $user->id)->get();
+          $saller = Saller::where('user_id', '=', $user->id)->first();
 
-          if(count($saller) == 0 || $user->group > 4){
+          if(!isset($saller->id) || $user->group > 4){
             return response()->json(['status' => 'error', 'message' => 'not_saller']);
+
+          }elseif($saller->status == 0 || $user->status == 0 ){
+            return response()->json(['status' => 'error', 'message' => 'not_active']);
           }
 
           $login = new UserController;

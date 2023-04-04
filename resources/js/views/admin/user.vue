@@ -13,9 +13,9 @@
         <td class="">{{ '0'+slotProps.row.mobile }}</td>
         <td class="">{{ slotProps.row.email }}</td>
         <td class="">{{ slotProps.row.rank }}</td>
-        <td class=""><span class="status" :data-status="slotProps.row.status">{{ slotProps.row.status == 1 ? "active" : "inactiv" }}</span></td>
+        <td class="status"><span @click="editeStatus(slotProps.row, slotProps.index)" :class="['status-btn', slotProps.row.status == 1 ? 'active':'']" ></span></td>
         <td class="">{{ slotProps.row.group.name }}</td>
-        <td class="">{{ slotProps.row.login }}</td>
+        <td class="">{{ slotProps.row.last_login }}</td>
         <td class="">
           <ul>
             <li v-for="elem in slotProps.row.store_info" :key="elem">
@@ -329,6 +329,25 @@ export default {
         });
 
       }
+    },
+
+
+    // updatae status user
+    editeStatus(elem, index){
+      let data = { id: elem.id, status: elem.status == 1 ? 0 : 1, action: "updateStatus"}
+      axios.post("/api/admin/user", data).then(resp=>{
+        console.log(resp);
+
+        if(resp.data.status == "done"){
+          this.tbody.data[index] = resp.data.data;
+          Toast.fire({
+            icon: 'success',
+            title: 'Success update Status :)'
+          })
+
+        }
+
+      })
     },
 
     // conver data come white DataBas to show in table user

@@ -7,4 +7,11 @@
 @import "saller/panel_all";
 @import "admin/print";
 
+@import "shop/signUp";
+
 @import "saller/setting";
+
+
+#saller {
+  min-width: 1500px;
+}

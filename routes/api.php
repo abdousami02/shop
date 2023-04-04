@@ -14,28 +14,28 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
 
 /*
 | this is admin router
 |
 */
-// Route::group([
-
-//   'middleware' => 'api',
-//   'prefix' => 'auth'
-
-// ], function ($router) {
-
+// Route::group([ 'middleware' => 'api', 'prefix' => 'auth'], function ($router) {
 //   Route::post('login', 'AuthController@login');
 //   Route::post('logout', 'AuthController@logout');
 //   Route::post('refresh', 'AuthController@refresh');
 //   Route::post('me', 'AuthController@me');
-
 // });
+
+
+
+
+/*
+| auth admin
+|
+*/
 Route::group(['middleware' => 'api', 'prefix' => 'auth-admin'], function ($router) {
 
   Route::post('login', [App\Http\Controllers\AuthAdminController::class, 'login']);
@@ -45,6 +45,10 @@ Route::group(['middleware' => 'api', 'prefix' => 'auth-admin'], function ($route
 
 });
 
+/*
+| auth user
+|
+*/
 Route::group(['middleware' => 'api', 'prefix' => 'auth'], function ($router) {
 
   Route::post('login', [App\Http\Controllers\AuthController::class, 'login']);
@@ -57,6 +61,12 @@ Route::group(['middleware' => 'api', 'prefix' => 'auth'], function ($router) {
 
 
 
+
+
+/*
+|  admin router
+|
+*/
 Route::group(['middleware' => 'auth:api', 'prefix' => 'admin'], function() {
   Route::post('product', [App\Http\Controllers\dashboard\ProductController::class, 'default']);
   Route::post('order', [App\Http\Controllers\dashboard\OrderController::class, 'default']);
@@ -69,6 +79,7 @@ Route::group(['middleware' => 'auth:api', 'prefix' => 'admin'], function() {
 
   Route::post('user', [App\Http\Controllers\dashboard\UserController::class, 'default']);
   Route::post('group', [App\Http\Controllers\dashboard\GroupController::class, 'default']);
+  Route::post('saller', [App\Http\Controllers\dashboard\SallerController::class, 'default']);
 
   Route::post('setting', [App\Http\Controllers\dashboard\AdminSettingController::class, 'default']);
 
@@ -78,6 +89,10 @@ Route::group(['middleware' => 'auth:api', 'prefix' => 'admin'], function() {
 
 
 
+/*
+|  saller router
+|
+*/
 Route::group(['middleware' => 'auth:api', 'prefix' => 'saller'], function ($router) {
 
   Route::post('order', [App\Http\Controllers\saller\OrderController::class, 'default']);
@@ -85,6 +100,11 @@ Route::group(['middleware' => 'auth:api', 'prefix' => 'saller'], function ($rout
   Route::post('product', [App\Http\Controllers\saller\ProductController::class, 'default']);
 
 });
+
+
+
+
+
 
 /*
 |  user router
@@ -97,7 +117,6 @@ Route::post('guest', [App\Http\Controllers\GuestController::class, 'default']);
 
 // register signup
 Route::post('signup', [App\Http\Controllers\website\SignUpController::class, 'default']);
-
 
 // for login user consumer
 Route::group(['middleware' => 'api'], function ($router) {

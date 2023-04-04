@@ -81,7 +81,7 @@ class StoreTypeController extends Controller
   public function add(Request $data){
 
     $validator = Validator::make($data->all(), [
-      'name'    => 'required|string|unique:store_type,name|min:3|max:15',
+      'name'    => 'required|string|unique:store_type,name|min:3|max:35',
       'status'  => 'nullable|integer|max:1',
       'rank'    => 'integer|max:100',
     ]);
@@ -108,7 +108,7 @@ class StoreTypeController extends Controller
 
     $validator = Validator::make($data->all(), [
       'id'      => 'required|exists:store_type,id',
-      'name'    => ['required', 'string', 'min:3','max:30',
+      'name'    => ['required', 'string', 'min:3','max:35',
                     Rule::unique('store_type')->ignore($data->id, 'id'),],
 
       'status'  => 'integer|max:1',

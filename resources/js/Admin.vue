@@ -27,7 +27,9 @@ export default {
         th: ['No', 'Nome Produit', 'Goute', 'Qte', 'Prix_U', 'Prix_Total'],
         tb: {},
         order: null,
-      }
+      },
+      user: {},
+      login: false,
     }
   },
   components: {

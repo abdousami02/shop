@@ -44,13 +44,15 @@ class RouteServiceProvider extends ServiceProvider
             ->namespace($this->namespace)
             ->group(base_path('routes/api.php'));
 
+          Route::domain("saller.badnishop_local")
+            ->namespace($this->namespace)
+            ->group(base_path('routes/saller.php'));
+
+
           Route::domain("admin.badnishop_local")
             ->namespace($this->namespace)
             ->group(base_path('routes/admin.php'));
 
-          Route::domain("saller.badnishop_local")
-            ->namespace($this->namespace)
-            ->group(base_path('routes/saller.php'));
 
 
           Route::middleware('web')

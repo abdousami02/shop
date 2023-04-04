@@ -187,10 +187,11 @@ class OrderController extends Controller
 
     $order = new Order();
 
-    $order->user_id = $data->user_id;
-    $order->store_id = $data->store_id;
-    isset($data->saller_id) ? $order->saller_id = $data->saller_id : null;
-    isset($data->status)    ? $order->status    = $data->status : null;
+    $order->user_id   = $data->user_id;
+    $order->store_id  = $data->store_id;
+    $order->saller_id = isset($data->saller_id) ?  $data->saller_id : null;
+    $order->status    = isset($data->status)    ?  $data->status    : 1;
+    $order->show_admin= 1;
 
     $order->save();
 

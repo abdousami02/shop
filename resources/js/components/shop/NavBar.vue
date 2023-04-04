@@ -41,8 +41,12 @@
               <i class="far fa-user fa-lg"></i>
             </a>
             <div :class="['dropdown-menu', lang.lg == 'ar' ? '': 'dropdown-menu-end']" ref="drop">
-              <a v-if="$root.login"><router-link to="/setting" class="dropdown-item" href="#">{{lang.setting}}</router-link></a>
+              <a v-if="$root.login" >
+                <span>{{$root.user.name}}</span>
+                <span>mobile: {{'0'+$root.user.mobile}}</span>
+              </a>
               <a v-if="$root.login" class="dropdown-divider"></a>
+              <a v-if="$root.login"><router-link to="/setting" class="dropdown-item" href="#">{{lang.setting}}</router-link></a>
               <a v-if="$root.login" @click.prevent="logout"><a class="dropdown-item" href="#">{{lang.logout}}</a></a>
               <a v-if="!$root.login"><router-link to="/login" class="dropdown-item" href="#">{{lang.login}}</router-link></a>
             </div>

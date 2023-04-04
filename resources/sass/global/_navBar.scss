@@ -129,6 +129,12 @@
       // dorpdonw in nav of account an setting
       .dropdown-menu {
         position: absolute !important;
+
+        .name {
+          width: 165px;
+          white-space: nowrap;
+          overflow: hidden;
+        }
       }
     }
   }

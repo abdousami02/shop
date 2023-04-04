@@ -63,6 +63,9 @@ class UserController extends Controller
     } elseif($req->action == 'update' && $update){
       return response()->json( $this->update($req) );
 
+        // to updat group
+    } elseif($req->action == 'updateStatus' && $update){
+      return response()->json( $this->updateStatus($req));
 
       // to delet user
     } elseif($req->action == 'delete' && $delete){
@@ -76,10 +79,13 @@ class UserController extends Controller
   // **********
   //  function to get User data
   // **********
-  public function getData($method=''){
+  public function getData($method='',$id=''){
 
     if($method == 'all'){
       $user = Users::get();
+
+    }elseif($method == 'id'){
+      $user = Users::where('id', '=', $id)->get();
 
     }else{
       $user = Users::orderby("id", "DESC")->paginate(20);
@@ -115,16 +121,16 @@ class UserController extends Controller
   public function add($data) {
 
     $validator = Validator::make($data->all(), [
-      'name'    => 'required|min:3|max:10|string',
+      'name'    => 'required|min:3|max:40|string',
       'password' => 'required|min:6|regex:/^(?=.*[a-zA-Z])(?=.*[0-9])([a-zA-Z0-9.?!@#$%^&*\-+=_,.?;:\'\\"\/]+)$/',
       'mobile'  => 'required|unique:users,mobile|integer|digits:9|regex: /^([0-9]+())$/',
       'email'   => 'nullable|unique:users,email|regex:/^[\w\.]+@([\w-]+\.)+\w{2,4}$/',
       'group_id'=> 'integer|exists:group,id|not_in:0,1',
       'rank'    => 'nullable|integer',
       'status'  => 'nullable|integer|max:1',
-      'store_info.*.name'   => 'required|min:3|max:13|string',
+      'store_info.*.name'   => 'required|min:3|max:30|string',
       'store_info.*.type_id'=> 'required|integer|exists:store_type,id',
-      'store_info.*.address'=> 'required|min:4|max:30|string',
+      'store_info.*.address'=> 'required|min:4|max:50|string',
 
     ]);
 
@@ -167,6 +173,23 @@ class UserController extends Controller
 
 
 
+  // **********
+  //  function to get Group data
+  // **********
+  public function updateStatus($data){
+
+    $saller = Users::where('id', '=', $data->id)
+                    ->update(['status' => $data->status]);
+
+    if($saller > 0){
+      return ['status' => 'done', 'data' => $this->getData($data)];
+
+    }else{
+      return ['status' => 'null'];
+    }
+  }
+
+
 
   // *********
   // function to update user
@@ -175,7 +198,7 @@ class UserController extends Controller
 
     $validator = Validator::make($data->all(), [
       'id'      => 'integer|required|exists:users,id|max:20|not_in:0',
-      'name'    => 'required|min:3|max:10|string',
+      'name'    => 'required|min:3|max:40|string',
       'password'=> 'nullable|min:6|regex:/^(?=.*[a-zA-Z])(?=.*[0-9])([a-zA-Z0-9.?!@#$%^&*\-+=_,.?;:\'\\"\/]+)$/',
       'mobile'  => ['required', 'digits:9', 'integer', 'regex: /^([0-9]+)$/',
                     Rule::unique('users', 'mobile')->ignore($data->id, 'id'),],

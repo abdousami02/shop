@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Validator;
 
 use App\Models\StoreType;
 use App\Models\Users;
+use App\Models\Saller;
+
 
 class SignUpController extends Controller
 {
@@ -27,6 +29,12 @@ class SignUpController extends Controller
       // to updat Order
     } elseif($req->action == 'register'){
     return response()->json( $this->register($req->info) );
+
+
+      // to updat Order
+    } elseif($req->action == 'registerSaller'){
+      return response()->json( $this->registerSaller($req->info) );
+
 
     // to delet Order
     } elseif($req->action == 'delete'){
@@ -53,8 +61,8 @@ class SignUpController extends Controller
     $verify = (array) $data;
 
     $valid = [
-      'name'      => 'required|string|min:3|max:20',
-      'store_name'=> 'required|string|min:3|max:20',
+      'name'      => 'required|string|min:3|max:30',
+      'store_name'=> 'required|string|min:3|max:30',
       'pre_mobile'=> 'required|integer|in:5,6,7',
       'mobile'    => 'required|integer|unique:users,mobile|digits:9|regex: /^([0-9]+())$/',
       'email'     => 'nullable|unique:users,email|regex:/^[\w\.]+@([\w-]+\.)+\w{2,4}$/',
@@ -115,5 +123,58 @@ class SignUpController extends Controller
       return ["status" => 'done', 'data' => $user];
 
   }
+
+
+
+    // register
+    public function registerSaller($data){
+
+      $data['mobile'] = (int) ($data['pre_mobile'].$data['mobile']);
+
+      $verify = (array) $data;
+
+      $valid = [
+        'name'      => 'required|string|min:3|max:35',
+        'pre_mobile'=> 'required|integer|in:5,6,7',
+        'mobile'    => 'required|integer|unique:users,mobile|digits:9|regex: /^([0-9]+())$/',
+        'type'      => 'required|string|max:20',
+        'address'   => 'required|string|min:5|max:50',
+        'password'  => 'required|min:6|regex:/^(?=.*[a-zA-Z])(?=.*[0-9])([a-zA-Z0-9.?!@#$%^&*\-+=_,.?;:\'\\"\/]+)$/',
+      ];
+
+
+      $validator = Validator::make($verify, $valid);
+
+      if($validator->fails()) {
+        return ['status'=> 'error', 'errors'=> $validator->errors()];
+      }
+
+      $data = (object) $data;
+
+
+      $user = new Users();
+
+      $user->group_id   = 4;
+      $user->name       = $data->name;
+      $user->mobile     = $data->mobile;
+      $user->password   = bcrypt($data->password);
+
+      $user->save();
+
+
+      $saller = new Saller();
+
+      $saller->user_id  = $user->id;
+      $saller->mobile   = $data->mobile;
+      $saller->name     = $data->name;
+      $saller->type     = $data->type;
+      $saller->address  = $data->address;
+
+      $saller->save();
+
+      return ['status' => 'done'];
+
+    }
+
 
 }

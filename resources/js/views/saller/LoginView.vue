@@ -15,10 +15,10 @@
           <a to="/signUp" href="#" class="forget">Forget Password?</a>
           <button type="submit" form="login-data" class="btn-sub">Login</button>
         </form>
-        <!-- <div>
+        <div>
           <span class="separ">OR</span>
-          <p class="switch">Dont have Account? <router-link to="/signUp" href="#">Create Account</router-link></p>
-        </div> -->
+          <p class="switch">Dont have Account? <router-link to="/signup" href="#">Create Account</router-link></p>
+        </div>
       </div>
     </div>
   </div>
@@ -48,9 +48,9 @@ export default {
           this.$router.push({path: "/dashboard/order"});
 
 
-        }else if(response.data.status == 'permition'){
+        }else if(response.data.status == 'error'){
           Swal.fire({
-          icon: 'error',
+          icon: 'warning',
           title: 'Oops...',
           text: "Can't login, contact admin!",
         })
