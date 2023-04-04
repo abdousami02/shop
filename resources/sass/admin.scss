@@ -10,6 +10,10 @@
 @import "./admin/print";
 
 
-#admin {
-  min-width: 1500px;
+#admin{
+  .navbar,
+  .footer,
+  .dash{
+    min-width: 1500px;
+  }
 }

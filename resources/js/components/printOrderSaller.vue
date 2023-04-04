@@ -9,7 +9,7 @@
         </div>
 
         <div class="info">
-          <p class="email"><span>Nome: </span>{{data.saller.name}}</p>
+          <p class="email"><span>Nome: </span>0{{data.saller.name}}</p>
           <p class="mobile"><span>No Tel: </span>{{data.saller.mobile}}</p>
           <p class="address"><span>Address: </span>{{data.saller.address}}</p>
         </div>

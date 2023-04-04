@@ -59,7 +59,7 @@ export default {
           this.data.saller = response.data.saller;
           this.data.tbody = response.data.order_detail;
           this.show_print = true;
-          console.log(this.data)
+          // console.log(this.data)
           if(this.data.order){
             setTimeout(e=>{window.print();this.show_print = false;}, 100);
           }
