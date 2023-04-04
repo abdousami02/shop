@@ -352,11 +352,7 @@ export default {
 
         }else if(action == "delete"){data = elem ; elem.action='delete';};
 
-        if(!this.temp_send){ return false }
-        this.temp_send = false;
-
         axios.post("/api/order_detail", data).then(response => {
-          this.temp_send = true;
 
           // console.log(response);
           this.action_wait = 0        // can send new response
