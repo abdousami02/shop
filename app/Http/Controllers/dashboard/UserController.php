@@ -129,7 +129,7 @@ class UserController extends Controller
       'rank'    => 'nullable|integer',
       'status'  => 'nullable|integer|max:1',
       'store_info.*.name'   => 'required|min:3|max:30|string',
-      'store_info.*.type_id'=> 'required|integer|exists:store_type,id',
+      'store_info.*.store_type_id'=> 'required|integer|exists:store_type,id',
       'store_info.*.address'=> 'required|min:4|max:50|string',
 
     ]);
@@ -162,7 +162,7 @@ class UserController extends Controller
       $store_info->user_id = $user->id;
 
       $store_info->name = $store['name'];
-      $store_info->type_id = $store['type_id'];
+      $store_info->store_type_id = $store['store_type_id'];
       $store_info->address = $store['address'];
 
       $store_info->save();

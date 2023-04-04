@@ -71,7 +71,7 @@ class StoreInfoController extends Controller{
     $validator = Validator::make($data->all(), [
       'user_id'   => 'required|integer|exists:users,id',
       'name'      =>  'required|string|min:3',
-      'type_id'   =>  'required|integer|exists:store_type,id',
+      'store_type_id'   =>  'required|integer|exists:store_type,id',
       'address'   =>  'required|string|min:4',
     ]);
 
@@ -84,7 +84,7 @@ class StoreInfoController extends Controller{
 
     $info->user_id =  $data->user_id;
     $info->name =     $data->name;
-    $info->type_id =  $data->type_id;
+    $info->store_type_id =  $data->type_id;
     $info->address =  $data->address;
 
     $info->save();
@@ -101,7 +101,7 @@ class StoreInfoController extends Controller{
       'id'        => 'required|integer|exists:store_info,id',
       'user_id'   => 'required|integer|exists:users,id',
       'name'      =>  'required|string|min:3',
-      'type_id'   =>  'required|integer|exists:store_type,id',
+      'store_type_id'   =>  'required|integer|exists:store_type,id',
       'address'   =>  'required|string|min:4',
     ]);
 
@@ -112,7 +112,7 @@ class StoreInfoController extends Controller{
     StoreInfo::where('id', $data->id)
               ->update([
                 'name'    => $data->name,
-                'type_id' => $data->type_id,
+                'store_type_id' => $data->type_id,
                 'address'  => $data->address,
               ]);    //find element
 

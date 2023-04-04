@@ -47,7 +47,10 @@ class CheckoutController extends Controller
 
     $store = StoreInfo::where('user_id', '=', $user->id)->get();
 
-    return $store;
+    if(count($store) <= 0){
+      return ['status' => 'empty'];
+    }
+    return ['status' => 'done', 'data' => $store];
 
   }
  }

@@ -69,8 +69,13 @@ export default {
     getStoreInfo(){
       axios.post("/api/checkout", {action: "getStoreInfo"}).then(resp=>{
         // console.log(resp);
-        this.store = resp.data;
-        this.store_sel = resp.data[0];
+        if(resp.data.status == 'empty'){
+          this.store = {name: 'not set'}
+
+        }else if(resp.data.status == 'done'){
+          this.store = resp.data.data;
+          this.store_sel = resp.data.data[0];
+        }
       })
     },
     sendOrder(){
