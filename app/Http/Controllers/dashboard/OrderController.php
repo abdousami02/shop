@@ -246,6 +246,7 @@ class OrderController extends Controller
     $order->update(['saller_id'   => $data->saller_id,
                     'status'      => 2,
                     'show_saller' => 0,
+                    'show_admin'  => 1,
                     'to_saller_at'=> $date]);
 
     $order_saller = OrderDetailSaller::where('order_id', '=', $data->id)->delete();

@@ -68,7 +68,7 @@
           <span v-if="slotProps.row.order_detail_goute.length == 0">None</span>
           <ul>
             <li v-for="elem in slotProps.row.order_detail_goute" :key="elem">
-              <p><span class="name"> <i>{{ elem.product_goute.goute }}</i></span> <span><input class="inp-qte" type="number" :value="elem.qte"></span> </p>
+              <span class="name"> <i>{{ elem.product_goute.goute }}</i></span> <span>{{elem.qte}}</span>,
             </li>
           </ul>
         </td>

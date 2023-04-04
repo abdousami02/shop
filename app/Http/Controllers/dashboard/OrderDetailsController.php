@@ -276,7 +276,7 @@ class OrderDetailsController extends Controller
               ->update($info);
 
 
-    $this->updateGoute($data->order_detail_goute, $data->id);
+    $this->updateGoute($data->order_detail_goute, $data);
 
     $calc = new OrderController();
     $calc->calc($data, 'update');
@@ -338,10 +338,10 @@ class OrderDetailsController extends Controller
     foreach($goutes as $elem){
       $goute = new OrderDetailGoute();
 
-      $goute->order_detail_id = $order_detail->id;
-      $goute->order_id = $order_detail->order_id;
+      $goute->order_detail_id  = $order_detail->id;
+      $goute->order_id         = $order_detail->order_id;
       $goute->product_goute_id = $elem['product_goute_id'];
-      $goute->qte = $elem['qte'];
+      $goute->qte              = $elem['qte'];
 
       $goute->save();
     }
