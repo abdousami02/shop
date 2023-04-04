@@ -74,13 +74,11 @@ export default {
   methods: {
     logout(){
       axios.post("/api/auth/logout").then(resp =>{
-        if(resp.data){
-          console.log(resp);
-          this.$root.user = {};
-          this.$root.login = false;
-          this.$router.push({ name: "login" })
-        }
-      })
+        this.$root.user = {};
+        this.$root.login = false;
+        document.cookie= "token=" + '' + "; expires=Thu, 18 Dec 2021 12:00:00 UTC; path=/";
+        this.$router.push({ path: "/" });
+      });
     },
     change_lang(){
       let lg = this.$root.lang;
