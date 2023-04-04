@@ -19,7 +19,7 @@
 
           <template v-slot="slotProps">
             <td class="id">{{ slotProps.row.id }}</td>
-            <td class="date">{{ convert_date(slotProps.row.created_at)}}<span :class="['new-show',slotProps.row.show_admin?'':'active' ]"></span></td>
+            <td class="date">{{ convert_date(slotProps.row.created_at)}}<span :class="['new-show',slotProps.row.show_admin > 0?'':'active' ]"></span></td>
             <td class="user info-order" v-if="slotProps.row">
               <b>User :</b>
               <p class="info-elem">

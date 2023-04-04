@@ -61,7 +61,7 @@
         </td>
 
         <td>
-          <p><span class="name" >Price buy: <i>{{slotProps.row.order_detail_saller ? slotProps.row.order_detail_saller.price_buy:''}}</i></span></p>
+          <p><span class="name" ><i>{{slotProps.row.order_detail_saller ? slotProps.row.order_detail_saller.price_buy:''}}</i></span></p>
         </td>
 
         <td class="goute info-order">
