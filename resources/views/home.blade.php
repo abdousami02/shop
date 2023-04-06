@@ -10,11 +10,11 @@
     <!-- meta description -->
     <meta name="copyright" content="BadniShop">
     <meta name="description" content="بيع منتجات بالجملة لأصحاب المحلات و سوبرات بأثمان معقولة و التوصيل مجاني، والطلب يكون في الموقع و الدفع عند التوصيل" >
-    <meta name="description" content="Vente en gros de produits aux commerçants et grandes surfaces à des prix raisonnables et livraison gratuite.La commande se fait sur web et le paiement s'effectue à la livraison" >
-    <meta name="description" content="Selling wholesale products to shop owners and supermarkets at reasonable prices and free delivery. The order is on website and payment is made upon delivery" >
+    <meta name="keywords" content="badni shop badnishop gros seller achat vente ecommerce product produit location Algeria Chlef ">
 
-    <meta name="keywords" content="badnishop badni shop gros seller achat vente ecommerce product produit location Algeria Chlef ">
+    <meta name="description" content="Vente en gros de produits aux commerçants et grandes surfaces à des prix raisonnables et livraison gratuite.La commande se fait sur web et le paiement s'effectue à la livraison" >
     <meta name="keywords" content="Alimantation boissons nettoyage couches bébé yaourts fromages sucreries ">
+    <meta name="description" content="Selling wholesale products to shop owners and supermarkets at reasonable prices and free delivery. The order is on website and payment is made upon delivery" >
     <meta name="keywords" content="شراء بيع بالجملة شلف الجزائر مواد غذائية موقع خدمات نقل منتجات توصيل بادني شوب">
     <meta name="keywords" content="مواد غذائية مشروبات تنظيف حفاضات معلبات ياغورت اجبان حلويات">
 

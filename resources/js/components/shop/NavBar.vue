@@ -42,7 +42,7 @@
             </a>
             <div :class="['dropdown-menu', lang.lg == 'ar' ? '': 'dropdown-menu-end']" ref="drop">
               <a v-if="$root.login" >
-                <span>{{$root.user.name}}</span>
+                <span>{{$root.user.name}}</span><br>
                 <span>mobile: {{'0'+$root.user.mobile}}</span>
               </a>
               <a v-if="$root.login" class="dropdown-divider"></a>

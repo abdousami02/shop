@@ -172,3 +172,8 @@ input[type=number] {
 input.invalid {
   border-color: #dc3545;
 }
+
+.pagination {
+  direction: ltr;
+  margin-left: 20px;
+}

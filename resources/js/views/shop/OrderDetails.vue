@@ -630,7 +630,21 @@ export default {
       let order_id = this.$route.query.order_id;
 
       if(this.$root.login == false){
-        this.$router.push({name: "store"})
+
+        Swal.fire({
+          title: "يجب تسجيل الدخول",
+          text: "يجب تسجيل الدخول لعرض تفاصيل طلبك",
+          icon: 'warning',
+          reverseButtons: true,
+          showCancelButton: true,
+
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.$router.push({name: "Login"});
+          }else{
+            this.$router.push({name: "store"});
+          }
+        });
 
       }else if(order_id == 'undefined' || order_id == undefined){
         this.back_to_order();

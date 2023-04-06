@@ -12,6 +12,10 @@
 @import "saller/setting";
 
 
-#saller .dash{
-  min-width: 1500px;
+#saller{
+  .navbar,
+  .footer,
+  .dash{
+    min-width: 1500px;
+  }
 }
