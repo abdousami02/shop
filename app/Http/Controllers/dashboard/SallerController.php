@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\dashboard;
 
 use App\Http\Controllers\Controller;
+use App\Models\OrderDetailSaller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -64,8 +65,8 @@ class SallerController extends Controller
       return response()->json( $this->updateStatus($req));
 
       // to delet group
-    } elseif($req->action == 'delete' && $delete){
-        return response()->json( $this->delete($req));
+    } elseif($req->action == 'historyPrice' && $get){
+        return response()->json( $this->history($req));
 
     } else {
       return response()->json(['status'=> 'permition7']);
@@ -144,6 +145,24 @@ class SallerController extends Controller
     }else{
       return ['status' => 'null'];
     }
+  }
+
+
+
+  // **********
+  //  function to get Group data
+  // **********
+  public function history($data){
+
+    if($data->product_id){
+      $price = OrderDetailSaller::where('product_id', '=', $data->product_id)
+                                ->select('saller_id', 'order_id', 'price_buy', 'product_id')
+                                ->with('saller', 'order')->get();
+
+
+      return $price;
+    }
+
   }
 
 }

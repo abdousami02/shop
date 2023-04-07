@@ -51,7 +51,7 @@
 
                   <div class="col">
 
-                    <div class="row mt-5">
+                    <div class="row mt-2">
                       <div class="col">
                         <!-- Porduct ID -->
                         <div class="id">
@@ -131,54 +131,69 @@
                   </div>
                 </div>
 
-                <div class="row mt-5">
+                <div class="row mt-3 ">
 
-                  <div class="col">
-                    <!-- price buy -->
-                    <div class="price-buy">
-                      <span class="name">Price buy</span>
-                      <div class="inp-form select-form">
-                        <input name="rat" type="number" :class="['form-control from-control-sm', errors.price_buy? 'is-invalid':'']" v-model="product.price_buy" />
-                        <span class="invalid-feedback" v-text="errors.price_buy?errors.price_buy[0]:''"></span>
+                  <!-- price buy -->
+                  <div class="col price-buy">
+                    <span class="name d-block">Price buy</span>
+                    <div class="inp-form select-form d-inline-block">
+                      <input name="rat" type="number" :class="['form-control from-control-sm', errors.price_buy? 'is-invalid':'']" v-model="product.price_buy" />
+                      <span class="invalid-feedback" v-text="errors.price_buy?errors.price_buy[0]:''"></span>
+                    </div>
+                    <button class="btn btn-outline-primary ms-1" @click="priceHist('show')"><i class="far fa-usd-circle"></i> History</button>
+                    <div class="saller-price" v-if="show_history">
+                      <div class="head">
+                        <h5 class="m-0">History of Price</h5>
+                        <button class="btn-close" @click="priceHist('hide')"></button>
                       </div>
-                      <div class="saller">
-                        <span>Saller</span>
-                        <select class="form-select">
-                          <option value="">Mohamed</option>
-                        </select>
-                        <button class="btn btn-primary">Add</button>
+                      <div class="cont">
+                        <table class="table">
+                          <thead>
+                            <tr>
+                              <th>Id Order</th>
+                              <th>Date</th>
+                              <th>Saller</th>
+                              <th>Price</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr v-for="elem in history_price" :key="elem">
+                              <th>{{elem.order_id}}</th>
+                              <td>{{convert_date(elem.order.created_at)}}</td>
+                              <td>{{elem.saller.name}}</td>
+                              <td>{{elem.price_buy}}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+
                       </div>
                     </div>
                   </div>
 
-                  <div class="col">
-                    <!-- Qte Unit / Cartoune -->
-                    <div class="qte-uc">
-                      <span class="name">Qte Unit/<sub>Cartone</sub></span>
-                      <div class="inp-num">
-                        <input name="rat" type="number" :class="['form-control from-control-sm', errors.qte_uc? 'is-invalid':'']" v-model="product.qte_uc" />
-                        <span class="invalid-feedback" v-text="errors.qte_uc?errors.qte_uc[0]:''"></span>
-                      </div>
+                  <!-- Qte Unit / Cartoune -->
+                  <div class="col qte-uc">
+                    <span class="name">Qte Unit/<sub>Cartone</sub></span>
+                    <div class="inp-num">
+                      <input name="rat" type="number" :class="['form-control from-control-sm', errors.qte_uc? 'is-invalid':'']" v-model="product.qte_uc" />
+                      <span class="invalid-feedback" v-text="errors.qte_uc?errors.qte_uc[0]:''"></span>
                     </div>
                   </div>
 
-                  <div class="col">
-                    <!-- price method -->
-                    <div class="method">
-                      <span class="name">Price method</span>
+                  <!-- price method -->
+                  <div class="col method">
+                    <span class="name">Price method</span>
 
-                      <div class="check-form">
-                        <div class="form-check">
-                          <input class="form-check-input" type="radio" name="check_price" id="check_price_unit" value="unite" v-model="product.method_price">
-                          <label class="form-check-label" for="check_price_unit">Unite</label>
-                        </div>
-                        <div class="form-check">
-                          <input class="form-check-input" type="radio" name="check_price" id="check_price_carton" value="cartone" v-model="product.method_price">
-                          <label class="form-check-label" for="check_price_carton">Cartone</label>
-                        </div>
+                    <div class="check-form">
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" name="check_price" id="check_price_unit" value="unite" v-model="product.method_price">
+                        <label class="form-check-label" for="check_price_unit">Unite</label>
                       </div>
-                      <span class="text-danger" v-text="errors.method_price?errors.method_price[0]:''"></span>
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" name="check_price" id="check_price_carton" value="cartone" v-model="product.method_price">
+                        <label class="form-check-label" for="check_price_carton">Cartone</label>
+                      </div>
                     </div>
+                    <span class="text-danger" v-text="errors.method_price?errors.method_price[0]:''"></span>
                   </div>
                 </div>
 
@@ -303,11 +318,6 @@
                     </div>
                   </div>
                 </div>
-                <div class="row mt-3">
-                  <div class="col">
-                    <button class="btn btn-outline-primary"><i class="far fa-usd-circle"></i> History of price</button>
-                  </div>
-                </div>
               </div>
 
           </div>
@@ -349,6 +359,9 @@ export default {
       search_method: 'name',
       action_wait: 0,         // for wait to get response of first action
 
+      id_product: null,
+      show_history: false,
+      history_price: [{}],
     };
   },
   methods: {
@@ -487,7 +500,8 @@ export default {
     },
     editeData(elem){
       this.product = JSON.parse( JSON.stringify(elem)); // get the data from response register and put it in Modal
-      console.log(elem)
+      console.log(elem);
+      this.id_product = elem.id;
       // this.inp_disable = true;          // modifie element Modal in DOM
       this.modal.title = "Edit User";
       this.modal.btn = "Update";
@@ -501,6 +515,22 @@ export default {
       axios.post("/api/admin/product", data).then(resp =>{
         this.tbody = resp.data;
       })
+    },
+
+    priceHist(func){
+
+      if(func == 'show'){
+        let data = {action: 'historyPrice', product_id: this.id_product};
+        this.show_history = true;
+        axios.post("/api/admin/saller", data).then(resp=>{
+          console.log(resp);
+          this.history_price = resp.data;
+        })
+
+      }else{
+        this.show_history = false;
+      }
+
     },
 
 // **** Goute Function *****
@@ -574,6 +604,10 @@ export default {
       this.response.familles.forEach(elem => {
         if(elem.categorie_id == this.product.categorie_id){ this.famille_cat.push(elem); }
       });
+    },
+    convert_date(date){
+      const d = new Date(date);
+      return d.toLocaleDateString("en-ZA");
     },
     dblclick_row(elem){
       this.editeData(elem);
