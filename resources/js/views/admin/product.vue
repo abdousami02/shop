@@ -521,10 +521,12 @@ export default {
 
       if(func == 'show'){
         let data = {action: 'historyPrice', product_id: this.id_product};
-        this.show_history = true;
         axios.post("/api/admin/saller", data).then(resp=>{
           console.log(resp);
-          this.history_price = resp.data;
+          if(resp.data.status == 'done'){
+            this.history_price = resp.data.data;
+            this.show_history = true;
+          }
         })
 
       }else{

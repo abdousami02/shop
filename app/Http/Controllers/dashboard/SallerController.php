@@ -160,7 +160,12 @@ class SallerController extends Controller
                                 ->with('saller', 'order')->get();
 
 
-      return $price;
+      if(count($price) > 0){
+        return [ 'status' => 'done', 'data' => $price];
+
+      }else{
+        return ['status' => 'none', 'message' => 'not have history'];
+      }
     }
 
   }
