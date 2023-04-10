@@ -290,8 +290,8 @@ class OrderDetailController extends Controller
     if($data->id){
 
       $resulte = Product::with(array('product_goute'=>function($query){
-                    $query->select()->where('in_stock', '!=', 0); }))
-                    ->where('id', $data->id)->get();
+                                $query->where('in_stock', '!=', 0); }))
+                        ->where('id', $data->id)->get();
 
     }else{
       $string = $data->str;

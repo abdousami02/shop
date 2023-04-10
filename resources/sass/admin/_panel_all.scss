@@ -149,6 +149,10 @@
     margin-top: -30px;
   }
 
+  .show-image {
+    img { max-height: 100%; }
+  }
+
   .goute{
     .btn-add {
       display: flex;
