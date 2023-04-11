@@ -128,19 +128,18 @@ class OrderController extends Controller
       return ["status" => "error", "message" => "set id and order_id"];
     }
 
-    $goutes = OrderDetailGoute::where('order_id' ,'=', $data->id)->forceDelete();
+    $goutes       = OrderDetailGoute::where('order_id' ,'=', $data->id)->forceDelete();
+    $order_detail = OrderDetail::where('order_id', '=', $data->id)->forceDelete();
+    $order        = Order::where('id', $data->id)->forceDelete();
 
-    $order_detail = OrderDetail::where('order_id', '=', $data->id);
-    $order = Order::where('id', $data->id);
+    // if($data->status == 0){
+    //   $order_detail ;
+    //   $order ;
 
-    if($data->status == 0){
-      $order_detail->forceDelete() ;
-      $order->forceDelete() ;
-
-    }else{
-      $order_detail->delete() ;
-      $order->delete();
-    }
+    // }else{
+    //   $order_detail->delete() ;
+    //   $order->delete();
+    // }
 
 
 

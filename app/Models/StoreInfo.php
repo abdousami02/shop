@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class StoreInfo extends Model
 {
   use HasFactory;
-  use SoftDeletes;
 
   protected $table = 'store_info';
   protected $filable = ['user_id', 'name', 'type_id', 'address'];

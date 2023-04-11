@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
 use App\Models\Saller;
+use App\Models\Users;
 
 class SallerController extends Controller
 {
@@ -136,10 +137,18 @@ class SallerController extends Controller
   // **********
   public function updateStatus($data){
 
-    $saller = Saller::where('id', '=', $data->id)
-                    ->update(['status' => $data->status]);
+    $saller = Saller::where('id', '=', $data->id);
 
-    if($saller > 0){
+    $user = $saller->first();
+
+    $count = $saller->update(['status' => $data->status]);
+
+    Users::where('id', '=', $user->user_id)
+        ->update(['status' => $data->status]);
+
+
+
+    if($count > 0){
       return $this->getData($data);
 
     }else{

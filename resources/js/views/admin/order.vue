@@ -2,8 +2,7 @@
   <div class="order">
 
     <div class="template">
-      <div :class="['shufle', show_details ? 'details' : '']">
-        <panel-template class="pan"
+        <panel-template class="pan"  v-if="!show_details"
                     :title="title" :th="thead" :tb="tbody"
                     :getData_forPag="getData"
                     :addData_func="addData"
@@ -13,8 +12,8 @@
 
             <!-- link top -->
           <template v-slot:link_top>
-            <li class="link"><router-link to="?status=0" @click="getData(1)">Draft <span class="count">(12)</span></router-link> |</li>
-            <li class="link"><router-link to="?status=9">Canccel <span class="count">(8)</span></router-link></li>
+            <li class="link"><router-link to="?status=0">Draft <span class="count">({{response.order_draft}})</span></router-link> |</li>
+            <li class="link"><router-link to="?status=9">Canccel <span class="count">({{response.order_canccel}})</span></router-link></li>
           </template>
 
           <template v-slot="slotProps">
@@ -76,9 +75,8 @@
 
         </panel-template>
 
-        <order-details class="pan" :backToOrder="hid_details" :order_id="order_id_edite"/>
+        <order-details class="pan" :backToOrder="hid_details" :order_id="order_id_edite" v-if="show_details"/>
 
-      </div>
     </div>
 
     <!-- Print Ordet -->
@@ -230,6 +228,8 @@ export default {
           this.tbody = resp.data;
           let date = new Date();
           this.time_get = date.toLocaleString("sv-SE");
+          this.response.order_draft = resp.info.draft;
+          this.response.order_canccel = resp.info.canccel;
         }
       });
     },

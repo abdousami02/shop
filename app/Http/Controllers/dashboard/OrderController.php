@@ -125,7 +125,12 @@ class OrderController extends Controller
       $elem->store_info->store_type ?? "none";
     }
 
-    return ['data' => $order, 'status' => 'done'];
+    $draft = Order::where('status', '=', 0)->select('id')->get();
+    $canccel = Order::where('status', '=', 9)->select('id')->get();
+
+    $info = ['draft' => count($draft), 'canccel' => count($canccel)];
+
+    return ['data' => $order, 'status' => 'done', 'info' => $info];
   }
 
 

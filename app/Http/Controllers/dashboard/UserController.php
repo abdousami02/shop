@@ -26,7 +26,7 @@ class UserController extends Controller
 
       switch($user['group_id']){
         case 0 :
-              $get= true; $update= true; $add= true; $delete= false;
+              $get= true; $update= true; $add= true; $delete= true;
               break;
 
         case 1 :
