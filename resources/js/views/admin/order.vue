@@ -21,7 +21,7 @@
             <td class="date">{{ convert_date(slotProps.row.created_at)}}<span :class="['new-show',slotProps.row.show_admin > 0?'':'active' ]"></span></td>
             <td class="user info-order" v-if="slotProps.row">
               <b>User :</b>
-              <p class="info-elem">
+              <p class="info-elem" v-if="slotProps.row.user">
                 <span class="name"> Name: <i>{{ slotProps.row.user.name }}, </i></span>
                 <span> Mobile: <i>{{ '0'+slotProps.row.user.mobile }}</i></span>
               </p>

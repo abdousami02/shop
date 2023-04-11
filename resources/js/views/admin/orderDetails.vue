@@ -597,6 +597,12 @@ export default {
     // this.getData();
     this.getHelpInfo();
 
+    if(this.order_id){
+        this.getData();
+        this.getOrderInfo();
+        this.getSetting();
+      }
+
     this.model_details = new bootstrap.Modal(document.getElementById('modal_order_details'), {});
   },
   watch: {
@@ -606,13 +612,6 @@ export default {
     "search_prod.str": function(str){
 
       str ? this.search_prod_order(str): '';
-    },
-    "order_id": function(){
-      if(this.order_id){
-        this.getData();
-        this.getOrderInfo();
-        this.getSetting();
-      }
     },
     "order_product.price": function(num){ num ? this.calcPrice() : '';},
     "order_product.qte": function(num){ num ? this.calcPrice() : '';}
