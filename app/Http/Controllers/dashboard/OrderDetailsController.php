@@ -212,7 +212,7 @@ class OrderDetailsController extends Controller
     if($validator->fails()) {
       return ['status'=> 'error', 'errors'=> $validator->errors()];
     }
-    if($data->price_sell < $data->product['price_buy']){
+    if($data->price_sell <= $data->product['price_buy']){
       return ['status'=> 'error', 'errors'=> ['price_sell' => false]];
     }
 

@@ -43,10 +43,13 @@
 
       </div>
       <!-- start totale prix -->
-      <div class="amount">
+      <div class="amount w-100">
         <h5>{{lang.amount}} :</h5>
         <div class="value">{{ setNumber(order_select.amount)}} {{lang.amount_cur}}</div>
       </div>
+
+      <pagination :data="product" @pagination-change-page="getData" />
+
       <!-- start tabel mobile -->
       <table class="table table-bordered tab-mobile">
         <thead>
@@ -192,7 +195,7 @@
         <router-link :to="'/orders/orderDetails?order_id='+order_select.id" class="btn btn-success">{{lang.btn_check}}</router-link>
       </div>
 
-       <pagination :data="product" @pagination-change-page="getData" />
+      <pagination :data="product" @pagination-change-page="getData" />
 
     </div>
   </div>

@@ -41,7 +41,7 @@ class GuestController extends Controller
     $product = Product::with(array('product_goute'=>function($query){
                         $query->select()->where('in_stock', '!=', 0); }))
                         ->where([['status','!=', 0],['in_stock', '!=', 0]])
-                        ->orderby("rank", "DESC")->paginate(20);    // ::get()
+                        ->orderby("rank", "DESC")->paginate(50);    // ::get()
 
   return ['data'=> $product, 'status'=> 'done'];
 }

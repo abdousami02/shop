@@ -67,6 +67,8 @@ export default {
     this.check_login();
     this.change_lang();
 
+    document.documentElement.style.width = $('body').width() + 'px';
+
   },
   watch: {
     lang(){

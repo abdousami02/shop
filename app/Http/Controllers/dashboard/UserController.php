@@ -182,7 +182,8 @@ class UserController extends Controller
                     ->update(['status' => $data->status]);
 
     if($saller > 0){
-      return ['status' => 'done', 'data' => $this->getData($data)];
+      $data = $this->getData('id', $data->id);
+      return ['status' => 'done', 'data' => $data[0]];
 
     }else{
       return ['status' => 'null'];
