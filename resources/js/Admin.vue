@@ -51,7 +51,7 @@ export default {
         this.show_print = true;
         console.log(this.data)
         if(this.data.order){
-          setTimeout(e=>{window.print();this.show_print = false;}, 100);
+          setTimeout(e=>{window.print();this.show_print = false;}, 1000);
         }
       });
 

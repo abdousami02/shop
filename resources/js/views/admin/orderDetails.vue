@@ -10,7 +10,14 @@
 
       <template #btns>
         <button class="btn btn-primary me-5 ms-2 mb-3 w-50" @click="backToOrder(); empty_tbody()"><i class="fas fa-long-arrow-left"></i></button>
-        <button class="btn btn-success" @click="$root.printOrder(order_id)"><i class="fal fa-print"></i> Print</button>
+        <button class="btn btn-success dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <i class="fal fa-print"></i> Print
+        </button>
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" href="#" @click="$root.printOrder(order_id, 'a5')">A5</a></li>
+          <li><a class="dropdown-item" href="#" @click="$root.printOrder(order_id, 'a4')">A4</a></li>
+          <li><a class="dropdown-item" href="#" @click="$root.printOrder(order_id, 'mobile')">Mobile</a></li>
+        </ul>
       </template>
 
       <template #header>

@@ -66,10 +66,11 @@
           </template>
 
           <template v-slot:btns_opt="slotProps">
-            <a class="dropdown-item"  @click="editeData(slotProps.row)"><i class="far fa-pen c"></i> Edit</a>
-            <a class="dropdown-item"  @click="makeCopy(slotProps.row)"><i class="far fa-copy"></i> Make Copy</a>
-            <a class="dropdown-item"  @click="calcOrder(slotProps.row, slotProps.index)"><i class="far fa-calculator"></i> Calc</a>
-            <a class="dropdown-item" @click="print_order(slotProps.row)"><i class="fas fa-print"></i> Print</a>
+            <a class="dropdown-item" @click="editeData(slotProps.row)"><i class="far fa-pen c"></i> Edit</a>
+            <a class="dropdown-item" @click="makeCopy(slotProps.row)"><i class="far fa-copy"></i> Make Copy</a>
+            <a class="dropdown-item" @click="calcOrder(slotProps.row, slotProps.index)"><i class="far fa-calculator"></i> Calc</a>
+            <a class="dropdown-item" @click="$root.printOrder(slotProps.row.id, 'a5')"><i class="fas fa-print"></i> Print A5</a>
+            <a class="dropdown-item" @click="$root.printOrder(slotProps.row.id, 'mobile')"><i class="fas fa-print"></i> Print Mobile</a>
             <a class="dropdown-item" @click="deleteOrder(slotProps.row.id, slotProps.index)"><i class="far fa-trash"></i> Delete</a>
           </template>
 
@@ -79,7 +80,7 @@
 
     </div>
 
-    <!-- Print Ordet -->
+    <!-- Print Order -->
     <print-order id="print_order" class="d-none">
 
     </print-order>
@@ -471,8 +472,8 @@ export default {
       })
     },
 
-    print_order(elem){
-      this.$root.printOrder(elem.id);
+    print_order(elem, method){
+      this.$root.printOrder(elem.id, method);
 
     },
     setNumber(num){
