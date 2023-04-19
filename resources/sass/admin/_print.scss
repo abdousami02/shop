@@ -69,6 +69,16 @@
     }
   }
 
+  &.mobile {
+    width: 500px;
+    max-width: auto;
+    .row-info {
+      flex-wrap: wrap;
+      & > * {
+        flex-basis: 50%;
+      }
+    }
+  }
 
 }
 
