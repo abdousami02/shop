@@ -26,7 +26,7 @@ class SallerController extends Controller
               break;
 
         case 1 :
-              $get= true; $update= true; $add= true; $delete= false;
+              $get= false; $update= false; $add= false; $delete= false;
               break;
 
         case 2 :

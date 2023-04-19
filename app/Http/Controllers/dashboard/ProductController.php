@@ -33,7 +33,7 @@ class ProductController extends Controller
               break;
 
         case 2 :
-              $get= true; $update= false; $add= true; $delete= false;
+              $get= true; $update= true; $add= true; $delete= false;
               break;
 
         case 3 :

@@ -34,7 +34,7 @@ class UserController extends Controller
               break;
 
         case 2 :
-              $get= true; $update= false; $add= true; $delete= false;
+              $get= false; $update= false; $add= true; $delete= false;
               break;
 
         case 3 :
@@ -57,11 +57,11 @@ class UserController extends Controller
 
     // add data of user in database
     } elseif($req->action == 'add' && $add){
-      return response()->json( $this->add($req) );
+      return response()->json( $this->add($req, $user) );
 
     // to update user
     } elseif($req->action == 'update' && $update){
-      return response()->json( $this->update($req) );
+      return response()->json( $this->update($req, $user) );
 
         // to updat group
     } elseif($req->action == 'updateStatus' && $update){
@@ -118,14 +118,18 @@ class UserController extends Controller
   // ************
   // function to add User
   // ************
-  public function add($data) {
+  public function add($data, $user) {
+
+    if($user->group_id != 0 && $data->group_id <= 1){
+      return ['status' => 'error', 'errors' => ['group_id']];
+    }
 
     $validator = Validator::make($data->all(), [
       'name'    => 'required|min:3|max:40|string',
       'password' => 'required|min:6|regex:/^(?=.*[a-zA-Z])(?=.*[0-9])([a-zA-Z0-9.?!@#$%^&*\-+=_,.?;:\'\\"\/]+)$/',
       'mobile'  => 'required|unique:users,mobile|integer|digits:9|regex: /^([0-9]+())$/',
       'email'   => 'nullable|unique:users,email|regex:/^[\w\.]+@([\w-]+\.)+\w{2,4}$/',
-      'group_id'=> 'integer|exists:group,id|not_in:0,1',
+      'group_id'=> 'integer|exists:group,id|not_in:0',
       'rank'    => 'nullable|integer',
       'status'  => 'nullable|integer|max:1',
       'store_info.*.name'   => 'required|min:3|max:30|string',
@@ -195,7 +199,11 @@ class UserController extends Controller
   // *********
   // function to update user
   // *********
-  public function update($data){
+  public function update($data, $user){
+
+    if($user->group_id != 0 && $data->group_id <= 1){
+      return ['status' => 'error', 'errors' => ['group_id']];
+    }
 
     $validator = Validator::make($data->all(), [
       'id'      => 'integer|required|exists:users,id|max:20|not_in:0',
@@ -207,9 +215,9 @@ class UserController extends Controller
       'email'   => ['nullable', 'regex:/^[\w\.]+@([\w-]+\.)+\w{2,4}$/',
                     Rule::unique('users', 'mobile')->ignore($data->id, 'id'),],
 
-      'group_id'=> 'integer|exists:group,id|not_in:0,1',
+      'group_id'=> 'integer|exists:group,id|not_in:0',
       'rank'    => 'integer',
-      'status'  => 'integer|required|max:1',
+      'status'  => 'integer|required|in:0,1',
     ]);
 
     if($validator->fails()) {

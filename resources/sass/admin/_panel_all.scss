@@ -192,6 +192,7 @@
   }
 }
 .modal-dialog{
+  max-width: 500px;
   .image{
     display: block !important;
     margin: auto;
@@ -566,6 +567,7 @@
       border-radius: 5px;
     }
   }
+
 }
 
 .search-prod {
