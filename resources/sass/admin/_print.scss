@@ -70,7 +70,12 @@
   }
 
   &.mobile {
-    width: 500px;
+    @page {
+      size: A6 landscape;
+      margin: 10%;
+    }
+
+    width: 14cm;
     margin: auto;
     .row-info {
       flex-wrap: wrap;

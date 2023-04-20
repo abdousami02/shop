@@ -62,6 +62,7 @@
         </table>
         <div class="amount"><span>Total: </span>{{setNumber(data.order.amount)}} DA</div>
 
+        <button class="btn btn-danger" v-if="method_print == 'mobile'" @click="showOrigin">Canccel</button>
       </div>
     </div>
   </div>
@@ -110,7 +111,7 @@ export default {
         this.data.tb = response.data.order_detail;
         this.show_print = true;
         console.log(this.data)
-        if(this.data.order){
+        if(this.data.order && this.method_print != 'mobile'){
           setTimeout(e=>{
             window.print();
             setTimeout(e=>{this.show_print = false;}, 800)
@@ -131,6 +132,9 @@ export default {
       let date = new Date(date_iso);
        return date.toLocaleString("es-CL");
     },
+    showOrigin(){
+      this.show_print = false;
+    }
   }
 };
 </script>
