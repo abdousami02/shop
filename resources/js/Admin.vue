@@ -113,7 +113,7 @@ export default {
         if(this.data.order){
           setTimeout(e=>{
             window.print();
-            setTimeout(e=>{this.show_print = false;}, 500)
+            setTimeout(e=>{this.show_print = false;}, 800)
           }, 100);
         }
       });
