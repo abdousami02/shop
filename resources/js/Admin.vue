@@ -62,7 +62,8 @@
         </table>
         <div class="amount"><span>Total: </span>{{setNumber(data.order.amount)}} DA</div>
 
-        <button class="btn btn-danger" v-if="method_print == 'mobile'" @click="showOrigin">Canccel</button>
+        <button class="btn btn-danger" v-if="method_print == 'mobile' & show_btn" @click="showOrigin">Canccel</button>
+        <button class="btn btn-success ms-3" v-if="method_print == 'mobile' & show_btn" @click="printMobile"><i class="fal fa-print"></i> Print</button>
       </div>
     </div>
   </div>
@@ -81,6 +82,7 @@ export default {
     return {
       show_print: false,
       method_print: '',
+      show_btn: true,
       data: {
         mobile: '0556581171',
         email: 'contact@badnishop.com',
@@ -134,6 +136,13 @@ export default {
     },
     showOrigin(){
       this.show_print = false;
+    },
+    printMobile(){
+      this.show_btn = false;
+      setTimeout(e=>{
+        window.print();
+        setTimeout(e=>{this.show_btn = true;}, 800)
+      }, 100);
     }
   }
 };
