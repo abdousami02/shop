@@ -29,7 +29,7 @@ class CreateOrderTable extends Migration
         $table->tinyInteger('status')->default(0);
         $table->tinyInteger('show_admin')->default(0);
         $table->tinyInteger('show_saller')->default(0);
-        $table->timestamp('to_saller')->nullable();
+        $table->timestamp('to_saller_at')->nullable();
         $table->decimal('amount_buy')->nullable();
         $table->timestamps();
         $table->softDeletes();

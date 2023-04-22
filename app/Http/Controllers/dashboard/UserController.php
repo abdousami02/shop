@@ -206,7 +206,7 @@ class UserController extends Controller
     }
 
     $validator = Validator::make($data->all(), [
-      'id'      => 'integer|required|exists:users,id|max:20|not_in:0',
+      'id'      => 'integer|required|exists:users,id|not_in:0,1',
       'name'    => 'required|min:3|max:40|string',
       'password'=> 'nullable|min:6|regex:/^(?=.*[a-zA-Z])(?=.*[0-9])([a-zA-Z0-9.?!@#$%^&*\-+=_,.?;:\'\\"\/]+)$/',
       'mobile'  => ['required', 'digits:9', 'integer', 'regex: /^([0-9]+)$/',

@@ -148,7 +148,7 @@
                <!-- search -->
               <div class="row mt-3 mb-4" v-if="action_func == 'add'">
                 <div class="col-12 search-prod">
-                  <input type="text" class="form-control" placeholder="Search..." ref="search" v-model="search_prod.str">
+                  <input type="search" class="form-control" placeholder="Search..." ref="search" v-model="search_prod.str">
                   <ul class="resulte">
                     <li v-for="elem in search_prod.resulte" :key="elem" @click="set_prod(elem)">
                       <div class="image"><img :src="'/'+elem.image" alt=""></div>
