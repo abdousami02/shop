@@ -14,7 +14,13 @@
           <router-link to="/dashboard/order" href="#" class="nav-link"><i class="fas fa-box-open"></i><span class="txt">Orders</span></router-link>
         </li>
         <li class="nav-item">
+          <router-link to="/dashboard/commande?status=1" href="#" class="nav-link"><i class="far fa-clipboard-list-check"></i><span class="txt">Commande</span></router-link>
+        </li>
+        <li class="nav-item">
           <router-link to="/dashboard/product" href="#" class="nav-link"><i class="fas fa-shopping-bag"></i><span class="txt">Product</span></router-link>
+        </li>
+        <li class="nav-item">
+          <router-link to="/dashboard/buy" href="#" class="nav-link"><i class="fas fa-cart-plus"></i><span class="txt">Buy</span></router-link>
         </li>
         <li class="nav-item">
           <router-link to="/dashboard/cat" href="#" class="nav-link"><i class="far fa-th-large"></i><span class="txt">Categories</span></router-link>

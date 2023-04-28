@@ -88,7 +88,7 @@ class UserController extends Controller
       $user = Users::where('id', '=', $id)->get();
 
     }else{
-      $user = Users::orderby("id", "DESC")->paginate(20);
+      $user = Users::orderby("id", "DESC")->paginate(50);
       //join('group', 'group.id', '=', 'users.group_id')->get();
     }
 

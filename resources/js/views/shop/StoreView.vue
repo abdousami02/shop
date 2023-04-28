@@ -568,8 +568,8 @@ export default {
     },
     qte_goute(opt, elem){
       // elem.order_goute_qte = 4;
-      elem.order_goute_qte ? '' : elem.order_goute_qte = 0;
-      elem.order_qte ? '' : elem.order_qte = 0;
+      elem.order_goute_qte ? elem.order_goute_qte = Number(elem.order_goute_qte) : elem.order_goute_qte = 0;
+      elem.order_qte ? elem.order_qte = Number(elem.order_qte) : elem.order_qte = 0;
       if(opt == 'up'){
         elem.order_goute_qte += 1;
 

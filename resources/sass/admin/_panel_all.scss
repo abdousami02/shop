@@ -379,6 +379,15 @@
       }
 
       &[data-status="1"] {
+        background: #e2e2e2;
+        color: #545454;
+
+        &::after {
+          background: #989898;
+        }
+      }
+
+      &[data-status="2"] {
         background: #fdf5dd;
         color: #cfa00c;
 
@@ -387,22 +396,12 @@
         }
       }
 
-      &[data-status="2"] {
+      &[data-status="3"] {
         background: #5e9fdf;
         color: #052c50;
 
         &::after {
           background: #052c50;
-        }
-      }
-
-
-      &[data-status="4"] {
-        background: #e2e2e2;
-        color: #545454;
-
-        &::after {
-          background: #989898;
         }
       }
 
@@ -460,9 +459,11 @@
 
 //order detail
 .amount-detail {
-  text-align: right;
+  // text-align: right;
   position: relative;
   bottom: 3px;
+  display: flex;
+  justify-content: space-between;
 
   span {
     display: inline-block;

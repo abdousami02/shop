@@ -68,10 +68,10 @@ The Laravel framework is open-sourced software licensed under the [MIT license](
 ----- status Order ------
 
 0 - Draft
-1 - attemp admin processing
-2 - attemp saller processing
-3 - finish saller  updatated 
-4 - attemp user to approve
+1 - Commande
+2 - attemp admin processing
+3 - attemp saller processing
+4 - finish saller  updatated 
 5 - prepare to delevery
 6 - finish delevery and wait payment
 7 - finish delevery and payement

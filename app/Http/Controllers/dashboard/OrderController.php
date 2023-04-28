@@ -96,6 +96,9 @@ class OrderController extends Controller
     } elseif($req->action == 'delete' && $delete){
         return response()->json( $this->delete($req) );
 
+    } elseif($req->action == 'close_order'){
+      return response()->json($this->close($req));
+
     } else {
       return response()->json(['status'=> 'permition']);
     }
@@ -306,6 +309,21 @@ class OrderController extends Controller
 
 
     return $this->getData($data);
+
+  }
+
+
+  public function close($data){
+
+    $out = Order::where('id', '=', $data->order_id)
+        ->update(['status' => 7]);
+
+    if($out > 0){
+      return ['status' => 'done'];
+
+    }else{
+      return ['status' => 'error'];
+    }
 
   }
 

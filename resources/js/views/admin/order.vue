@@ -187,8 +187,8 @@ export default {
       show_details: false,
 
       order: {},
-      order_status:{0: 'Draft', 1: 'admin processing', 2: 'saller processing',
-                    3: 'finish saller updated', 4: 'Attemp user approve', 5: 'Prepare to delevery',
+      order_status:{0: 'Draft', 1: 'Commande', 2: 'admin processing', 3: 'saller processing',
+                    4: 'finish saller updated', 5: 'Prepare to delevery',
                     6:'delevered and not payment', 7: 'delevered and payment',
                     9: 'Cancceled'},
       order_id_edite: '',
@@ -205,7 +205,7 @@ export default {
       });
     },
 
-    getData(page=1){
+    getData(page=1, method=false){
       let action = 'getData';
       let status = this.$route.query.status;
       let query = status ? "&status="+status : null;
@@ -481,12 +481,16 @@ export default {
     },
   },
   mounted: function(){
+
+    // location.reload();
+
     this.getData();
     this.getHelpInfo();
-    this.model_order = new bootstrap.Modal(document.getElementById('modal_order'), {});
-
     setInterval(this.getNew, 5000);
 
+    this.model_order = new bootstrap.Modal(document.getElementById('modal_order'), {});
+
+  console.log('new ref')
   },
   watch: {
     'order.user_id': function (){

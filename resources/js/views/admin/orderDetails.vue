@@ -67,8 +67,9 @@
           </div>
         </td>
 
-        <td>
-          <p><span class="name" ><i>{{slotProps.row.order_detail_saller ? slotProps.row.order_detail_saller.price_buy:''}}</i></span></p>
+        <td class="qte">
+          <input type="number" class="inp-qte" :value="slotProps.row.qte">
+          <span v-if="slotProps.row.order_detail_saller && slotProps.row.qte != slotProps.row.order_detail_saller.qte" class="qte-saller">{{slotProps.row.order_detail_saller.qte}}</span>
         </td>
 
         <td class="goute info-order">
@@ -78,11 +79,6 @@
               <span class="name"> <i>{{ elem.product_goute.goute }}</i></span> <span>{{elem.qte}}</span>,
             </li>
           </ul>
-        </td>
-
-        <td class="qte">
-          <input type="number" class="inp-qte" :value="slotProps.row.qte">
-          <span v-if="slotProps.row.order_detail_saller && slotProps.row.qte != slotProps.row.order_detail_saller.qte" class="qte-saller">{{slotProps.row.order_detail_saller.qte}}</span>
         </td>
 
         <td class="instock">
@@ -103,6 +99,7 @@
 
       <template #footer>
         <div class="amount-detail" v-if="order_info.amount">
+          <button class="btn btn-primary" @click="closeOrder"><i class="fas fa-lock"></i> Valide & Close</button>
           <span class="value">{{ setNumber(order_info.amount) }} DA</span>
         </div>
       </template>
@@ -253,7 +250,7 @@ export default {
   data: function () {
     return {
       title: "Order Details",
-      thead: ["Image", "Product", "Price", "Price buy", "Goutes", "Qte", "Stock Saller", "Discount", "Price Totale" ],
+      thead: ["Image", "Product", "Price", "Qte", "Goutes", "Stock Saller", "Discount", "Price Totale" ],
       tbody:{data:{},},
 
       modal: {},
@@ -509,6 +506,17 @@ export default {
       data.action = "search";
       axios.post("/api/admin/order_detail", data).then(response=>{
         this.search_prod.resulte = response.data;
+      })
+    },
+
+    closeOrder(){
+      // location.reload(true);
+      let data = {action: "close_order", order_id: this.order_id};
+      axios.post("/api/admin/order", data).then(resp=> {
+        console.log(resp);
+        if(resp.data.status == 'done'){
+          this.backToOrder();
+        }
       })
     },
 

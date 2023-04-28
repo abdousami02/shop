@@ -19,6 +19,7 @@ class CreateProductGouteTable extends Migration
         $table->foreign('product_id')->references('id')->on('products');
         $table->string('goute');
         $table->integer('in_stock');
+        $table->mediumInteger('qte_stock')->default(0);
         $table->decimal('discount')->nullable();
         $table->timestamps();
         $table->softDeletes();
