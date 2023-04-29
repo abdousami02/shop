@@ -12,8 +12,9 @@
 
             <!-- link top -->
           <template v-slot:link_top>
-            <li class="link"><router-link to="?status=0">Draft <span class="count">({{response.order_draft}})</span></router-link> |</li>
-            <li class="link"><router-link to="?status=9">Canccel <span class="count">({{response.order_canccel}})</span></router-link></li>
+            <li class="link"><router-link to="?status=0">Draft <span class="count">({{response.order_num.draft}})</span></router-link> |</li>
+            <li class="link"><router-link to="?status=1">commande <span class="count">({{response.order_num.commande}})</span></router-link> |</li>
+            <li class="link"><router-link to="?status=9">Canccel <span class="count">({{response.order_num.canccel}})</span></router-link></li>
           </template>
 
           <template v-slot="slotProps">
@@ -33,20 +34,7 @@
               </p>
             </td>
 
-            <td class="saller info-order">
-              <b>Saller :</b>
-              <p class="info-elem" v-if="slotProps.row.saller">
-                <span class="name"> Name: <i>{{ slotProps.row.saller.name }}, </i></span><span> Mobile: <i>{{ '0'+slotProps.row.saller.user.mobile }}</i></span><br>
-                <span>Address: <i>{{ slotProps.row.saller.address }}</i></span>
-              </p>
-              <div class="inp-form" v-if="slotProps.row.saller == false">
-                <select name="saller" :class="['form-select from-select-sm', errors.saller? 'is-invalid':'']" v-model="slotProps.row.saller_id">
-                  <option v-for="elem in response.sallers" :key="elem" :value="elem.id">{{elem.name+ ' -  '+elem.address }}</option>
-                </select>
-                <button class="btn btn-outline-success ms-2" @click="change_saller(slotProps.row)"><i class="far fa-save m-1"></i></button>
-              </div>
-              <button class="btn btn-primary edite-order" @click="edite_saller(slotProps.index)"><i class="far fa-pen"></i></button>
-            </td>
+            <td class="note">{{ slotProps.row.note }}</td>
 
             <td class="status">
               <span v-if="!slotProps.row.edite_status" class="status-show" :data-status="slotProps.row.status">{{ order_status[slotProps.row.status] }}</span>
@@ -128,14 +116,10 @@
                     </div>
                   </div>
 
-                  <!-- Saller -->
-                  <div class="saller">
-                    <span>Saller</span>
+                  <div class="no">
+                    <span>Note</span>
                     <div class="inp-form">
-                      <select name="User" :class="['form-select from-select-sm', errors.saller? 'is-invalid':'']" v-model="order.saller_id">
-                        <option v-for="elem in response.sallers" :key="elem" :value="elem.id">{{elem.name+ ' -  '+elem.address }}</option>
-                      </select>
-                      <span class="invalid-feedback" v-text="errors.saller_id?errors.saller_id[0]:''"></span>
+                      <input type="text" class="form-control" v-model="order.note">
                     </div>
                   </div>
 
@@ -176,14 +160,14 @@ export default {
   data: function () {
     return {
       title: "Orders",
-      thead: ["ID", "date", "User", "to Saller", "Status", "Num Product", "Poide", "Amount"],
+      thead: ["ID", "date", "User", "Note", "Status", "Num Product", "Poide", "Amount"],
       tbody:{
         data:{},
       },
       inp_disable: false,
       modal: {},
       errors: {0:{}},
-      response: {},
+      response: {order_num:{}},
       show_details: false,
 
       order: {},
@@ -229,8 +213,7 @@ export default {
           this.tbody = resp.data;
           let date = new Date();
           this.time_get = date.toLocaleString("sv-SE");
-          this.response.order_draft = resp.info.draft;
-          this.response.order_canccel = resp.info.canccel;
+          this.response.order_num = resp.info;
         }
       });
     },

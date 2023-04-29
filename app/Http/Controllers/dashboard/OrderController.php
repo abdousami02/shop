@@ -128,10 +128,11 @@ class OrderController extends Controller
       $elem->store_info->store_type ?? "none";
     }
 
-    $draft = Order::where('status', '=', 0)->select('id')->get();
-    $canccel = Order::where('status', '=', 9)->select('id')->get();
+    $draft    = Order::where('status', '=', 0)->select('id')->get();
+    $commande = Order::where('status', '=', 1)->select('id')->get();
+    $canccel  = Order::where('status', '=', 9)->select('id')->get();
 
-    $info = ['draft' => count($draft), 'canccel' => count($canccel)];
+    $info = ['draft' => count($draft), 'commande' => count($commande), 'canccel' => count($canccel)];
 
     return ['data' => $order, 'status' => 'done', 'info' => $info];
   }
@@ -185,7 +186,7 @@ class OrderController extends Controller
     $validator = Validator::make($data->all(), [
       'user_id'   => 'required|integer|exists:users,id',
       'store_id'  => 'nullable|integer|exists:store_info,id',
-      'saller_id' => 'nullable|integer|exists:sallers,id',
+      'note'      => 'nullable|string',
       'status'    => 'nullable|integer|max:5',
     ]);
 
@@ -197,8 +198,8 @@ class OrderController extends Controller
 
     $order->user_id   = $data->user_id;
     $order->store_id  = $data->store_id;
-    $order->saller_id = isset($data->saller_id) ?  $data->saller_id : null;
-    $order->status    = isset($data->status)    ?  $data->status    : 1;
+    $order->note      = isset($data->note)   ? $data->note   : null;
+    $order->status    = isset($data->status) ? $data->status : 1;
     $order->show_admin= 1;
 
     $order->save();
