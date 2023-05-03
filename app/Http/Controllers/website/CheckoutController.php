@@ -69,7 +69,7 @@ class CheckoutController extends Controller
     $order = Order::where([['id', '=', $data->order_id], ['user_id', '=', $user->id]])
                     ->update([
                       'store_id'    => $data->store_id,
-                      'status'      => 2,
+                      'status'      => 3,
                       'show_admin'  => 0,
                       'created_at'  => $date ]);
 

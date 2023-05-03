@@ -38,6 +38,11 @@
     max-width: 200px;
   }
 
+  .info > div ,
+  .price > div {
+    margin-bottom: 10px;
+  }
+
   .opt {
     width: 40px;
     .dot-opt {

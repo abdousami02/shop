@@ -129,7 +129,7 @@ class OrderController extends Controller
     }
 
     $draft    = Order::where('status', '=', 0)->select('id')->get();
-    $commande = Order::where('status', '=', 1)->select('id')->get();
+    $commande = Order::where('status', '=', 2)->select('id')->get();
     $canccel  = Order::where('status', '=', 9)->select('id')->get();
 
     $info = ['draft' => count($draft), 'commande' => count($commande), 'canccel' => count($canccel)];
@@ -217,6 +217,7 @@ class OrderController extends Controller
       'id'        => 'required|integer|exists:order,id',
       // 'saller_id' => 'nullable|integer|exists:sallers,id',
       'store_id'  => 'nullable|integer|exists:store_info,id',
+      'note'      => 'nullable|string',
       'status'    => 'nullable|integer|max:10',
     ]);
 
@@ -226,9 +227,10 @@ class OrderController extends Controller
     }
 
     Order::where('id', $data->id)
-          ->update(['saller_id'=> $data->saller_id,
-                    'store_id' => $data->store_id ,
-                    'status'=> $data->status]);    //find element
+          ->update(['saller_id' => $data->saller_id,
+                    'store_id'  => $data->store_id ,
+                    'note'      => $data->note,
+                    'status'    => $data->status]);    //find element
 
 
     return $this->getData($data);

@@ -391,20 +391,20 @@
       }
 
       &[data-status="2"] {
-        background: #fdf5dd;
-        color: #cfa00c;
-
-        &::after {
-          background: #f2be1d;
-        }
-      }
-
-      &[data-status="3"] {
         background: #5e9fdf;
         color: #052c50;
 
         &::after {
           background: #052c50;
+        }
+      }
+
+      &[data-status="3"] {
+        background: #fdf5dd;
+        color: #cfa00c;
+
+        &::after {
+          background: #f2be1d;
         }
       }
 

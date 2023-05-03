@@ -12,8 +12,8 @@
 
             <!-- link top -->
           <template v-slot:link_top>
+            <li class="link"><router-link to="?status=2">commande <span class="count">({{response.order_num.commande}})</span></router-link> |</li>
             <li class="link"><router-link to="?status=0">Draft <span class="count">({{response.order_num.draft}})</span></router-link> |</li>
-            <li class="link"><router-link to="?status=1">commande <span class="count">({{response.order_num.commande}})</span></router-link> |</li>
             <li class="link"><router-link to="?status=9">Canccel <span class="count">({{response.order_num.canccel}})</span></router-link></li>
           </template>
 
@@ -171,8 +171,8 @@ export default {
       show_details: false,
 
       order: {},
-      order_status:{0: 'Draft', 1: 'Commande', 2: 'admin processing', 3: 'saller processing',
-                    4: 'finish saller updated', 5: 'Prepare to delevery',
+      order_status:{0: 'Draft', 1: 'open order', 2: 'Commande', 3: 'admin processing',
+                    4: 'user aprove', 5: 'Prepare to delevery',
                     6:'delevered and not payment', 7: 'delevered and payment',
                     9: 'Cancceled'},
       order_id_edite: '',
