@@ -64,7 +64,7 @@ class StoreController extends Controller
   public function getOrder($user){
 
     $order = Order::where('user_id', '=', $user->id)
-                    ->where('status', '<=', 1 )->get();
+                    ->where([['status', '<=', 1],['status', '>'. 6]] )->get();
 
     return $order;
   }
