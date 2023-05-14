@@ -24,7 +24,6 @@
             <p class="weight"><span>Poids: </span>{{data.order.weight}} <span>Kg</span></p>
           </div>
           <div class="row-info">
-            <p class="user-id"><span>Client No: </span>{{data.order.store_id}}</p>
             <p class="user-name"><span>Nome: </span>{{data.order.store_info.name}}</p>
             <p class="user-addr"><span>Address: </span>{{data.order.store_info.address}}</p>
           </div>
