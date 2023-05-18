@@ -192,9 +192,9 @@ export default {
     getData(page=1, method=false){
       let action = 'getData';
       let status = this.$route.query.status;
-      let query = status ? "&status="+status : null;
+      let query = status ? "status="+status : null;
       console.log(query)
-      axios.post("/api/admin/order?page="+page+query, {action: action}).then(response =>{
+      axios.post("/api/admin/order?page="+page+'&'+query, {action: action}).then(response =>{
 
         console.log(response);
         let resp = response.data;
