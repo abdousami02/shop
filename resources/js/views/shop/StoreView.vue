@@ -65,7 +65,7 @@
 
             <td class="image"><img :src="'/'+elem.image" alt="." /></td>
             <td class="product">
-              <p class="name">{{lang.lg == "ar" && elem.name_ar != "" ? elem.name_ar : elem.name}}</p>
+              <p class="name">{{lang.lg == "ar" && elem.name_ar ? elem.name_ar : elem.name}}</p>
               <p><span v-html="lang.pr_qte_uc"></span><span class="value">{{elem.qte_uc}}</span></p>
 
               <div v-if="elem.product_goute.length > 0" dir="ltr">
