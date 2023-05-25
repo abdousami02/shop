@@ -1,7 +1,7 @@
 <template>
-  <div class="discount">
+  <div class="discount content">
     <div class="container">
-      <div class="content">
+      <div class="promo">
         <i class="fal fa-badge-percent fa-lg"></i>
         <p>No Diponible</p>
       </div>

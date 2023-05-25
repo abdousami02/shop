@@ -1,5 +1,5 @@
 <template>
-  <div class="orders">
+  <div class="orders content">
     <div class="container">
       <!-- <nav class="nav-links my-2">
         <a href="#" class="linkd">Home</a> /<a href="#" class="linkd">Orders</a> /

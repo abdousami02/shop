@@ -1,6 +1,6 @@
 <template>
-  <div class="checkout">
-    <div class="panel">
+  <div class="checkout content">
+    <div class="panel container">
       <h3 class="head">{{lang.head_send}}</h3>
       <h4 class="ms-2">{{lang.info_order}} :</h4>
       <div class="head-order pan-info">

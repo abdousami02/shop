@@ -1,5 +1,5 @@
 <template>
-  <div class="order-detail">
+  <div class="order-detail content">
     <div class="container">
 
       <!-- search add edit -->
