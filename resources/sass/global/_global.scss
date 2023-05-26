@@ -178,3 +178,34 @@ input.invalid {
   margin-left: 20px;
   margin-bottom: 20px;
 }
+
+.status-show {
+  display: inline-block;
+  width: fit-content;
+  border: 1px solid #d94c4c;
+  color: #d94c4c;
+  padding: 1px 6px;
+  border-radius: 5px;
+  padding-left: 17px;
+  position: relative;
+
+  &::after {
+    content: "";
+    position: absolute;
+    width: 7px;
+    height: 7px;
+    background: #d94c4c;
+    left: 5px;
+    top: 38%;
+    border-radius: 50%;
+
+  }
+
+  &.active {
+    border: 1px solid #4cd964;
+    color: #4cd964;
+    &::after {
+      background: #4cd964;
+    }
+  }
+}

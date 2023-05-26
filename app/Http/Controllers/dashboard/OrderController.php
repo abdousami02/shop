@@ -129,7 +129,7 @@ class OrderController extends Controller
     }
 
     $draft    = Order::where('status', '=', 0)->select('id')->get();
-    $commande = Order::where('status', '=', 2)->select('id')->get();
+    $commande = Order::where([['status', '>=', 2],['status', '<=', 5]])->select('id')->get();
     $canccel  = Order::where('status', '=', 9)->select('id')->get();
 
     $info = ['draft' => count($draft), 'commande' => count($commande), 'canccel' => count($canccel)];

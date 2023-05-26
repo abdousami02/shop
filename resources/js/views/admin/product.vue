@@ -19,17 +19,16 @@
       <template v-slot="slotProps">
         <td class="id">{{ slotProps.row.id }}</td>
         <td class="image"><img :src="'/'+slotProps.row.image" alt=""></td>
-        <td class="code-bare">{{ slotProps.row.code_bare }}</td>
         <td class="name">{{ slotProps.row.name }}</td>
         <td class="name ar">{{ slotProps.row.name_ar }}</td>
         <td class="price">{{ slotProps.row.price_sell1 }}</td>
         <td class="price">{{ slotProps.row.price_sell2 }}</td>
         <td class="price">{{ slotProps.row.price_sell3 }}</td>
-        <td class="qte">{{ slotProps.row.qte_uc }}</td>
-        <td class="goute">{{ slotProps.row.has_goute }}</td>
+        <td class="qte">{{ slotProps.row.qte_stock}}</td>
         <td class="stock"><span @click="edite_stock(slotProps.row, slotProps.index)" :class="['status-btn', slotProps.row.in_stock == 1 ? 'active':'']" ></span></td>
-        <td class="status"><span class="status" :data-status="slotProps.row.status">{{ slotProps.row.status == 1 ? "active" : "inactiv" }}</span></td>
-        <td class="stock">{{ slotProps.row.rank }}</td>
+        <td class="status"><span :class="['status-show', slotProps.row.status == 1 ? 'active' : '']" :data-status="slotProps.row.status">{{ slotProps.row.status == 1 ? "active" : "inactive" }}</span></td>
+        <td class="goute">{{ slotProps.row.has_goute }}</td>
+        <td class="rank">{{ slotProps.row.rank }}</td>
       </template>
 
     </panel-template>
@@ -269,10 +268,11 @@
                     <div class="status">
                       <span class="name">Status</span>
                       <div class="inp-form select-form">
-                        <select name="status" :class="['form-select from-select-sm', errors.status? 'is-invalid':'']" v-model="product.status" >
+                        <span @click="product.status = edite_status(product.status)" :class="['status-btn', product.status == 1 ? 'active':'']" ></span>
+                        <!-- <select name="status" :class="['form-select from-select-sm', errors.status? 'is-invalid':'']" v-model="product.status" >
                           <option value="1">active</option>
                           <option value="0">inactive</option>
-                        </select>
+                        </select> -->
                         <span class="invalid-feedback" v-text="errors.status?errors.status[0]:''"></span>
                       </div>
                     </div>
@@ -283,10 +283,11 @@
                     <div class="stock">
                       <span class="name">Stock</span>
                       <div class="inp-form select-form">
-                        <select name="status" :class="['form-select from-select-sm', errors.in_stock? 'is-invalid':'']" v-model="product.in_stock" >
+                        <span @click="product.in_stock = edite_status(product.in_stock)" :class="['status-btn', product.in_stock == 1 ? 'active':'']" ></span>
+                        <!-- <select name="status" :class="['form-select from-select-sm', errors.in_stock? 'is-invalid':'']" v-model="product.in_stock" >
                           <option value="1">in stock</option>
                           <option value="0">out stock</option>
-                        </select>
+                        </select> -->
                         <span class="invalid-feedback" v-text="errors.in_stock?errors.in_stock[0]:''"></span>
                       </div>
                     </div>
@@ -294,7 +295,7 @@
                 </div>
 
                 <div class="row mt-3">
-                  <div class="col-6">
+                  <div class="col-4">
                     <!-- description -->
                     <label for="desc">Description</label>
                     <div class="inp-form">
@@ -302,19 +303,26 @@
                     </div>
                   </div>
                   <div class="col-1"></div>
-                  <div class="col-2">
                     <!-- Rank -->
+                  <div class="col-2">
                     <div class="price inp-num">
                       <span class="name">Rank</span>
                       <input name="rat" type="number" :class="['form-control from-control-sm', errors.rank? 'is-invalid':'']" v-model="product.rank" />
                       <span class="invalid-feedback" v-text="errors.rank?errors.rank[0]:''"></span>
                     </div>
                   </div>
-                  <div class="col-2">
                     <!-- weight -->
+                  <div class="col-2">
                     <div class="inp-num">
                       <span>Weight</span>
                       <input type="number" class="form-control" v-model="product.weight">
+                    </div>
+                  </div>
+                    <!-- qte_stock -->
+                  <div class="col-2">
+                    <div>
+                      <span>Qte Stock</span>
+                      <input type="number" class="form-control inp-num" v-model="product.qte_stock">
                     </div>
                   </div>
                 </div>
@@ -344,7 +352,7 @@ export default {
   data: function () {
     return {
       title: "product",
-      thead: ["ID", "Image", "code_bare", "Name", "Name AR", "Price 1", "price 2", "price 3", "Qte U/c", "Goute", "in Stocke", "status", "rank"],
+      thead: ["ID", "Image", "Name", "Name AR", "Price 1", "price 2", "price 3", "Qte Stock", "in Stocke", "status", "Goute", "rank"],
       tbody:{data:{},},
       modal: {},
       response: {},
@@ -572,6 +580,9 @@ export default {
         this.image = e.target.result;
       }
     },
+
+
+  // **** Other Function *******
     edite_stock(elem, index){
       console.log(elem);
       let data = {id: elem.id, stock: elem.in_stock, action: "update_stock"};
@@ -587,8 +598,11 @@ export default {
         }
       })
     },
-
-  // **** Other Function *******
+    edite_status(elem){
+      elem == 1 ? elem = 0 : elem = 1;
+      console.log(elem)
+      return elem
+    },
     empty_data(){
       this.product= {product_goute: [], status: 0, in_stock: 0};
       this.errors= {0:{},};
