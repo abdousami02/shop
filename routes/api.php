@@ -82,6 +82,7 @@ Route::group(['middleware' => 'auth:api', 'prefix' => 'admin'], function() {
   Route::post('saller', [App\Http\Controllers\dashboard\SallerController::class, 'default']);
 
   Route::post('setting', [App\Http\Controllers\dashboard\AdminSettingController::class, 'default']);
+  Route::post('anal', [App\Http\Controllers\dashboard\AnalController::class, 'default']);
 
 });
 

@@ -6,7 +6,25 @@
 
       </div>
       <div class="info">
-        <span class="value" v-bind="mont"></span>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>name</th>
+              <th>price buy</th>
+              <th>qte stock</th>
+              <th>total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="elem in product" :key="elem">
+              <th>{{elem.name}}</th>
+              <td>{{elem.price_buy}}</td>
+              <td>{{elem.qte_stock}}</td>
+              <td>{{elem.total}}</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="total">Total: <span class="value">{{setNumber(mount)}}</span></div>
       </div>
     </div>
   </div>
@@ -17,15 +35,24 @@ export default {
   name: "AnalyticsDash",
   data: function (){
     return {
-      mont: 0,
+      mount: 0,
+      product: [],
     }
   },
   methods: {
     getData (){
-      axios.post("/api/anal").then(resp=>{
-        console.log(resp)
+      axios.post("/api/admin/anal", {action: "getMontProduct"}).then(resp=>{
+        console.log(resp);
+        this.product = resp.data.product;
+        this.mount = resp.data.mount;
       })
-    }
+    },
+    setNumber(num){
+      return Number(num).toLocaleString("fi-FI", { minimumFractionDigits: 2 }) ;
+    },
   },
+  mounted: function(){
+    this.getData();
+  }
 };
 </script>
