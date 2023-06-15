@@ -48,7 +48,7 @@
               <button class="btn btn-primary edite-order" v-if="!slotProps.row.edite_status" @click="change_status(slotProps.index)"><i class="far fa-pen"></i></button>
             </td>
 
-            <td class="num-product">{{ slotProps.row.num_product }}</td>
+            <td class="num-product">{{ slotProps.row.num_cartone }}</td>
             <td class="weight">{{ slotProps.row.weight }} Kg</td>
             <td class="amount"><span>{{ setNumber(slotProps.row.amount) }} DA</span></td>
           </template>
@@ -160,7 +160,7 @@ export default {
   data: function () {
     return {
       title: "Orders",
-      thead: ["ID", "date", "User", "Note", "Status", "Num Product", "Poide", "Amount"],
+      thead: ["ID", "date", "User", "Note", "Status", "Num Cartone", "Poide", "Amount"],
       tbody:{
         data:{},
       },

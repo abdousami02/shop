@@ -35,7 +35,7 @@ class OrderDetailsController extends Controller
               break;
 
         case 2 :
-              $get= false; $update= false; $add= false; $delete= false;
+              $get= true; $update= true; $add= true; $delete= true;
               break;
 
         case 3 :
@@ -222,6 +222,7 @@ class OrderDetailsController extends Controller
 
     $order_detail->order_id     = $data->order_id;
     $order_detail->product_id   = $data->product_id;
+    $order_detail->price_buy    = $data->product['price_buy'];
     $order_detail->price_sell   = $data->price_sell;
     $order_detail->price_total  = ($data->price_sell * $data->qte * $method);
     $order_detail->qte          = $data->qte;

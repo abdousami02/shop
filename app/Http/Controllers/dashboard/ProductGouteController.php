@@ -30,7 +30,7 @@ class ProductGouteController extends Controller
               break;
 
         case 2 :
-              $get= false; $update= false; $add= false; $delete= false;
+              $get= true; $update= true; $add= true; $delete= false;
               break;
 
         case 3 :
