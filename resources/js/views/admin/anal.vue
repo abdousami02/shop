@@ -24,7 +24,7 @@
               <th>{{elem.id}}</th>
               <th>{{convert_date(elem.created_at)}}</th>
               <th>{{elem.num_cartone}}</th>
-              <th><span class="text-bold me-2">{{}}</span><span></span>{{elem.user.mobile}}</th>
+              <th><span class="text-bold me-2">{{elem.user.name}}</span><span></span>{{'0'+elem.user.mobile}}</th>
               <th>{{elem.note}}</th>
               <th>{{elem.amount}}</th>
               <th>{{elem.amount - elem.amount_buy}}</th>
