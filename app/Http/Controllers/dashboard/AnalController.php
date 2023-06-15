@@ -15,7 +15,7 @@ class AnalController extends Controller
 
 
 
-    if($user['group_id'] >= 1){
+    if($user['group_id'] <= 1){
 
       // to getDat from  database
       if($req->action == 'getStock' ){
