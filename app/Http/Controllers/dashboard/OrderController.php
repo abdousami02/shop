@@ -35,7 +35,7 @@ class OrderController extends Controller
               break;
 
         case 2 :
-              $get= false; $update= false; $add= false; $delete= false;
+              $get= true; $update= true; $add= true; $delete= false;
               break;
 
         case 3 :
@@ -80,7 +80,7 @@ class OrderController extends Controller
 
 
     } elseif($req->action == 'calc' && $get){
-      $del = $this->calc($req, 'hard_update');
+      $del = $this->calc($req, 'update');
 
       if( $del['status'] == 'done' ){
         $req->id = $req->order_id;
@@ -128,10 +128,11 @@ class OrderController extends Controller
       $elem->store_info->store_type ?? "none";
     }
 
-    $draft = Order::where('status', '=', 0)->select('id')->get();
-    $canccel = Order::where('status', '=', 9)->select('id')->get();
+    $draft    = Order::where('status', '=', 0)->select('id')->get();
+    $commande = Order::where([['status', '>=', 2],['status', '<=', 5]])->select('id')->get();
+    $canccel  = Order::where('status', '=', 9)->select('id')->get();
 
-    $info = ['draft' => count($draft), 'canccel' => count($canccel)];
+    $info = ['draft' => count($draft), 'commande' => count($commande), 'canccel' => count($canccel)];
 
     return ['data' => $order, 'status' => 'done', 'info' => $info];
   }
@@ -185,7 +186,7 @@ class OrderController extends Controller
     $validator = Validator::make($data->all(), [
       'user_id'   => 'required|integer|exists:users,id',
       'store_id'  => 'nullable|integer|exists:store_info,id',
-      'saller_id' => 'nullable|integer|exists:sallers,id',
+      'note'      => 'nullable|string',
       'status'    => 'nullable|integer|max:5',
     ]);
 
@@ -197,8 +198,8 @@ class OrderController extends Controller
 
     $order->user_id   = $data->user_id;
     $order->store_id  = $data->store_id;
-    $order->saller_id = isset($data->saller_id) ?  $data->saller_id : null;
-    $order->status    = isset($data->status)    ?  $data->status    : 1;
+    $order->note      = isset($data->note)   ? $data->note   : null;
+    $order->status    = isset($data->status) ? $data->status : 1;
     $order->show_admin= 1;
 
     $order->save();
@@ -216,6 +217,7 @@ class OrderController extends Controller
       'id'        => 'required|integer|exists:order,id',
       // 'saller_id' => 'nullable|integer|exists:sallers,id',
       'store_id'  => 'nullable|integer|exists:store_info,id',
+      'note'      => 'nullable|string',
       'status'    => 'nullable|integer|max:10',
     ]);
 
@@ -225,9 +227,10 @@ class OrderController extends Controller
     }
 
     Order::where('id', $data->id)
-          ->update(['saller_id'=> $data->saller_id,
-                    'store_id' => $data->store_id ,
-                    'status'=> $data->status]);    //find element
+          ->update(['saller_id' => $data->saller_id,
+                    'store_id'  => $data->store_id ,
+                    'note'      => $data->note,
+                    'status'    => $data->status]);    //find element
 
 
     return $this->getData($data);
@@ -381,18 +384,18 @@ class OrderController extends Controller
 
     }elseif($action == 'add_product'){
 
-      $order = Order::where('id', '=', $id);
+      $order = Order::where('id', '=', $id)->first();
 
-      $get = ($order->get())[0];
-      // return $get->amount;
-      $amount = $get->amount + $data->price_total;
-      $weight = $get->weight + $data->weight;
-      $num    = $get->num_product + 1;
+      $amount     = $order->amount + $data->price_total;
+      $amount_buy = $order->amount_buy + ( $data->price_buy * $data->qte * $data->method_qte );
+      $weight     = $order->weight + $data->weight;
+      $num        = $order->num_cartone + $data->qte;
 
       $order->update([
         'amount' => $amount,
+        'amount_buy'  => $amount_buy,
         'weight' => $weight,
-        'num_product' => $num,
+        'num_cartone' => $num,
       ]);
 
       // Update Order product
@@ -401,95 +404,52 @@ class OrderController extends Controller
       $order_detail = OrderDetail::where('order_id', '=', $id)->get();
 
       $total_price   = 0;
-      $total_product = 0;
+      $total_buy     = 0;
       $total_weight  = 0;
+      $total_cart    = 0;
 
       foreach($order_detail as $elem){
-        if($elem['price_total'] == 0){ return ['status' => 'error', 'message' => 'price_total not be 0']; }
+        if($elem['price_total'] == 0){
+          return ['status' => 'error', 'message' => 'price_total not be 0'];
+        }
 
-        $total_price   += $elem['price_total'];
-        $total_product += 1;
+        $method = $elem['product']['method_qte'];
+        $buy = $elem['price_buy'] == 0 ? $elem['product']['price_buy'] : $elem['price_buy'];
+
+        $total_price   += $elem['price_sell'] * $elem['qte'] * $method;
+        $total_buy     += $buy * $elem['qte'] * $method;
         $total_weight  += $elem['weight'];
+        $total_cart    +=  $elem['qte'];
       }
 
       Order::where('id' ,'=', $id)
-            ->update(['amount' => $total_price,
-                      'num_product' => $total_product,
-                      'weight' => $total_weight,
+            ->update(['amount'      => $total_price,
+                      'amount_buy'  => $total_buy,
+                      'num_cartone' => $total_cart,
+                      'weight'      => $total_weight,
                     ]);
       return ['status' => 'done'];
 
 
      // Harde Update Calc Order
-    }elseif($action == 'hard_update'){
 
-      $order_detail = OrderDetail::where('order_id', '=', $id)->get();
-
-      $total_price   = 0;
-      $total_product = 0;
-      $total_weight  = 0;
-
-      foreach($order_detail as $elem){
-        $elem->product;
-
-        if($elem['product']['qte_sell3'] && $elem['qte'] >= $elem['product']['qte_sell3']){   //  set price sell with qte
-          $price_sell = $elem['product']['price_sell3'];
-
-        }elseif($elem['product']['qte_sell2'] && $elem['qte'] >= $elem['product']['qte_sell2']){
-          $price_sell = $elem['product']['price_sell2'];
-
-        }else{
-          $price_sell = $elem['product']['price_sell1'];
-        }
-
-        if($price_sell == 0 ){return ['status' => 'error', 'message' => 'price not be 0 for product: '.$elem['product']['name']];}
-
-        // return $elem['product'];
-        $method = $elem['product']['method_qte'];
-
-        $total_price   += ($price_sell * $elem['qte'] * $method);;
-        $total_product += 1;
-        $total_weight  += ($elem['product']['weight'] * $elem['qte'] * $method);
-
-        OrderDetail::where('id', '=', $elem['id'])
-                    ->update([
-                      'price_sell'  => $price_sell,
-                      'method_qte'  => $method,
-                      'price_total' => ($price_sell * $elem['qte'] * $method),
-                      'weight'      => ($elem['product']['weight'] * $data->qte * $method)
-                    ]);
-      }
-
-      Order::where('id' ,'=', $id)
-            ->update(['amount' => $total_price,
-                      'num_product' => $total_product,
-                      'weight' => $total_weight,
-                    ]);
-      return ['status' => 'done'];
-
-
-
-      // delete product from Order
     }elseif($action == 'delete'){
 
 
-      $order = Order::where('id', '=', $id);
+      $order = Order::where('id', '=', $id)->first();
 
-      $get = ($order->get())[0];
-      // return ['order' => $get->amount, 'detail' => $data->price_total];
-      $price_prod = $data->price_total;
-      $weight_prod = $data->weight;
-
-      $amount = $get->amount - $price_prod;
-      $weight = $get->weight - $weight_prod;
-      $num    = $get->num_product - 1;
+      $amount     = $order->amount - $data->price_total;
+      $amount_buy = $order->amount_buy - ($data->price_buy * $data->qte * $data->method_qte);
+      $weight     = $order->weight - $data->weight;
+      $num        = $order->num_cartone - $data->qte;
 
       // return [$amount, $weight, $num];
 
       $order->update([
         'amount' => $amount,
+        'amount' => $amount_buy,
         'weight' => $weight,
-        'num_product' => $num,
+        'num_cartone' => $num,
       ]);
 
     }

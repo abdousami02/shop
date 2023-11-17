@@ -1,6 +1,10 @@
 
 .orders {
 
+  .select-display {
+    width: 125px;
+    margin-left: auto;
+  }
 
   .orders-list {
     padding: 5px;
@@ -36,6 +40,11 @@
     display: flex;
     justify-content: space-between;
     max-width: 200px;
+  }
+
+  .info > div ,
+  .price > div {
+    margin-bottom: 10px;
   }
 
   .opt {

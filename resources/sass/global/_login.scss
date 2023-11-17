@@ -13,13 +13,7 @@
     direction: ltr;
     .mobile {
       position: relative;
-      &::before {
-        content: "0";
-        position: absolute;
-        top: 7px;
-        left: 35px;
-        font-size: 17px;
-      }
+
     }
     .invalid {
       border-color: #dc3545;

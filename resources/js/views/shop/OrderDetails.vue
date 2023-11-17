@@ -1,9 +1,10 @@
 <template>
-  <div class="order-detail">
+  <div class="order-detail content">
     <div class="container">
 
       <!-- search add edit -->
       <div class="opt-prod">
+        <router-link :to="'/orders'" href="/orders" class="btn btn-primary"><i class="fas fa-long-arrow-left"></i> Retoure</router-link>
         <div class="btn-opt mb-2 mt-3">
           <button class="btn btn-outline-primary" @click="addData"><i class="far fa-plus"></i> {{lang.btn_add}}</button>
           <button class="btn btn-outline-success mx-2" @click="getData(1, order_id)"><i class="fas fa-sync-alt"></i> {{lang.btn_sync}}</button>

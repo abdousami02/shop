@@ -13,7 +13,7 @@ class Order extends Model
   use SoftDeletes;
 
   protected $table = 'order';
-  protected $filable = ['id', 'store_id', 'user_id', 'saller_id', 'amount', 'num_product', 'weight', 'status'];
+  protected $fillable = ['id', 'store_id', 'user_id', 'saller_id', 'amount', 'amount_buy', 'num_cartone', 'weight', 'status'];
   protected $hidden = ['deleted_at'];
 
   public function store_info(){

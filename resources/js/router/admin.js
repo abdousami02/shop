@@ -7,7 +7,7 @@ import HomeDashboard from "../views/admin/DashboardView.vue";
 // children
 import dashBoard from "../views/admin/dashboard.vue";
 import order from "../views/admin/order.vue";
-// import commande from "../views/admin/commande.vue";
+import commande from "../views/admin/commande.vue";
 import product from "../views/admin/product.vue";
 import buy from "../views/admin/buy.vue";
 import cat from "../views/admin/cat.vue";
@@ -38,7 +38,7 @@ const routes = [
       },
       {
         path: "commande",
-        component: order,
+        component: commande,
       },
       {
         path: "product",

@@ -62,13 +62,13 @@ class SignUpController extends Controller
 
     $valid = [
       'name'      => 'required|string|min:3|max:30',
-      'store_name'=> 'required|string|min:3|max:30',
+      'store_name'=> 'nullable|string|min:3|max:30',
       'pre_mobile'=> 'required|integer|in:5,6,7',
       'mobile'    => 'required|integer|unique:users,mobile|digits:9|regex: /^([0-9]+())$/',
       'email'     => 'nullable|unique:users,email|regex:/^[\w\.]+@([\w-]+\.)+\w{2,4}$/',
       'store_type'=> 'required|integer|exists:store_type,id',
       'wilaya'    => 'nullable|string|min:4|max:20',
-      'address'   => 'required|string|min:5|max:30',
+      'address'   => 'required|string|min:3|max:30',
     ];
 
     if($register == true){
@@ -78,6 +78,7 @@ class SignUpController extends Controller
 
 
     if($validator->fails()) {
+
       return ['status'=> 'error', 'errors'=> $validator->errors()];
     }
 

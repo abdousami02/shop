@@ -1,6 +1,6 @@
 
 .print {
-  font-size: 17px;
+  font-size: 9px;
 
   p span {
     font-weight: 600;
@@ -8,17 +8,21 @@
   .header {
     .logo {
       text-align: center;
+      h4 {
+        font-size: 14px;
+      }
       .image {
-        width: 30px;
+        width: 20px;
         display: inline-block;
       }
     }
     .info {
-      margin-top: -40px;
+      p {
+        margin-bottom: 3px;
+      }
       .link {
         text-align: right;
-        font-size: 18px;
-        margin-top: -15px;
+        font-size: 9px;
       }
     }
   }
@@ -27,12 +31,14 @@
     .info .row-info {
       display: flex;
       justify-content: space-between;
-      margin-bottom: 10px;
-      padding-right: 40px;
     }
     tbody {
       font-weight: 500;
-      font-size: 20px;
+      font-size: 8px;
+      th {
+        padding: 10px 0;
+        font-size: 8px;
+      }
       tr td {
         padding: 5px;
       }
@@ -43,7 +49,7 @@
       margin: 0;
       margin-right: 10px;
       font-weight: 400;
-      font-size: 16px;
+      font-size: 12px;
       span {
         font-weight: 400;
       }
@@ -56,12 +62,12 @@
     .amount {
       margin-left: auto;
       padding: 5px;
-      width: 232px;
+      width: fit-content;
       text-align: center;
       border: 0.5px solid #878787;
       margin-top: -17px;
       font-weight: 600;
-      font-size: 20px;
+      font-size: 10px;
       span {
         margin-right: 7px;
         font-weight: 700;
@@ -75,7 +81,7 @@
       margin: 10%;
     }
 
-    width: 14cm;
+    width: 65mm;
     margin: auto;
     .row-info {
       flex-wrap: wrap;

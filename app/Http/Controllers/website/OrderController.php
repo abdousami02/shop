@@ -167,12 +167,12 @@ class OrderController extends Controller
       // return $get->amount;
       $amount = $get->amount + $data->price_total;
       $weight = $get->weight + $data->weight;
-      $num    = $get->num_product + 1;
+      $num    = $get->num_cartone + $data->qte;
 
       $order->update([
         'amount' => $amount,
         'weight' => $weight,
-        'num_product' => $num,
+        'num_cartone' => $num,
       ]);
 
     }elseif($data->order_id && $action == 'update'){
@@ -180,21 +180,31 @@ class OrderController extends Controller
       $order_detail = OrderDetail::where('order_id', '=', $data->order_id)->get();
 
       $total_price   = 0;
-      $total_product = 0;
+      $total_buy     = 0;
       $total_weight  = 0;
+      $total_cart    = 0;
 
       foreach($order_detail as $elem){
-        $total_price   += $elem['price_sell'] * $elem['qte'] * $elem['method_qte'];
-        $total_product += 1;
+        if($elem['price_total'] == 0){
+          return ['status' => 'error', 'message' => 'price_total not be 0'];
+        }
+
+        $method = $elem['product']['method_qte'];
+        $buy = $elem['price_buy'] == 0 ? $elem['product']['price_buy'] : $elem['price_buy'];
+
+        $total_price   += $elem['price_sell'] * $elem['qte'] * $method;
+        $total_buy     += $buy * $elem['qte'] * $method;
         $total_weight  += $elem['weight'];
+        $total_cart    +=  $elem['qte'];
       }
 
       Order::where('id' ,'=', $data->order_id)
-            ->update(['amount' => $total_price,
-                      'num_product' => $total_product,
-                      'weight' => $total_weight,
+            ->update(['amount'      => $total_price,
+                      'amount_buy'  => $total_buy,
+                      'num_cartone' => $total_cart,
+                      'weight'      => $total_weight,
                     ]);
-
+      return ['status' => 'done'];
     }elseif($data->order_id && $action == 'delete'){
 
       $order = Order::where('id', '=', $data->order_id);
@@ -203,7 +213,7 @@ class OrderController extends Controller
       // return $get->amount;
       $amount = $get->amount - $data->price_total;
       $weight = $get->weight - $data->weight;
-      $num    = $get->num_product - 1;
+      $num    = $get->num_cartone - $data->qte;
 
       $order->update([
         'amount' => $amount,

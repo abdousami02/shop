@@ -24,7 +24,6 @@
             <p class="weight"><span>Poids: </span>{{data.order.weight}} <span>Kg</span></p>
           </div>
           <div class="row-info">
-            <p class="user-id"><span>Client No: </span>{{data.order.store_id}}</p>
             <p class="user-name"><span>Nome: </span>{{data.order.store_info.name}}</p>
             <p class="user-addr"><span>Address: </span>{{data.order.store_info.address}}</p>
           </div>
@@ -39,7 +38,15 @@
             </tr>
             <tr class="elem-row" v-for="(row, index) in data.tb" :key="index">
               <td class="index">{{index+1}}</td>
-              <td class="name">{{row.product.name}}</td>
+              <td class="name">
+                <p>{{row.product.name}}</p>.
+                <ul class="ms-2" v-for=" elem in row.order_detail_goute" :key="elem">
+                  <li class="goutes">
+                    <span class="name">{{elem.qte}}</span>
+                    <span>{{elem.product_goute.goute}}</span>
+                  </li>ddd
+                </ul>
+                </td>
               <td class="goute">
                 <p v-for="elem in row.order_detail_goute" :key="elem">
                   <span class="goute">{{elem.product_goute.goute}}: </span>{{elem.qte}}

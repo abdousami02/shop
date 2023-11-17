@@ -21,6 +21,7 @@ class CreateOrderDetailsTable extends Migration
         $table->foreign('product_id')->references('id')->on('products');
         $table->integer('discount_id')->unsigned()->nullable();
         $table->foreign('discount_id')->references('id')->on('discount');
+        $table->decimal('price_buy');
         $table->decimal('price_sell');
         $table->smallInteger('qte');
         $table->smallInteger('method_qte');

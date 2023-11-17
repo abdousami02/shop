@@ -1,36 +1,38 @@
 <template>
-  <div class="contact">
-    <div class="logo">
-      <div class="image"><img src="/favicon.ico" alt="logo"></div>
-      <h4>Badni Shop</h4>
-    </div>
-    <div class="info">
-      <div class="en" v-if="false">
-        <h5>About Us</h5>
-        <p>Wholesale Products General foodstuffs for suppermaket and Shops, have service delevery</p>
+  <div class="contact content">
+    <div class="container">
+      <div class="logo">
+        <div class="image"><img src="/favicon.ico" alt="logo"></div>
+        <h4>Badni Shop</h4>
+      </div>
+      <div class="info">
+        <div class="en" v-if="false">
+          <h5>About Us</h5>
+          <p>Wholesale Products General foodstuffs for suppermaket and Shops, have service delevery</p>
+        </div>
+
+        <div class="fr" v-if="false">
+          <h5>About Us</h5>
+          <p>Wholesale Products General foodstuffs for suppermaket and Shops, have service delevery</p>
+        </div>
+
+        <div class="ar">
+          <h5>من نحن</h5>
+          <p>بيع المنتجات بالجملة لأصحاب المحلات التجارية ، ويتوفر على خدمة التوصيل </p>
+        </div>
       </div>
 
-      <div class="fr" v-if="false">
-        <h5>About Us</h5>
-        <p>Wholesale Products General foodstuffs for suppermaket and Shops, have service delevery</p>
+      <div class="mobile">
+        <i class="fas fa-mobile-android-alt icon"></i>
+        <p class="value"><a href="#" @click="copy">0699421973</a></p>
       </div>
 
-      <div class="ar">
-        <h5>من نحن</h5>
-        <p>بيع المنتجات بالجملة لأصحاب المحلات التجارية ، ويتوفر على خدمة التوصيل </p>
-      </div>
-    </div>
-
-    <div class="mobile">
-      <i class="fas fa-mobile-android-alt icon"></i>
-      <p class="value"><a href="#" @click="copy">0556581171</a></p>
-    </div>
-
-    <div class="email">
-      <i class="fal fa-envelope icon"></i>
-      <div class="value">
-        <p><a href="#" @click="copy">contact@badnishop.com</a></p>
-        <p><a href="#" @click="copy">badnishop02@gmail.com</a></p>
+      <div class="email">
+        <i class="fal fa-envelope icon"></i>
+        <div class="value">
+          <p><a href="#" @click="copy">contact@badnishop.com</a></p>
+          <p><a href="#" @click="copy">badnishop02@gmail.com</a></p>
+        </div>
       </div>
     </div>
     <p ref="test"></p>

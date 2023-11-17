@@ -25,7 +25,7 @@ class CreateOrderTable extends Migration
         $table->foreign('saller_id')->references('id')->on('sallers');
         $table->decimal('amount')->default(0);
         $table->decimal('amount_buy')->nullable();
-        $table->smallInteger('num_product')->default(0);
+        $table->smallInteger('num_cartone')->default(0);
         $table->decimal('weight')->nullable()->default(0);
         $table->tinyInteger('status')->default(0);
         $table->string('note')->nullable();

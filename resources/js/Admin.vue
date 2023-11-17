@@ -48,7 +48,15 @@
             </tr>
             <tr class="elem-row" v-for="(row, index) in data.tb" :key="index">
               <td class="index">{{index+1}}</td>
-              <td class="name">{{row.product.name}}</td>
+              <td class="name">
+                <span>{{row.product.name}}</span>.
+                <ul class="ms-2" v-for=" elem in row.order_detail_goute" :key="elem">
+                  <li class="goutes">
+                    <span class="name">{{elem.qte}}</span>
+                    <span>{{elem.product_goute.goute}}</span>
+                  </li>
+                </ul>
+              </td>
               <td class="goute" v-if="!method_print == 'mobile'">
                 <p v-for="elem in row.order_detail_goute" :key="elem">
                   <span class="goute">{{elem.product_goute.goute}}: </span>{{elem.qte}}
@@ -84,7 +92,7 @@ export default {
       method_print: '',
       show_btn: true,
       data: {
-        mobile: '0556581171',
+        mobile: '0770 47 07 89',
         email: 'contact@badnishop.com',
         date: '',
         th: ['No', 'Nome Produit', 'Goute', 'Qte', 'Prix_U', 'Prix_Total'],

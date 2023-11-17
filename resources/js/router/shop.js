@@ -14,8 +14,8 @@ import Contact from "../views/shop/ContactView.vue";
 import Login from "../views/shop/LoginView.vue";
 import signUp from "../views/shop/signUpView.vue";
 // stting pages
-import dashSett from "../components/shop/setting/dashboard.vue";
-import profSett from "../components/shop/setting/profile.vue";
+import dashSett from "../views/shop/setting/dashboard.vue";
+import profSett from "../views/shop/setting/profile.vue";
 
 
 const routes = [
@@ -65,6 +65,7 @@ const routes = [
       },
       {
         path: "profile",
+        name: 'profile',
         component: profSett,
       },
     ],
