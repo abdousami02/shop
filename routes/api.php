@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\website\SettingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -58,7 +59,8 @@ Route::group(['middleware' => 'api', 'prefix' => 'auth'], function ($router) {
 
 });
 
-
+// register signup
+Route::post('signup', [App\Http\Controllers\website\SignUpController::class, 'default']);
 
 
 
@@ -68,6 +70,7 @@ Route::group(['middleware' => 'api', 'prefix' => 'auth'], function ($router) {
 |
 */
 Route::group(['middleware' => 'auth:api', 'prefix' => 'admin'], function() {
+
   Route::post('product', [App\Http\Controllers\dashboard\ProductController::class, 'default']);
   Route::post('order', [App\Http\Controllers\dashboard\OrderController::class, 'default']);
   Route::post('order_detail', [App\Http\Controllers\dashboard\OrderDetailsController::class, 'default']);
@@ -116,8 +119,7 @@ Route::post('setting', [App\Http\Controllers\SettingController::class, 'default'
 // for guest user
 Route::post('guest', [App\Http\Controllers\GuestController::class, 'default']);
 
-// register signup
-Route::post('signup', [App\Http\Controllers\website\SignUpController::class, 'default']);
+
 
 // for login user consumer
 Route::group(['middleware' => 'api'], function ($router) {
@@ -127,5 +129,7 @@ Route::group(['middleware' => 'api'], function ($router) {
   Route::post('order_detail', [App\Http\Controllers\website\OrderDetailController::class, 'default']);
   Route::post('checkout', [App\Http\Controllers\website\CheckoutController::class, 'default']);
   Route::post('setting', [App\Http\Controllers\website\SettingController::class, 'default']);
+
+  Route::post('profile-info',[SettingController::class, 'profile']);
 });
 

@@ -34,6 +34,7 @@
       </div>
       <div class="stock" v-if="show_stock">
         <h4 class="title">Total product Montant</h4>
+        <div class="total">Total: <span class="value">{{setNumber(mount)}}</span></div>
         <table class="table">
           <thead>
             <tr>

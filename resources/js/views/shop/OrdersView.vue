@@ -6,7 +6,15 @@
         <a href="#" class="linkd">No: 434</a>
       </nav> -->
       <!-- search add edit -->
-      <h4 class="mt-4">{{lang.title_order}}:</h4>
+      <div class="btn-opt d-flex justify-content-between mt-4">
+        <h4 >{{lang.title_order}}:</h4>
+        <select name="show" id="" class="form-control select-display">
+          <option value="all">Tous</option>
+          <option value="all">Brouillon</option>
+          <option value="">processing</option>
+          <option value="">finish</option>
+        </select>
+      </div>
       <div class="opt-order">
         <div class="btn-opt mb-2">
           <button class="btn btn-success btn-sm" @click="addOrder()"><i class="far fa-plus"></i> {{lang.btn_add}}</button>
@@ -15,56 +23,11 @@
       <!-- orders Lists -->
 
       <div class="orders-list">
-        <!-- <div class="item">
-          <p class="date">Created at:<br /><span class="value">02/01/2023-12:44</span></p>
-          <p class="num">No: <span class="value">356</span></p>
-          <p class="status">Status: <span class="value">Pending</span></p>
-          <p class="montant">Montant: <span class="value">1853,00</span></p>
-        </div> -->
-        <!-- table for PC -->
-        <!-- <table class="table table-bordered table-hover tab-pc" v-if="false">
-          <thead>
-            <tr>
-              <th class="select-all"></th>
-              <th class="num">Number</th>
-              <th class="date">date</th>
-              <th class="stat">Status</th>
-              <td class="num-prod">Produites</td>
-              <td class="poid">Poid</td>
-              <th class="total">Montant</th>
-              <th class="opt"></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>
-                <div class="select"><input type="checkbox" name="select" /></div>
-              </td>
-              <td class="num">356</td>
-              <td class="date">02/01/2023-12:44</td>
-              <td class="status">Pending</td>
-              <td class="num-prod">35</td>
-              <td class="poid"><span>1345</span> Kg</td>
-              <td class="total">1853,00</td>
-              <td class="opt dropdown">
-                <i class="fas fa-ellipsis-v dot-opt show" data-bs-toggle="dropdown">
-                  <div class="dropdown-menu dropdown-menu-end" data-bs-popper="static">
-                    <router-link to="/orders/orderDetails" class="dropdown-item">Modifier</router-link>
-                    <a href="/" class="dropdown-item">Deleat</a>
-                    <a href="https://google.com" class="dropdown-item">Send checkout</a>
-                    <a href="/" class="dropdown-item">canccel Order</a>
-                  </div>
-                </i>
-              </td>
-            </tr>
-          </tbody>
-        </table> -->
 
         <!-- table for mobile -->
         <table class="table table-bordered tab-mobile">
           <thead>
             <tr>
-              <th class="select-all"></th>
               <th class="">{{lang.tb_info}}</th>
               <th class="">{{lang.tb_total}}</th>
               <th class="opt"></th>
@@ -72,14 +35,10 @@
           </thead>
           <tbody>
             <tr :class="['item', order.id == 'local' ? 'local' : '']" v-for="(order, index) in response.order" :key="order">
-
-              <td class="select">
-                <input type="checkbox" name="select" />
-              </td>
               <td class="info">
+                <div class="date">{{lang.info_date}}: <span class="value">{{setDate(order.created_at)}}</span></div>
                 <div class="num ">{{lang.info_id}}: <span class="value">{{order.id}}</span></div>
                 <div class="status">{{lang.info_status}}: <span class="value">{{lang.status[order.status]}}</span></div>
-                <div class="date">{{lang.info_date}}: <span class="value">{{setDate(order.created_at)}}</span></div>
                 <p class="local-order" v-if="order.id == 'local' ">
                   {{lang.not_reg}}<button @click="addLocalOrder" class="btn btn-success">{{lang.btn_add}}</button>
                 </p>
@@ -267,7 +226,7 @@ export default {
     },
     setDate(date_iso){
       let date = new Date(date_iso);
-       return date.toLocaleString("es-CL");
+       return date.toLocaleString("es-CL", {dateStyle: 'medium'});
     },
 
     change_lang(){

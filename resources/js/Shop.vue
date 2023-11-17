@@ -1,7 +1,7 @@
 <template>
   <top-nav v-if="top_nav" />
   <navbar />
-  <router-view />
+  <router-view v-if="render" />
   <footers />
 </template>
 

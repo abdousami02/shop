@@ -24,7 +24,7 @@
 
       <div class="mobile">
         <i class="fas fa-mobile-android-alt icon"></i>
-        <p class="value"><a href="#" @click="copy">0556581171</a></p>
+        <p class="value"><a href="#" @click="copy">0699421973</a></p>
       </div>
 
       <div class="email">

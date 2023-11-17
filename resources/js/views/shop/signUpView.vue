@@ -25,10 +25,12 @@
               <label class="form-label" for="name-user">Name</label>
               <input type="text" :class="['form-control', errors.name?'is-invalid':'']" placeholder="Name Consumer" v-model="user.name" />
             </div>
-            <div class="stor-name">
+
+            <!-- <div class="stor-name">
               <label class="form-label" for="name-stor">Name Stor</label>
               <input type="text" :class="['form-control', errors.store_name?'is-invalid':'']" placeholder="Name Stor" v-model="user.store_name"/>
-            </div>
+            </div> -->
+
             <div class="type">
               <label class="form-label" for="type-stor">Type of Stor</label>
               <select name="type" id="type-stor" :class="['form-select', errors.store_type?'is-invalid':'']" v-model="user.store_type">

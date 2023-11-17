@@ -113,7 +113,7 @@ export default {
     border-radius: 13px;
 
     .item {
-      min-width: 145px;
+      min-width: 110px;
       padding: 10px;
       background: #eee;
       border-radius: 10px;
@@ -122,7 +122,7 @@ export default {
       text-decoration: none;
 
       .image {
-        height: 150px;
+        height: 100px;
         overflow: hidden;
       }
     }
@@ -130,8 +130,12 @@ export default {
     .info {
       margin: 10px 0;
       .name {
-        white-space: nowrap;
+        text-align: center;
         overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 2; /* number of lines to show */
+                line-clamp: 2;
+        -webkit-box-orient: vertical;
       }
       .price {
         font-weight: 600;

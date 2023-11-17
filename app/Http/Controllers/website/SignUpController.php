@@ -78,6 +78,7 @@ class SignUpController extends Controller
 
 
     if($validator->fails()) {
+
       return ['status'=> 'error', 'errors'=> $validator->errors()];
     }
 
