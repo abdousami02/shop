@@ -5,6 +5,7 @@
   <footers />
 </template>
 
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-2FW93SZM97"></script>
 <script>
 import navbar from "./components/shop/NavBar.vue";
 import footers from "./components/shop/footer.vue";
@@ -68,6 +69,14 @@ export default {
     this.change_lang();
 
     document.documentElement.style.width = $('body').width() + 'px';
+
+
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-2FW93SZM97');
+
 
   },
   watch: {
