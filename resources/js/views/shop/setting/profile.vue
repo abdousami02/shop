@@ -2,7 +2,7 @@
   <div class="profile">
     <h3 class="head-sett">Profile</h3>
     <div class="profile-cont">
-    <form action="" method="post" id="info">
+    <!-- <form action="" method="post" id="info" @onsubmit="sendForm(event)"> -->
       <div class="img sett-row">
         <label>Profile Picture</label>
         <div class="value">
@@ -62,7 +62,7 @@
         <button class="btn btn-primary" @click="sendForm()">Save Change</button>
         <button class="btn btn-danger">Cancel</button>
       </div>
-    </form>
+    <!-- </form> -->
     </div>
 
     <div>
@@ -146,54 +146,3 @@ export default {
 };
 </script>
 
-<style lang="scss">
-.profile {
-  padding-right: 10px;
-  margin-bottom: 60px;
-  .profile-cont {
-    padding: 21px 15px;
-    background: #fff;
-    border-radius: 6px;
-  }
-  .sett-row {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 17px;
-    label {
-      font-weight: 600;
-    }
-    .value {
-      // max-width: 350px;
-      flex-basis: calc(100% - 150px);
-      .regular {
-        max-width: 350px;
-        display: inline-block;
-      }
-    }
-    .pwd {
-      input {
-        margin: 15px 0;
-        margin-right: 5px;
-      }
-      .btn {
-        margin: 0 3px;
-      }
-    }
-  }
-  .img {
-    .image {
-      width: 100px;
-    }
-    .btn {
-      margin-top: 10px;
-    }
-  }
-  .btns-act {
-    margin-top: 60px;
-    .btn {
-      margin-right: 10px;
-      min-width: 60px;
-    }
-  }
-}
-</style>

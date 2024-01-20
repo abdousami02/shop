@@ -57,9 +57,15 @@
                   </div>
                 </div>
               </div>
-              <div class="row">
-                <div class="col">
+
+              <!-- slide product -->
+              <div class="row mt-10">
+                <div class="col" style="margin-top: 35px">
                   <div class="slider">
+                  <div class="header-slid d-flex justify-content-between">
+                    <h3>Product Promotion</h3>
+                    <a href="#" class="link">View all <i class="fad fa-chevron-right"></i></a>
+                  </div>
                     <div class="btn-slider btn-left"><i class="fad fa-chevron-circle-left"></i></div>
                     <div class="btn-slider btn-right"><i class="fad fa-chevron-circle-right"></i></div>
                     <div class="content">
@@ -67,7 +73,7 @@
                         <div class="image">
                           <img src="img/mordjan.jpg" alt="." />
                         </div>
-                        <div class="name"><span>Assila Mordjan 1KG</span></div>
+                        <div class="name"><h5 class="name-product">Assila Mordjan 1KG</h5></div>
                         <div class="price">
                           <p class="old">170 DA</p>
                           <p class="new">155 DA</p>
@@ -191,139 +197,6 @@
     <categ-show :nameCat="cos" :iconCat="cos_icon" />
   </div>
 </template>
-
-<style lang="scss">
-.lan-left img {
-  width: 100%;
-}
-.slider {
-  overflow: hidden;
-  position: relative;
-  margin-top: 15px;
-
-  .btn-slider {
-    position: absolute;
-    z-index: 3;
-    display: flex;
-    width: 35px;
-    height: 100%;
-    align-items: center;
-    font-size: 28px;
-    cursor: pointer;
-
-    &.btn-left {
-      left: 0;
-      background-image: linear-gradient(to right, rgba(0, 0, 0, 0.17), rgba(0, 0, 0, 0));
-      padding-left: 10px;
-    }
-    &.btn-right {
-      right: 0;
-      background-image: linear-gradient(to left, rgba(0, 0, 0, 0.17), rgba(0, 0, 0, 0));
-      padding-right: 10px;
-    }
-  }
-
-  .content {
-    display: flex;
-    position: relative;
-    justify-content: flex-start;
-    width: 200%;
-
-    .item {
-      width: 115px;
-      margin-right: 14px;
-      padding: 10px;
-      background: #fff;
-
-      .image {
-        // width: 120px;
-        height: 145px;
-        overflow: hidden;
-      }
-
-      .name {
-        height: 55px;
-        overflow: hidden;
-        font-size: 16px;
-        margin-bottom: 5px;
-        text-align: center;
-      }
-
-      .price {
-        .old {
-          text-align: center;
-          margin: 6px 0 0;
-          font-size: 15px;
-          width: fit-content;
-          position: relative;
-
-          &::after {
-            content: "";
-            position: absolute;
-            width: 100%;
-            height: 1px;
-            background: red;
-            left: -6px;
-            transform: rotate(13deg);
-            top: 13px;
-          }
-        }
-        .new {
-          width: fit-content;
-          padding: 0 5px;
-          margin: auto;
-          font-size: 20px;
-          background: yellow;
-        }
-      }
-    }
-    img {
-      width: 100%;
-    }
-  }
-}
-
-.all-categ {
-  margin-top: 60px;
-
-  .title {
-    margin: 0 20px;
-  }
-
-  .content {
-    background: #fff;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
-    border-radius: 13px;
-
-    .item a {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      color: #103262;
-      text-decoration: none;
-      padding: 20px 10px;
-
-      .icon {
-        width: 100px;
-        border: 3px solid #103262;
-        padding: 14px;
-        border-radius: 50%;
-      }
-      .name {
-        font-size: 18px;
-        margin-top: 10px;
-      }
-    }
-  }
-}
-@media (max-width: 992px) {
-  .all-categ .item {
-    flex-basis: 33%;
-  }
-}
-</style>
 
 <script>
 // @ is an alias to /src

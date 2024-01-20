@@ -52,6 +52,7 @@
                 <i class="fas fa-ellipsis-v dot-opt show" data-bs-toggle="dropdown"></i>
                 <div class="dropdown-menu dropdown-menu-end">
                   <router-link :to="'/orders/orderDetails?order_id='+order.id" href="/orders/orderDetails?order_id=" class="dropdown-item"><i class="far fa-pen"></i> {{lang.opt_edite}}</router-link>
+                  <a class="dropdown-item">Show Factur</a>
                   <a class="dropdown-item" @click="deleteOrder(order,index)"><i class="far fa-trash"></i> {{lang.opt_delete}}</a>
                   <a class="dropdown-item"><i class="far fa-money-check-edit-alt"></i> {{lang.opt_checkout}}</a>
                 </div>

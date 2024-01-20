@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\NotificationController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\website\SettingController;
@@ -43,7 +44,6 @@ Route::group(['middleware' => 'api', 'prefix' => 'auth-admin'], function ($route
   Route::post('logout', [App\Http\Controllers\AuthAdminController::class, 'logout']);
   Route::post('refresh', [App\Http\Controllers\AuthAdminController::class, 'refresh']);
   Route::post('me', [App\Http\Controllers\AuthAdminController::class, 'me']);
-
 });
 
 /*
@@ -51,7 +51,6 @@ Route::group(['middleware' => 'api', 'prefix' => 'auth-admin'], function ($route
 |
 */
 Route::group(['middleware' => 'api', 'prefix' => 'auth'], function ($router) {
-
   Route::post('login', [App\Http\Controllers\AuthController::class, 'login']);
   Route::post('logout', [App\Http\Controllers\AuthController::class, 'logout']);
   Route::post('refresh', [App\Http\Controllers\AuthController::class, 'refresh']);
@@ -90,7 +89,7 @@ Route::group(['middleware' => 'auth:api', 'prefix' => 'admin'], function() {
 });
 
 
-
+Route::post('/setToken', [NotificationController::class, 'set']);
 
 
 /*
