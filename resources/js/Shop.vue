@@ -5,6 +5,7 @@
   <footers />
 </template>
 
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-2FW93SZM97"></script>
 <script>
 import navbar from "./components/shop/NavBar.vue";
 import footers from "./components/shop/footer.vue";
