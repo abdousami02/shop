@@ -14,11 +14,14 @@
           <router-link to="/setting/profile" href="#" class="nav-link"><i class="fas fa-user"></i><span class="txt">Profile</span></router-link>
         </li>
         <li class="nav-item">
+          <router-link to="/setting/address" href="#" class="nav-link"><i class="fas fa-user"></i><span class="txt">Address</span></router-link>
+        </li>
+        <li class="nav-item">
           <router-link to="/setting/logout" href="#" class="nav-link"><i class="fas fa-sign-out-alt"></i><span class="txt">LogOut</span></router-link>
         </li>
       </ul>
     </div>
-    <div class="content">
+    <div class="content-all">
       <router-view />
     </div>
   </div>

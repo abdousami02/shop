@@ -13,9 +13,12 @@ import Contact from "../views/shop/ContactView.vue";
 // login sugnUp
 import Login from "../views/shop/LoginView.vue";
 import signUp from "../views/shop/signUpView.vue";
+
 // stting pages
 import dashSett from "../views/shop/setting/dashboard.vue";
 import profSett from "../views/shop/setting/profile.vue";
+import address from "../views/shop/setting/address.vue";
+import { add } from "lodash";
 
 
 const routes = [
@@ -67,6 +70,11 @@ const routes = [
         path: "profile",
         name: 'profile',
         component: profSett,
+      },
+      {
+        path: 'address',
+        name: 'addresss',
+        component: address,
       },
     ],
   },
